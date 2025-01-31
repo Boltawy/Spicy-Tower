@@ -96,7 +96,7 @@ const rightWall = add([
 
 function spawnPlatform() {
     let platform = add([
-        rect(rand(100, 600), 30),
+        rect(rand(100, 400), 30),
         pos(0, 0),
         outline(4),
         anchor("botleft"),

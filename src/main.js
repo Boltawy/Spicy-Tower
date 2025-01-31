@@ -75,27 +75,6 @@ const startingPlatform = add([
     color(127, 200, 255),
 ]);
 
-// const leftWall = add([
-//     rect(480, height()),
-//     pos(0, 0),
-//     area(),
-//     body({ isStatic: true }),
-//     color(127, 200, 255),
-//     "wall",
-//     "leftwall",
-// ]);
-
-// const rightWall = add([
-//     rect(480, height()),
-//     pos(width() - 480, 0),
-//     area(),
-//     body({ isStatic: true }),
-//     color(127, 200, 255),
-//     "wall",
-//     "rightwall",
-// ]);
-
-
 function wallSpawner(wallPosY) {
     for (let i = 0; i < 5; i++) {
         const leftWall = add([
@@ -168,30 +147,6 @@ setInterval(() => {
         }
     })
 }, 1000);
-
-
-
-// function spawnPlatform() {
-//     let platform = add([
-//         rect(rand(100, 400), 30),
-//         pos(0, camPosition.y - 500),
-//         outline(4),
-//         anchor("botleft"),
-//         body({ isStatic: true }),
-//         color(127, 200, 255),
-//         move(DOWN, 100),
-//         offscreen({ destroy: true }),
-//         "platform",
-//     ]);
-
-//     platform.pos.x = rand(480, width() - 480 - platform.width);
-
-
-
-//     wait(1, () => {
-//         spawnPlatform();
-//     });
-// }
 
 
 onUpdate(() => { // Adds collision when the player is above a platform

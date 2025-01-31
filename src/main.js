@@ -97,7 +97,7 @@ const rightWall = add([
 function spawnPlatform() {
     let platform = add([
         rect(rand(100, 600), 30),
-        pos(rand(440, width() - 480), 0),
+        pos(0, 0),
         outline(4),
         anchor("botleft"),
         body({ isStatic: true }),
@@ -107,8 +107,7 @@ function spawnPlatform() {
         "platform",
     ]);
 
-    // platform.use(pos(rand(480 - platform.width(), width() - 480 - platform.width()), 0),);
-
+    platform.pos.x = rand(480, width() - 480 - platform.width);
 
 
 

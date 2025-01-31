@@ -1,7 +1,13 @@
 import kaplay from "kaplay";
 // import "kaplay/global"; // uncomment if you want to use without the k. prefix
 
-const k = kaplay();
+const k = kaplay(
+    {
+        debug: true,
+        global: true,
+        
+    }
+);
 
 k.loadRoot("./"); // A good idea for Itch.io publishing later
 k.loadSprite("bean", "sprites/bean.png");
@@ -11,6 +17,7 @@ const bean = k.add([
     k.sprite("bean"),
     body(),
     area(),
+    anchor("botleft"),
     "bean",
     "player",
 
@@ -89,15 +96,19 @@ const rightWall = add([
 
 function spawnPlatform() {
     let platform = add([
-        rect(100, 30),
-        pos(rand(480, width() - 480), 0),
+        rect(rand(100, 600), 30),
+        pos(rand(440, width() - 480), 0),
         outline(4),
+        anchor("botleft"),
         body({ isStatic: true }),
         color(127, 200, 255),
         move(DOWN, 100),
         offscreen({ destroy: true }),
         "platform",
     ]);
+
+    // platform.use(pos(rand(480 - platform.width(), width() - 480 - platform.width()), 0),);
+
 
 
 

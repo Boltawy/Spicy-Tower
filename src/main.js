@@ -5,6 +5,8 @@ const k = kaplay(
     {
         debug: true,
         global: true,
+        width: 1280,
+        height: 720
 
     }
 );
@@ -38,13 +40,9 @@ const friction = 100; // Slow down when no key is pressed
 
 onUpdate(() => {
     if (isKeyDown("d")) {
-        // if (!bean.isGrounded()) acceleration = 0;
-        // else acceleration = 10;
         if (velocity < 0) velocity = Math.min(velocity + friction, 0);
         velocity = Math.min(velocity + acceleration * acceleration, maxSpeed);
     } else if (isKeyDown("a")) {
-        // if (!bean.isGrounded()) acceleration = 0;
-        // else acceleration = 10;
         if (velocity > 0) velocity = Math.max(velocity - friction, 0);
         velocity = Math.max(velocity - acceleration * acceleration, -maxSpeed);
     } else {
@@ -135,8 +133,6 @@ function platformSpawner(platformPosY) {
 let initialPlatformPosY = bean.pos.y - 50;
 let currentPlatform = platformSpawner(initialPlatformPosY);
 
-let scrollHeight = 0;
-
 setInterval(() => {
     if (currentPlatform.pos.y > getCamPos().y - 500) {
         currentPlatform = platformSpawner(currentPlatform.pos.y - 100);
@@ -185,7 +181,3 @@ setTimeout(() => {
 setTimeout(() => {
     camsSpeed = -3;
 }, 20000);
-
-
-
-spawnPlatform();

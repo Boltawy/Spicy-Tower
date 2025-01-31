@@ -12,7 +12,7 @@ const k = kaplay(
 k.loadSprite("bean", "sprites/bean.png");
 
 const bean = k.add([
-    k.pos(540, 40),
+    k.pos(540, 700),
     k.sprite("bean"),
     body(),
     area(),
@@ -32,7 +32,7 @@ k.onKeyPress("space", () => {
 
 
 let velocity = 0;
-let acceleration = 2.8;
+let acceleration = 3;
 const maxSpeed = 500;
 const friction = 100; // Slow down when no key is pressed
 
@@ -75,48 +75,123 @@ const startingPlatform = add([
     color(127, 200, 255),
 ]);
 
-const leftWall = add([
-    rect(480, height()),
-    pos(0, 0),
-    area(),
-    body({ isStatic: true }),
-    color(127, 200, 255),
-    "wall",
-    "leftwall",
-]);
+// const leftWall = add([
+//     rect(480, height()),
+//     pos(0, 0),
+//     area(),
+//     body({ isStatic: true }),
+//     color(127, 200, 255),
+//     "wall",
+//     "leftwall",
+// ]);
 
-const rightWall = add([
-    rect(480, height()),
-    pos(width() - 480, 0),
-    area(),
-    body({ isStatic: true }),
-    color(127, 200, 255),
-    "wall",
-    "rightwall",
-]);
-
-
-function spawnPlatform() {
-    let platform = add([
-        rect(rand(100, 400), 30),
-        pos(0, camPosition.y - 500),
-        outline(4),
-        anchor("botleft"),
-        body({ isStatic: true }),
-        color(127, 200, 255),
-        move(DOWN, 100),
-        offscreen({ destroy: true }),
-        "platform",
-    ]);
-
-    platform.pos.x = rand(480, width() - 480 - platform.width);
+// const rightWall = add([
+//     rect(480, height()),
+//     pos(width() - 480, 0),
+//     area(),
+//     body({ isStatic: true }),
+//     color(127, 200, 255),
+//     "wall",
+//     "rightwall",
+// ]);
 
 
+function wallSpawner(wallPosY) {
+    for (let i = 0; i < 5; i++) {
+        const leftWall = add([
+            rect(480, height()),
+            pos(0, wallPosY),
+            area(),
 
-    wait(1, () => {
-        spawnPlatform();
-    });
+            body({ isStatic: true }),
+            color(127, 200, 255),
+            "wall",
+            "leftwall",
+        ]);
+        const rightWall = add([
+            rect(480, height()),
+            pos(width() - 480, wallPosY),
+            area(),
+            body({ isStatic: true }),
+            color(127, 200, 255),
+            "wall",
+            "rightwall",
+        ]);
+
+        wallPosY -= height();
+    }
+
+
+
+    // wait(10, () => {
+    //     wallSpawner(wallPosY);
+    // });
 }
+
+wallSpawner(0);
+// wallSpawner(-height());
+
+
+
+function platformSpawner(platformPosY) {
+    let spawnedPlatform;
+    for (let i = 0; i < 10; i++) {
+        spawnedPlatform = add([
+            rect(rand(100, 400), 30),
+            pos(0, platformPosY),
+            outline(4),
+            anchor("botleft"),
+            body({ isStatic: true }),
+            color(127, 200, 255),
+            "platform",
+        ]);
+
+        spawnedPlatform.pos.x = rand(480, width() - 480 - spawnedPlatform.width);
+        platformPosY -= 100;
+    }
+
+    return spawnedPlatform; //return last generated platform
+}
+
+let initialPlatformPosY = bean.pos.y - 50;
+let currentPlatform = platformSpawner(initialPlatformPosY);
+
+let scrollHeight = 0;
+
+setInterval(() => {
+    if (currentPlatform.pos.y > getCamPos().y - 500) {
+        currentPlatform = platformSpawner(currentPlatform.pos.y - 100);
+    }
+    get("platform").forEach(platform => {
+        if (platform.pos.y > getCamPos().y + 500) {
+            platform.destroy();
+        }
+    })
+}, 1000);
+
+
+
+// function spawnPlatform() {
+//     let platform = add([
+//         rect(rand(100, 400), 30),
+//         pos(0, camPosition.y - 500),
+//         outline(4),
+//         anchor("botleft"),
+//         body({ isStatic: true }),
+//         color(127, 200, 255),
+//         move(DOWN, 100),
+//         offscreen({ destroy: true }),
+//         "platform",
+//     ]);
+
+//     platform.pos.x = rand(480, width() - 480 - platform.width);
+
+
+
+//     wait(1, () => {
+//         spawnPlatform();
+//     });
+// }
 
 
 onUpdate(() => { // Adds collision when the player is above a platform
@@ -143,12 +218,19 @@ let camPosition = {
 camPosition.x = width() / 2;
 camPosition.y = height() / 2;
 
+let camsSpeed = -2;
+
 setTimeout(() => {
     onUpdate(() => {
-        camPos(camPosition.x, camPosition.y); // Moves the camera upwards
-        camPosition.y--;
+        setCamPos(camPosition.x, camPosition.y); // Moves the camera upwards
+        camPosition.y += camsSpeed;
     });
-}, 9000);
+}, 2000);
+
+setTimeout(() => {
+    camsSpeed = -3;
+}, 20000);
+
 
 
 spawnPlatform();

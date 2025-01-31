@@ -25,7 +25,7 @@ const bean = k.add([
 
 k.onKeyPress("space", () => {
     if (bean.isGrounded()) {
-        bean.jump(Math.max(450, Math.abs(velocity) * 2));
+        bean.jump(Math.max(600, Math.abs(velocity) * 2));
     }
 }
 );
@@ -143,12 +143,12 @@ let camPosition = {
 camPosition.x = width() / 2;
 camPosition.y = height() / 2;
 
-// setTimeout(() => {
-//     onUpdate(() => {
-//         camPos(camPosition.x, camPosition.y); // Moves the camera upwards
-//         camPosition.y--;
-//     });
-// }, 5000);
+setTimeout(() => {
+    onUpdate(() => {
+        camPos(camPosition.x, camPosition.y); // Moves the camera upwards
+        camPosition.y--;
+    });
+}, 9000);
 
 
 spawnPlatform();

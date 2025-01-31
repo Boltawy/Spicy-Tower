@@ -5,11 +5,10 @@ const k = kaplay(
     {
         debug: true,
         global: true,
-        
+
     }
 );
 
-k.loadRoot("./"); // A good idea for Itch.io publishing later
 k.loadSprite("bean", "sprites/bean.png");
 
 const bean = k.add([
@@ -23,39 +22,21 @@ const bean = k.add([
 
 ]);
 
+
 k.onKeyPress("space", () => {
     if (bean.isGrounded()) {
         bean.jump(700);
-    }}
-);
-
-let isSprinting = false;
-
-k.onKeyDown("shift", () => {
-    isSprinting = true;
+    }
 }
 );
 
-k.onKeyRelease("shift", () => {
-    isSprinting = false;
-});
 
 k.onKeyDown("a", () => {
-    if (isSprinting) {
-        bean.move(-400, 0);
-    }
-    else {
-        bean.move(-200, 0);
-    }
+    bean.move(-200, 0);
 });
 
 k.onKeyDown("d", () => {
-    if (isSprinting) {
-        bean.move(400, 0);
-    }
-    else {
-        bean.move(200, 0);
-    }
+    bean.move(200, 0);
 });
 
 bean.onCollide("tree", () => {
@@ -97,7 +78,7 @@ const rightWall = add([
 function spawnPlatform() {
     let platform = add([
         rect(rand(100, 400), 30),
-        pos(0, 0),
+        pos(0, camPosition.y - 500),
         outline(4),
         anchor("botleft"),
         body({ isStatic: true }),
@@ -116,15 +97,16 @@ function spawnPlatform() {
     });
 }
 
-onUpdate(() => {
+
+onUpdate(() => { // Adds collision when the player is above a platform
     get("platform").forEach(platform => {
-        if (bean.pos.y < platform.pos.y) {
-            platform.use(area());
+        if (bean.pos.y < platform.pos.y - 30) {
+            platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
         }
     });
 });
 
-onUpdate(() => {
+onUpdate(() => { // Removes collision when the player is below a platform
     get("platform").forEach(platform => {
         if (bean.pos.y > platform.pos.y) {
             platform.unuse("area");
@@ -132,7 +114,20 @@ onUpdate(() => {
     });
 });
 
+let camPosition = {
+    x: 0,
+    y: 0
+}
 
+camPosition.x = width() / 2;
+camPosition.y = height() / 2;
+
+setTimeout(() => {
+    onUpdate(() => {
+        camPos(camPosition.x, camPosition.y); // Moves the camera upwards
+        camPosition.y--;
+    });
+}, 5000);
 
 
 spawnPlatform();

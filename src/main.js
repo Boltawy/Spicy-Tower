@@ -25,23 +25,40 @@ const bean = k.add([
 
 k.onKeyPress("space", () => {
     if (bean.isGrounded()) {
-        bean.jump(700);
+        bean.jump(Math.max(450, Math.abs(velocity) * 2));
     }
 }
 );
 
 
-k.onKeyDown("a", () => {
-    bean.move(-200, 0);
-});
+let velocity = 0;
+let acceleration = 2.8;
+const maxSpeed = 500;
+const friction = 100; // Slow down when no key is pressed
 
-k.onKeyDown("d", () => {
-    bean.move(200, 0);
-});
+onUpdate(() => {
+    if (isKeyDown("d")) {
+        // if (!bean.isGrounded()) acceleration = 0;
+        // else acceleration = 10;
+        if (velocity < 0) velocity = Math.min(velocity + friction, 0);
+        velocity = Math.min(velocity + acceleration * acceleration, maxSpeed);
+    } else if (isKeyDown("a")) {
+        // if (!bean.isGrounded()) acceleration = 0;
+        // else acceleration = 10;
+        if (velocity > 0) velocity = Math.max(velocity - friction, 0);
+        velocity = Math.max(velocity - acceleration * acceleration, -maxSpeed);
+    } else {
+        if (bean.isGrounded()) {
+            if (velocity > 0) velocity = Math.max(velocity - friction, 0);
+            if (velocity < 0) velocity = Math.min(velocity + friction, 0);
+        }
+    }
 
-bean.onCollide("tree", () => {
-    k.addKaboom(bean.pos);
-    shake(10);
+    onCollide("player", "wall", () => {
+        velocity = velocity * -1;
+    });
+
+    bean.move(velocity, 0);
 });
 
 
@@ -64,6 +81,8 @@ const leftWall = add([
     area(),
     body({ isStatic: true }),
     color(127, 200, 255),
+    "wall",
+    "leftwall",
 ]);
 
 const rightWall = add([
@@ -72,6 +91,8 @@ const rightWall = add([
     area(),
     body({ isStatic: true }),
     color(127, 200, 255),
+    "wall",
+    "rightwall",
 ]);
 
 
@@ -92,7 +113,7 @@ function spawnPlatform() {
 
 
 
-    wait(rand(1, 2), () => {
+    wait(1, () => {
         spawnPlatform();
     });
 }
@@ -122,12 +143,12 @@ let camPosition = {
 camPosition.x = width() / 2;
 camPosition.y = height() / 2;
 
-setTimeout(() => {
-    onUpdate(() => {
-        camPos(camPosition.x, camPosition.y); // Moves the camera upwards
-        camPosition.y--;
-    });
-}, 5000);
+// setTimeout(() => {
+//     onUpdate(() => {
+//         camPos(camPosition.x, camPosition.y); // Moves the camera upwards
+//         camPosition.y--;
+//     });
+// }, 5000);
 
 
 spawnPlatform();

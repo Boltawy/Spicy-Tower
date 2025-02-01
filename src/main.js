@@ -16,10 +16,10 @@ const k = kaplay(
 k.loadSound("spicyTheme", "audio/spicy-theme.mp3")
 
 
-k.onLoad(() => {
-    k.play("spicyTheme", { volume: 0.2, loop: true });
+// k.onLoad(() => {
+//     k.play("spicyTheme", { volume: 0.2, loop: true });
 
-});
+// });
 
 
 k.loadSprite("bean", "sprites/bean.png");
@@ -195,11 +195,31 @@ let camPosition = {
     y: height() / 2
 }
 
+let isDead = false;
+let deathAnimation = true;
+
+function shakeOnDeath() {
+    if (isDead && deathAnimation) {
+        shake(20)
+
+        deathAnimation = false;
+    }
+}
+
 let camsSpeed = -height() / 800;
 
 let startScroll = false;
+let bgMusic;
 
-onUpdate(() => {
+
+let startMusic = onUpdate(() => {
+    if (startScroll) {
+        bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
+        startMusic.cancel();
+    }
+});
+
+k.onUpdate(() => {
     if (bean.pos.y < height() / 2) {
         startScroll = true;
     }
@@ -213,11 +233,12 @@ onUpdate(() => {
         setCamPos(camPosition.x, camPosition.y);
         camPosition.y += camsSpeed;
     }
+    if (bean.pos.y > camPosition.y + height()) {
+        isDead = true;
+        shakeOnDeath();
+        bgMusic.stop();
+    }
 });
-
-setTimeout(() => {
-    camsSpeed = -height() / 400;
-}, 20000);
 
 
 k.on

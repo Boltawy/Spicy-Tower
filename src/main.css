@@ -9,3 +9,8 @@ html, body {
     background-color: black; /* Change background as needed */
     overflow: hidden;
 }
+
+canvas {
+    width: 100vw;
+    height: 100vh;
+}

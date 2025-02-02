@@ -57,6 +57,7 @@ k.scene("game", () => {
 
 
 
+
     const bean = k.add([
         k.pos(width() / 2, height() - 50),
         k.sprite("bean"),
@@ -68,7 +69,7 @@ k.scene("game", () => {
         "player",
 
     ]);
-    
+
 
 
 
@@ -87,14 +88,22 @@ k.scene("game", () => {
     const maxSpeed = 1000;
     const friction = 50; // Slow down when no key is pressed
 
+    function moveleft() {
+        if (velocity > 0) velocity = Math.max(velocity - friction, 0);
+        velocity = Math.max(velocity - acceleration * acceleration, -maxSpeed);
+    }
+
+    function moveright() {
+        if (velocity < 0) velocity = Math.min(velocity + friction, 0);
+        velocity = Math.min(velocity + acceleration * acceleration, maxSpeed);
+    }
+
     onUpdate(() => {
         if (!paused) {
             if (isKeyDown(["d", "right"])) {
-                if (velocity < 0) velocity = Math.min(velocity + friction, 0);
-                velocity = Math.min(velocity + acceleration * acceleration, maxSpeed);
+                moveright();
             } else if (isKeyDown(["a", "left"])) {
-                if (velocity > 0) velocity = Math.max(velocity - friction, 0);
-                velocity = Math.max(velocity - acceleration * acceleration, -maxSpeed);
+                moveleft();
             } else {
                 if (bean.isGrounded()) {
                     if (velocity > 0) velocity = Math.max(velocity - friction, 0);
@@ -114,6 +123,42 @@ k.scene("game", () => {
             bean.move(velocity, 0);
         }
     });
+
+
+    // let leftButton = add([
+    //     k.rect(100, 100),
+    //     k.pos(50, height() - 50),
+    //     k.color(255, 255, 255),
+    //     k.opacity(0.5),
+    //     k.anchor("botleft"),
+    //     k.fixed(),
+    //     k.area({ shape: new Rect(vec2(0, 0), 50, 50) }),
+    //     k.scale(0.5),
+    //     "leftbutton",
+    // ]);
+
+    // let rightButton = add([
+    //     k.rect(100, 100),
+    //     k.pos(width() - 50, height() - 50),
+    //     k.color(255, 255, 255),
+    //     k.opacity(0.5),
+    //     k.anchor("botright"),
+    //     k.fixed(),
+    //     k.area({ shape: new Rect(vec2(0, 0), 50, 50) }),
+    //     k.scale(0.5),
+    //     "rightbutton",
+    // ]);
+
+    // leftButton.onTouchStart(() => {
+    //     moveleft();
+    //     bean.jump(600);
+    // });
+
+    // rightButton.onMouseDown(() => {
+    //     if (!paused) {
+    //         // moveright();
+    //     }
+    // });
 
     let paused = false;
     let pauseThemeTime;

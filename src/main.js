@@ -84,6 +84,7 @@ onUpdate(() => {
 let paused = false;
 let pauseTheme;
 let pauseThemeTime;
+let pauseThemeDuration;
 let bgMusicTime;
 k.onKeyPress(["p", "escape"], () => {
     paused = !paused;
@@ -96,14 +97,20 @@ k.onKeyPress(["p", "escape"], () => {
     if (paused) {
         bgMusicTime = bgMusic.time();
         bgMusic.stop();
-        // pauseTheme = k.play("spicyTheme", { volume: 0.2, loop: true, speed: 0.7, seek: bgMusicTime });
-        // debug.log(bgMusicTime);
+        pauseTheme = k.play("spicyTheme", { volume: 0.2, loop: true, speed: 0.7, seek: bgMusicTime });
+        debug.log("Bg music time: ", bgMusicTime);
+        // debug.log("Main theme Duration: ", bgMusic.duration() / 0.8);
     }
     else {
+        pauseThemeDuration = pauseTheme.duration();
+        // pauseThemeTime = (pauseTheme.time() * bgMusic.duration() * 0.7) / (bgMusic.duration());
+        pauseThemeTime = (pauseTheme.time() * 0.7) + bgMusicTime; 
         // pauseThemeTime = (pauseTheme.time());
-        // pauseTheme.stop();
-        bgMusic.play(bgMusicTime);
-        // debug.log(pauseThemeTime);
+        pauseTheme.stop();
+        bgMusic.play(pauseThemeTime);
+        debug.log("Pause theme time: ", pauseThemeTime);
+        // debug.log("Pause theme Duration: ", pauseThemeDuration);
+
     }
 });
 

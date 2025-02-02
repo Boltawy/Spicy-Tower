@@ -8,7 +8,7 @@ const k = kaplay(
         global: true,
         width: 640,
         height: 800,
-        letterbox: false,
+        letterbox: true,
         stretch: false,
 
     }
@@ -42,6 +42,7 @@ k.scene("game", () => {
         "player",
 
     ]);
+    
 
 
 

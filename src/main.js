@@ -6,8 +6,8 @@ const k = kaplay(
         debug: true,
         debugKey: "r",
         global: true,
-        width: Math.min(window.innerWidth, 600),
-        height: Math.min(window.innerHeight, 800),
+        width: 640,
+        height: 800,
         letterbox: false,
         stretch: false,
 
@@ -38,7 +38,7 @@ const bean = k.add([
 
 
 
-k.onKeyDown("space", () => {
+k.onKeyDown(["space", "w", "up"], () => {
     if (bean.isGrounded()) {
         bean.jump(Math.max(570, Math.abs(velocity) * 2.1));
     }
@@ -52,10 +52,10 @@ const maxSpeed = 1000;
 const friction = 50; // Slow down when no key is pressed
 
 onUpdate(() => {
-    if (isKeyDown("d")) {
+    if (isKeyDown(["d", "right"])) {
         if (velocity < 0) velocity = Math.min(velocity + friction, 0);
         velocity = Math.min(velocity + acceleration * acceleration, maxSpeed);
-    } else if (isKeyDown("a")) {
+    } else if (isKeyDown(["a", "left"])) {
         if (velocity > 0) velocity = Math.max(velocity - friction, 0);
         velocity = Math.max(velocity - acceleration * acceleration, -maxSpeed);
     } else {
@@ -98,7 +98,7 @@ const startingPlatform = add([
 function wallSpawner(wallPosY) {
     for (let i = 0; i < 10; i++) {
         const leftWall = add([
-            rect(5, height()),
+            rect(-100, height()),
             pos(0, wallPosY),
             area(),
             body({ isStatic: true }),
@@ -107,8 +107,8 @@ function wallSpawner(wallPosY) {
             "leftwall",
         ]);
         const rightWall = add([
-            rect(5, height()),
-            pos(width() - 5, wallPosY),
+            rect(100, height()),
+            pos(width() , wallPosY),
             area(),
             body({ isStatic: true }),
             color(127, 200, 255),
@@ -235,6 +235,7 @@ k.onUpdate(() => {
     }
     if (bean.pos.y > camPosition.y + height()) {
         isDead = true;
+        startScroll = false;
         shakeOnDeath();
         bgMusic.stop();
     }

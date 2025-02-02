@@ -1,0 +1,22 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+    },
+    "last.imagePath": "C:/Users/zeyad/.vscode/practice-projects/spicy-tower/public/tiles",
+    "map.fixedSize": true,
+    "map.height": 30,
+    "map.width": 20,
+    "openFiles": [
+    ],
+    "project": "spicy.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

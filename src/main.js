@@ -39,8 +39,10 @@ const bean = k.add([
 
 
 k.onKeyDown(["space", "w", "up"], () => {
-    if (bean.isGrounded()) {
-        bean.jump(Math.max(570, Math.abs(velocity) * 2.1));
+    if (!paused) {
+        if (bean.isGrounded()) {
+            bean.jump(Math.max(570, Math.abs(velocity) * 2.1));
+        }
     }
 }
 );
@@ -52,29 +54,57 @@ const maxSpeed = 1000;
 const friction = 50; // Slow down when no key is pressed
 
 onUpdate(() => {
-    if (isKeyDown(["d", "right"])) {
-        if (velocity < 0) velocity = Math.min(velocity + friction, 0);
-        velocity = Math.min(velocity + acceleration * acceleration, maxSpeed);
-    } else if (isKeyDown(["a", "left"])) {
-        if (velocity > 0) velocity = Math.max(velocity - friction, 0);
-        velocity = Math.max(velocity - acceleration * acceleration, -maxSpeed);
-    } else {
-        if (bean.isGrounded()) {
-            if (velocity > 0) velocity = Math.max(velocity - friction, 0);
+    if (!paused) {
+        if (isKeyDown(["d", "right"])) {
             if (velocity < 0) velocity = Math.min(velocity + friction, 0);
+            velocity = Math.min(velocity + acceleration * acceleration, maxSpeed);
+        } else if (isKeyDown(["a", "left"])) {
+            if (velocity > 0) velocity = Math.max(velocity - friction, 0);
+            velocity = Math.max(velocity - acceleration * acceleration, -maxSpeed);
+        } else {
+            if (bean.isGrounded()) {
+                if (velocity > 0) velocity = Math.max(velocity - friction, 0);
+                if (velocity < 0) velocity = Math.min(velocity + friction, 0);
+            }
         }
-    }
 
-    onCollide("player", "wall", () => {
-        if (bean.isGrounded()) {
-            velocity = 0;
-        }
-        else {
-            velocity = velocity * -1;
-        }
+        onCollide("player", "wall", () => {
+            if (bean.isGrounded()) {
+                velocity = 0;
+            }
+            else {
+                velocity = velocity * -1;
+            }
+        });
+
+        bean.move(velocity, 0);
+    }
     });
 
-    bean.move(velocity, 0);
+let paused = false;
+let pauseTheme;
+let pauseThemeTime;
+let bgMusicTime;
+k.onKeyPress(["p", "escape"], () => {
+    paused = !paused;
+    if (bean.has("body")) {
+        bean.unuse("body");
+    }
+    else {
+        bean.use(body());
+    }
+    if (paused) {
+        bgMusicTime = bgMusic.time();
+        bgMusic.stop();
+        // pauseTheme = k.play("spicyTheme", { volume: 0.2, loop: true, speed: 0.7, seek: bgMusicTime });
+        // debug.log(bgMusicTime);
+    }
+    else {
+        // pauseThemeTime = (pauseTheme.time());
+        // pauseTheme.stop();
+        bgMusic.play(bgMusicTime);
+        // debug.log(pauseThemeTime);
+    }
 });
 
 
@@ -96,28 +126,30 @@ const startingPlatform = add([
 // k.viewport.follow(bean);
 
 function wallSpawner(wallPosY) {
-    for (let i = 0; i < 10; i++) {
-        const leftWall = add([
-            rect(-100, height()),
-            pos(0, wallPosY),
-            area(),
-            body({ isStatic: true }),
-            color(127, 200, 255),
-            "wall",
-            "leftwall",
-        ]);
-        const rightWall = add([
-            rect(100, height()),
-            pos(width() , wallPosY),
-            area(),
-            body({ isStatic: true }),
-            color(127, 200, 255),
-            "wall",
-            "rightwall",
-        ]);
+    if (!paused) {
+        for (let i = 0; i < 10; i++) {
+            const leftWall = add([
+                rect(-100, height()),
+                pos(0, wallPosY),
+                area(),
+                body({ isStatic: true }),
+                color(127, 200, 255),
+                "wall",
+                "leftwall",
+            ]);
+            const rightWall = add([
+                rect(100, height()),
+                pos(width(), wallPosY),
+                area(),
+                body({ isStatic: true }),
+                color(127, 200, 255),
+                "wall",
+                "rightwall",
+            ]);
 
-        wallPosY -= height();
-        return leftWall;
+            wallPosY -= height();
+            return leftWall;
+        }
     }
 }
 
@@ -140,24 +172,26 @@ setInterval(() => {
 // }, 1000);
 
 function platformSpawner(platformPosY) {
-    let spawnedPlatform;
-    for (let i = 0; i < 10; i++) {
-        spawnedPlatform = add([
-            rect(rand(150, 600), 30),
-            pos(0, platformPosY),
-            outline(4),
-            scale(0.5),
-            anchor("botleft"),
-            body({ isStatic: true }),
-            color(127, 200, 255),
-            "platform",
-        ]);
+    if (!paused) {
+        let spawnedPlatform;
+        for (let i = 0; i < 10; i++) {
+            spawnedPlatform = add([
+                rect(rand(150, 600), 30),
+                pos(0, platformPosY),
+                outline(4),
+                scale(0.5),
+                anchor("botleft"),
+                body({ isStatic: true }),
+                color(127, 200, 255),
+                "platform",
+            ]);
 
-        spawnedPlatform.pos.x = k.rand(0, width() - spawnedPlatform.width * spawnedPlatform.scale.x);
-        platformPosY -= 100;
+            spawnedPlatform.pos.x = k.rand(0, width() - spawnedPlatform.width * spawnedPlatform.scale.x);
+            platformPosY -= 100;
+        }
+
+        return spawnedPlatform; //return last generated platform
     }
-
-    return spawnedPlatform; //return last generated platform
 }
 
 let currentPlatform = platformSpawner(bean.pos.y - 50);
@@ -175,19 +209,23 @@ setInterval(() => {
 
 
 onUpdate(() => { // Adds collision when the player is above any given platform
-    get("platform").forEach(platform => {
-        if (bean.pos.y < platform.pos.y - 20) {
-            platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
-        }
-    });
+    if (!paused) {
+        get("platform").forEach(platform => {
+            if (bean.pos.y < platform.pos.y - 20) {
+                platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
+            }
+        });
+    }
 });
 
 onUpdate(() => { // Removes collision when the player is below any given platform
-    get("platform").forEach(platform => {
-        if (bean.pos.y > platform.pos.y) {
-            platform.unuse("area");
-        }
-    });
+    if (!paused) {
+        get("platform").forEach(platform => {
+            if (bean.pos.y > platform.pos.y) {
+                platform.unuse("area");
+            }
+        });
+    }
 });
 
 let camPosition = {
@@ -220,26 +258,26 @@ let startMusic = onUpdate(() => {
 });
 
 k.onUpdate(() => {
-    if (bean.pos.y < height() / 2) {
-        startScroll = true;
-    }
-    if (startScroll) {
-        if (bean.pos.y < camPosition.y - height() / 3) {
-            camsSpeed = -4;
+    if (!paused) {
+        if (bean.pos.y < height() / 2) {
+            startScroll = true;
         }
-        else {
-            camsSpeed = -height() / 600;
+        if (startScroll) {
+            if (bean.pos.y < camPosition.y - height() / 3) {
+                camsSpeed = -4;
+            }
+            else {
+                camsSpeed = -height() / 600;
+            }
+            setCamPos(camPosition.x, camPosition.y);
+            camPosition.y += camsSpeed;
         }
-        setCamPos(camPosition.x, camPosition.y);
-        camPosition.y += camsSpeed;
-    }
-    if (bean.pos.y > camPosition.y + height()) {
-        isDead = true;
-        startScroll = false;
-        shakeOnDeath();
-        bgMusic.stop();
+        if (bean.pos.y > camPosition.y + height()) {
+            isDead = true;
+            startScroll = false;
+            shakeOnDeath();
+            bgMusic.stop();
+        }
     }
 });
 
-
-k.on

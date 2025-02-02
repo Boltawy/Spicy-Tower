@@ -1,5 +1,5 @@
 import kaplay from "kaplay";
-// import "kaplay/global"; // uncomment if you want to use without the k. prefix
+import "kaplay/global"; // uncomment if you want to use without the k. prefix
 
 const k = kaplay(
     {
@@ -30,6 +30,32 @@ k.scene("game", () => {
 
 
     k.loadSprite("bean", "sprites/bean.png");
+
+
+    let scoreCounter = add([
+        k.text("Score: 0", 24),
+        pos(width() / 2, 50),
+        color(0, 0, 0),
+        opacity(0.5),
+        anchor("center"),
+        fixed(),
+        "score",
+    ]);
+
+    let score = 0;
+
+    onUpdate(() => {
+        if (!paused && startScroll && !isDead) {
+            score += 1;
+            scoreCounter.text = `Score: ${score}`;
+
+        }
+    });
+
+
+
+
+
 
     const bean = k.add([
         k.pos(width() / 2, height() - 50),
@@ -104,7 +130,7 @@ k.scene("game", () => {
         if (paused) {
             bgMusicTime = bgMusic?.time();
             bgMusic?.stop();
-            bgMusic ? pauseTheme = k.play("spicyTheme", { volume: 0.2, loop: true, speed: 0.7, seek: bgMusicTime }) : null;
+            pauseTheme = k.play("spicyTheme", { volume: 0.2, loop: true, speed: 0.7, seek: bgMusicTime });
 
             add([
                 rect(width(), height()),
@@ -305,6 +331,7 @@ k.scene("game", () => {
                 startScroll = false;
                 shakeOnDeath();
                 bgMusic?.stop();
+                pauseTheme?.stop();
             }
         }
     });

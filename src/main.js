@@ -320,17 +320,7 @@ k.scene("game", () => {
         }
     }
 
-    
-
 
 })
 
 k.go("game");
-
-
-// onkeydown = (e) => {
-//     if (e.key == "r") {
-//         k.destroyAll
-//         k.go("game");
-//     }
-// }

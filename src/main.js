@@ -41,7 +41,6 @@ k.scene("game", () => {
         k.text("0", {
             font: "VCR_OSD",
             size: 48,
-
         }),
         z(10),
         pos(width() / 2, 50),
@@ -51,12 +50,26 @@ k.scene("game", () => {
         "score",
     ]);
 
+    add([
+        k.text("0", {
+            font: "VCR_OSD",
+            size: 48,
+        }),
+        z(10),
+        pos(width() / 2 + 3, 50 + 3),
+        color(255, 255, 255),
+        anchor("center"),
+        fixed(),
+        "score",
+    ]);
+    
+
     let score = 0;
 
     onUpdate(() => {
         if (!paused && startScroll && !isDead) {
             score += Math.floor(150 * dt());
-            scoreCounter.text = `${score}`;
+            get("score").forEach(scoreText => scoreText.text = score.toString());
 
         }
     });
@@ -288,6 +301,7 @@ k.scene("game", () => {
         area(),
         body({ isStatic: true }),
         color(127, 200, 255),
+        "startingPlatform",
     ]);
 
 
@@ -379,7 +393,7 @@ k.scene("game", () => {
     onUpdate(() => { // Adds collision when the player is above any given platform
         if (!paused) {
             get("platform").forEach(platform => {
-                if (player.pos.y < platform.pos.y - 50) {
+                if (player.pos.y < platform.pos.y - 55) {
                     platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
                 }
             });

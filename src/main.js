@@ -21,6 +21,10 @@ let bgMusic;
 
 k.scene("game", () => {
     k.loadSound("spicyTheme", "audio/spicy-theme.mp3")
+    k.loadSound("track1", "audio/track1.mp3")
+    k.loadSound("track2", "audio/track2.mp3")
+    k.loadSound("track4", "audio/track4.mp3")
+    k.loadSound("track5", "audio/track5.mp3")
 
 
     // k.onLoad(() => {
@@ -117,11 +121,11 @@ k.scene("game", () => {
     }
 
     let playerFlip = false;
-
+    let canJump = true;
 
 
     k.onKeyDown(["space", "w", "up"], () => {
-        if (!paused) {
+        if (!paused && canJump) {
             if (player.isGrounded()) {
                 player.jump(Math.max(570, Math.abs(velocity) * 2.1));
             }
@@ -200,12 +204,17 @@ k.scene("game", () => {
 
 
             onCollide("player", "wall", () => {
+                canJump = false;
                 if (player.isGrounded()) {
                     velocity = 0;
                 }
                 else {
-                    velocity = velocity * -1;
+                    velocity = -velocity;
                 }
+            });
+
+            onCollideEnd("player", "wall", () => {
+                canJump = true;
             });
 
             mainAnimations();
@@ -229,7 +238,7 @@ k.scene("game", () => {
         if (paused) {
             bgMusicTime = bgMusic?.time();
             bgMusic?.stop();
-            pauseTheme = k.play("spicyTheme", { volume: 0.2, loop: true, speed: 0.7, seek: bgMusicTime });
+            pauseTheme = k.play("track5", { volume: 0.2, loop: true, speed: 0.7, seek: bgMusicTime });
 
             add([
                 rect(width(), height()),
@@ -405,7 +414,8 @@ k.scene("game", () => {
 
     let startMusic = onUpdate(() => {
         if (startScroll) {
-            bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
+            // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
+            bgMusic = k.play("track5", { volume: 0.2, loop: true });
             startMusic.cancel();
         }
     });

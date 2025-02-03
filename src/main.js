@@ -29,9 +29,8 @@ k.scene("game", () => {
     // });
 
 
-    k.loadSprite("bean", "sprites/bean.png");
-
-
+    
+    
     let scoreCounter = add([
         k.text("Score: 0", 24),
         pos(width() / 2, 50),
@@ -43,31 +42,30 @@ k.scene("game", () => {
     ]);
 
     let score = 0;
-
+    
     onUpdate(() => {
         if (!paused && startScroll && !isDead) {
             score += Math.floor(150 * dt());
             scoreCounter.text = `Score: ${score}`;
-
+            
         }
     });
+    
+    
+
+    
+    k.loadSprite("bean", "sprites/bean.png");
+    loadSprite("hooded", "sprites/hooded.png");
 
 
-
-
-
-
-
-    const bean = k.add([
+    const player = k.add([
         k.pos(width() / 2, height() - 50),
         k.sprite("bean"),
         k.body(),
         area(),
         scale(0.5),
         anchor("botleft"),
-        "bean",
         "player",
-
     ]);
 
 
@@ -75,8 +73,8 @@ k.scene("game", () => {
 
     k.onKeyDown(["space", "w", "up"], () => {
         if (!paused) {
-            if (bean.isGrounded()) {
-                bean.jump(Math.max(570, Math.abs(velocity) * 2.1));
+            if (player.isGrounded()) {
+                player.jump(Math.max(570, Math.abs(velocity) * 2.1));
             }
         }
     }
@@ -90,13 +88,13 @@ k.scene("game", () => {
 
     function moveleft() {
         if (velocity > 0) velocity = Math.max(velocity - friction * dt(), 0);
-        if (velocity > 0 && !bean.isGrounded()) velocity = Math.max(velocity - friction / 1.5 * dt(), 0);
+        if (velocity > 0 && !player.isGrounded()) velocity = Math.max(velocity - friction / 1.5 * dt(), 0);
         velocity = Math.max(velocity - acceleration * acceleration * dt(), -maxSpeed);
     }
 
     function moveright() {
         if (velocity < 0) velocity = Math.min(velocity + friction * dt(), 0);
-        if (velocity < 0 && !bean.isGrounded()) velocity = Math.min(velocity + friction / 1.5 * dt(), 0);
+        if (velocity < 0 && !player.isGrounded()) velocity = Math.min(velocity + friction / 1.5 * dt(), 0);
         velocity = Math.min(velocity + acceleration * acceleration * dt(), maxSpeed);
     }
 
@@ -107,7 +105,7 @@ k.scene("game", () => {
             } else if (isKeyDown(["a", "left"])) {
                 moveleft();
             } else {
-                if (bean.isGrounded()) {
+                if (player.isGrounded()) {
                     if (velocity > 0) velocity = Math.max(velocity - friction / 1.4 * dt(), 0);
                     if (velocity < 0) velocity = Math.min(velocity + friction / 1.4 * dt(), 0);
                 }
@@ -118,7 +116,7 @@ k.scene("game", () => {
             }
 
             onCollide("player", "wall", () => {
-                if (bean.isGrounded()) {
+                if (player.isGrounded()) {
                     velocity = 0;
                 }
                 else {
@@ -126,7 +124,7 @@ k.scene("game", () => {
                 }
             });
 
-            bean.move(velocity, 0);
+            player.move(velocity, 0);
         }
     });
 
@@ -137,11 +135,11 @@ k.scene("game", () => {
     let bgMusicTime;
     k.onKeyPress(["p", "escape"], () => {
         paused = !paused;
-        if (bean.has("body")) {
-            bean.unuse("body");
+        if (player.has("body")) {
+            player.unuse("body");
         }
         else {
-            bean.use(body());
+            player.use(body());
         }
         if (paused) {
             bgMusicTime = bgMusic?.time();
@@ -195,7 +193,7 @@ k.scene("game", () => {
 
 
 
-    // k.viewport.follow(bean);
+    // k.viewport.follow(player);
 
     function wallSpawner(wallPosY) {
         if (!paused) {
@@ -263,7 +261,7 @@ k.scene("game", () => {
         }
     }
 
-    let currentPlatform = platformSpawner(bean.pos.y - 50);
+    let currentPlatform = platformSpawner(player.pos.y - 50);
 
     let platformInterval = setInterval(() => {
         if (!paused) {
@@ -282,7 +280,7 @@ k.scene("game", () => {
     onUpdate(() => { // Adds collision when the player is above any given platform
         if (!paused) {
             get("platform").forEach(platform => {
-                if (bean.pos.y < platform.pos.y - 20) {
+                if (player.pos.y < platform.pos.y - 20) {
                     platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
                 }
             });
@@ -292,7 +290,7 @@ k.scene("game", () => {
     onUpdate(() => { // Removes collision when the player is below any given platform
         if (!paused) {
             get("platform").forEach(platform => {
-                if (bean.pos.y > platform.pos.y) {
+                if (player.pos.y > platform.pos.y) {
                     platform.unuse("area");
                 }
             });
@@ -329,11 +327,11 @@ k.scene("game", () => {
 
     k.onUpdate(() => {
         if (!paused) {
-            if (bean.pos.y < height() / 2) {
+            if (player.pos.y < height() / 2) {
                 startScroll = true;
             }
             if (startScroll) {
-                if (bean.pos.y < camPosition.y - height() / 3) {
+                if (player.pos.y < camPosition.y - height() / 3) {
                     camsSpeed = -height() / 2;
                 }
                 else {
@@ -342,7 +340,7 @@ k.scene("game", () => {
                 setCamPos(camPosition.x, camPosition.y);
                 camPosition.y += camsSpeed * dt();
             }
-            if (bean.pos.y > camPosition.y + height()) {
+            if (player.pos.y > camPosition.y + height()) {
                 isDead = true;
                 startScroll = false;
                 shakeOnDeath();

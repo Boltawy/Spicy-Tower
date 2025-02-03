@@ -26,6 +26,7 @@ k.scene("game", () => {
     k.loadSound("track4", "audio/track4.mp3")
     k.loadSound("track5", "audio/track5.mp3")
     loadSound("fall", "audio/fall.mp3")
+    loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
 
 
     // k.onLoad(() => {
@@ -37,10 +38,14 @@ k.scene("game", () => {
 
 
     let scoreCounter = add([
-        k.text("Score: 0", 24),
+        k.text("0", {
+            font: "VCR_OSD",
+            size: 48,
+
+        }),
+        z(10),
         pos(width() / 2, 50),
-        color(0, 0, 0),
-        opacity(0.5),
+        color(20, 20, 20),
         anchor("center"),
         fixed(),
         "score",
@@ -51,7 +56,7 @@ k.scene("game", () => {
     onUpdate(() => {
         if (!paused && startScroll && !isDead) {
             score += Math.floor(150 * dt());
-            scoreCounter.text = `Score: ${score}`;
+            scoreCounter.text = `${score}`;
 
         }
     });

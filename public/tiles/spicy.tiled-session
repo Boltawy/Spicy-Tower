@@ -3,20 +3,38 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "untitled.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "tile_castle.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 2
+        },
+        "untitled.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 364.33333333333337,
+                "y": 418.99999999999994
+            }
+        }
     },
     "last.imagePath": "C:/Users/zeyad/.vscode/practice-projects/spicy-tower/public/tiles",
     "map.fixedSize": true,
     "map.height": 30,
+    "map.lastUsedFormat": "tmx",
     "map.width": 20,
     "openFiles": [
+        "untitled.tmx",
+        "tile_castle.tsx"
     ],
     "project": "spicy.tiled-project",
     "recentFiles": [
+        "tile_castle.tsx",
+        "untitled.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

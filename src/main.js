@@ -46,7 +46,7 @@ k.scene("game", () => {
 
     onUpdate(() => {
         if (!paused && startScroll && !isDead) {
-            score += 1;
+            score += Math.floor(150 * dt());
             scoreCounter.text = `Score: ${score}`;
 
         }
@@ -84,18 +84,20 @@ k.scene("game", () => {
 
 
     let velocity = 0;
-    let acceleration = 2;
+    let acceleration = 20;
     const maxSpeed = 1000;
-    const friction = 50; // Slow down when no key is pressed
+    const friction = 1000; // Slow down when no key is pressed
 
     function moveleft() {
-        if (velocity > 0) velocity = Math.max(velocity - friction, 0);
-        velocity = Math.max(velocity - acceleration * acceleration, -maxSpeed);
+        if (velocity > 0) velocity = Math.max(velocity - friction * dt(), 0);
+        if (velocity > 0 && !bean.isGrounded()) velocity = Math.max(velocity - friction / 1.5 * dt(), 0);
+        velocity = Math.max(velocity - acceleration * acceleration * dt(), -maxSpeed);
     }
 
     function moveright() {
-        if (velocity < 0) velocity = Math.min(velocity + friction, 0);
-        velocity = Math.min(velocity + acceleration * acceleration, maxSpeed);
+        if (velocity < 0) velocity = Math.min(velocity + friction * dt(), 0);
+        if (velocity < 0 && !bean.isGrounded()) velocity = Math.min(velocity + friction / 1.5 * dt(), 0);
+        velocity = Math.min(velocity + acceleration * acceleration * dt(), maxSpeed);
     }
 
     onUpdate(() => {
@@ -106,8 +108,12 @@ k.scene("game", () => {
                 moveleft();
             } else {
                 if (bean.isGrounded()) {
-                    if (velocity > 0) velocity = Math.max(velocity - friction, 0);
-                    if (velocity < 0) velocity = Math.min(velocity + friction, 0);
+                    if (velocity > 0) velocity = Math.max(velocity - friction / 1.4 * dt(), 0);
+                    if (velocity < 0) velocity = Math.min(velocity + friction / 1.4 * dt(), 0);
+                }
+                else {
+                    if (velocity > 0) velocity = Math.max(velocity - friction / 3 * dt(), 0);
+                    if (velocity < 0) velocity = Math.min(velocity + friction / 3 * dt(), 0);
                 }
             }
 
@@ -124,41 +130,6 @@ k.scene("game", () => {
         }
     });
 
-
-    // let leftButton = add([
-    //     k.rect(100, 100),
-    //     k.pos(50, height() - 50),
-    //     k.color(255, 255, 255),
-    //     k.opacity(0.5),
-    //     k.anchor("botleft"),
-    //     k.fixed(),
-    //     k.area({ shape: new Rect(vec2(0, 0), 50, 50) }),
-    //     k.scale(0.5),
-    //     "leftbutton",
-    // ]);
-
-    // let rightButton = add([
-    //     k.rect(100, 100),
-    //     k.pos(width() - 50, height() - 50),
-    //     k.color(255, 255, 255),
-    //     k.opacity(0.5),
-    //     k.anchor("botright"),
-    //     k.fixed(),
-    //     k.area({ shape: new Rect(vec2(0, 0), 50, 50) }),
-    //     k.scale(0.5),
-    //     "rightbutton",
-    // ]);
-
-    // leftButton.onTouchStart(() => {
-    //     moveleft();
-    //     bean.jump(600);
-    // });
-
-    // rightButton.onMouseDown(() => {
-    //     if (!paused) {
-    //         // moveright();
-    //     }
-    // });
 
     let paused = false;
     let pauseThemeTime;
@@ -363,13 +334,13 @@ k.scene("game", () => {
             }
             if (startScroll) {
                 if (bean.pos.y < camPosition.y - height() / 3) {
-                    camsSpeed = -4;
+                    camsSpeed = -height() / 2;
                 }
                 else {
-                    camsSpeed = -height() / 600;
+                    camsSpeed = -height() / 6;
                 }
                 setCamPos(camPosition.x, camPosition.y);
-                camPosition.y += camsSpeed;
+                camPosition.y += camsSpeed * dt();
             }
             if (bean.pos.y > camPosition.y + height()) {
                 isDead = true;

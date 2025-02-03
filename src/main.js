@@ -69,9 +69,9 @@ k.scene("game", () => {
 
     const player = k.add([
         k.pos(width() / 2, height() - 50),
-        k.sprite("hooded", {anim: "run"}),
+        k.sprite("hooded", { anim: "idle1" }),
         k.body(),
-        area({ shape: new Rect(vec2(0, 5), 20, 25) }),
+        area({ shape: new Rect(vec2(0, 5), 20, 23) }),
         // scale(0.5),
         scale(2),
         anchor("center"),
@@ -98,20 +98,22 @@ k.scene("game", () => {
     let isWalking = false;
     let isRunning = false;
     let canRun = false;
+    let isIdle = false;
+    let canIdle = false;
 
-    function walkAnimation() {
+    function mainAnimations() {
         if (isWalking && canWalk) {
             player.play("walk");
             canWalk = false;
         }
-        else if (isRunning && canRun)
-        {
+        else if (isRunning && canRun) {
             player.play("run");
             canRun = false;
         }
-        // else {
-        //     player.play("idle1");
-        // }
+        else if (isIdle) {
+            player.play("idle1");
+            isIdle = false;
+        }
     }
 
     let playerFlip = false;
@@ -139,14 +141,7 @@ k.scene("game", () => {
         velocity = Math.max(velocity - acceleration * acceleration * dt(), -maxSpeed);
         playerFlip ? null : player.scale.x *= -1;
         playerFlip = true;
-        if (player.isGrounded() && Math.abs(velocity) > 50) {
-            isWalking = true;
-            // canWalk = true;
-        }
-        else if (player.isGrounded() && Math.abs(velocity) < 50) {
-            isWalking = false;
-            canWalk = true;
-        }
+
     }
 
     function moveright() {
@@ -155,14 +150,7 @@ k.scene("game", () => {
         velocity = Math.min(velocity + acceleration * acceleration * dt(), maxSpeed);
         playerFlip ? player.scale.x *= -1 : null;
         playerFlip = false;
-        if ((player.isGrounded() && Math.abs(velocity) > 50) && player.isGrounded() && Math.abs(velocity) > 300) {
-            isWalking = true;
-            // canWalk = true;
-        }
-        else if (player.isGrounded() && Math.abs(velocity) < 50) {
-            isWalking = false;
-            canWalk = true;
-        }
+
 
     }
 
@@ -183,6 +171,34 @@ k.scene("game", () => {
                 }
             }
 
+
+            if (player.isGrounded() && Math.abs(velocity) > 100) {
+                isWalking = true;
+            }
+            else if (player.isGrounded() && Math.abs(velocity) < 100) {
+                isWalking = false;
+                canWalk = true;
+                isRunning = false;
+                canRun = true;
+                isIdle = true;
+            }
+
+            if ((player.isGrounded() && Math.abs(velocity) > 100) && player.isGrounded() && Math.abs(velocity) < 300) {
+                isWalking = true;
+            }
+            else if (player.isGrounded() && Math.abs(velocity) < 100) {
+                isWalking = false;
+                canWalk = true;
+                isRunning = false;
+                canRun = true;
+                isIdle = true;
+            }
+
+
+
+
+
+
             onCollide("player", "wall", () => {
                 if (player.isGrounded()) {
                     velocity = 0;
@@ -192,7 +208,7 @@ k.scene("game", () => {
                 }
             });
 
-            walkAnimation();
+            mainAnimations();
             player.move(velocity, 0);
         }
     });

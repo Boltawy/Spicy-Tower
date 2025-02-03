@@ -29,8 +29,8 @@ k.scene("game", () => {
     // });
 
 
-    
-    
+
+
     let scoreCounter = add([
         k.text("Score: 0", 24),
         pos(width() / 2, 50),
@@ -42,32 +42,79 @@ k.scene("game", () => {
     ]);
 
     let score = 0;
-    
+
     onUpdate(() => {
         if (!paused && startScroll && !isDead) {
             score += Math.floor(150 * dt());
             scoreCounter.text = `Score: ${score}`;
-            
+
         }
     });
-    
-    
 
-    
+
+
+
     k.loadSprite("bean", "sprites/bean.png");
-    loadSprite("hooded", "sprites/hooded.png");
+    loadSprite("hooded", "sprites/hooded.png", {
+        sliceX: 8,
+        sliceY: 9,
+        anims: {
+            idle1: { from: 0, to: 1, loop: false, speed: 4 },
+            idle2: { from: 8, to: 9, loop: false, speed: 4 },
+            walk: { from: 16, to: 19, loop: true, speed: 4 },
+            run: { from: 24, to: 31, loop: true, speed: 8 },
+        },
+    });
 
 
     const player = k.add([
         k.pos(width() / 2, height() - 50),
-        k.sprite("bean"),
+        k.sprite("hooded", {anim: "run"}),
         k.body(),
-        area(),
-        scale(0.5),
-        anchor("botleft"),
+        area({ shape: new Rect(vec2(0, 5), 20, 25) }),
+        // scale(0.5),
+        scale(2),
+        anchor("center"),
         "player",
     ]);
 
+
+    let idleAnimationCounter = 0;
+    let blinkTimer = 0;
+    player.on("animEnd", (anim) => {
+        blinkTimer = rand(5, 10)
+        if (anim === "idle1" && idleAnimationCounter < blinkTimer) {
+            player.play("idle1");
+            idleAnimationCounter++;
+        } else if (anim === "idle1" && idleAnimationCounter >= blinkTimer) {
+            player.play("idle2");  // Switch to idle2 after idle1 finishes 2 times
+            idleAnimationCounter = 0;  // Reset counter for next cycle
+        } else if (anim === "idle2") {
+            player.play("idle1");  // Play idle1 after idle2 finishes
+        }
+    });
+
+    let canWalk = false;
+    let isWalking = false;
+    let isRunning = false;
+    let canRun = false;
+
+    function walkAnimation() {
+        if (isWalking && canWalk) {
+            player.play("walk");
+            canWalk = false;
+        }
+        else if (isRunning && canRun)
+        {
+            player.play("run");
+            canRun = false;
+        }
+        // else {
+        //     player.play("idle1");
+        // }
+    }
+
+    let playerFlip = false;
 
 
 
@@ -90,12 +137,33 @@ k.scene("game", () => {
         if (velocity > 0) velocity = Math.max(velocity - friction * dt(), 0);
         if (velocity > 0 && !player.isGrounded()) velocity = Math.max(velocity - friction / 1.5 * dt(), 0);
         velocity = Math.max(velocity - acceleration * acceleration * dt(), -maxSpeed);
+        playerFlip ? null : player.scale.x *= -1;
+        playerFlip = true;
+        if (player.isGrounded() && Math.abs(velocity) > 50) {
+            isWalking = true;
+            // canWalk = true;
+        }
+        else if (player.isGrounded() && Math.abs(velocity) < 50) {
+            isWalking = false;
+            canWalk = true;
+        }
     }
 
     function moveright() {
         if (velocity < 0) velocity = Math.min(velocity + friction * dt(), 0);
         if (velocity < 0 && !player.isGrounded()) velocity = Math.min(velocity + friction / 1.5 * dt(), 0);
         velocity = Math.min(velocity + acceleration * acceleration * dt(), maxSpeed);
+        playerFlip ? player.scale.x *= -1 : null;
+        playerFlip = false;
+        if ((player.isGrounded() && Math.abs(velocity) > 50) && player.isGrounded() && Math.abs(velocity) > 300) {
+            isWalking = true;
+            // canWalk = true;
+        }
+        else if (player.isGrounded() && Math.abs(velocity) < 50) {
+            isWalking = false;
+            canWalk = true;
+        }
+
     }
 
     onUpdate(() => {
@@ -124,6 +192,7 @@ k.scene("game", () => {
                 }
             });
 
+            walkAnimation();
             player.move(velocity, 0);
         }
     });
@@ -280,7 +349,7 @@ k.scene("game", () => {
     onUpdate(() => { // Adds collision when the player is above any given platform
         if (!paused) {
             get("platform").forEach(platform => {
-                if (player.pos.y < platform.pos.y - 20) {
+                if (player.pos.y < platform.pos.y - 50) {
                     platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
                 }
             });

@@ -10,7 +10,6 @@ const k = kaplay(
         height: 800,
         letterbox: true,
         stretch: false,
-        maxFPS: 60,
 
     }
 );
@@ -74,6 +73,15 @@ k.scene("game", () => {
 
 
 
+    k.onKeyDown(["space", "w", "up"], () => {
+        if (!paused) {
+            if (bean.isGrounded()) {
+                bean.jump(Math.max(570, Math.abs(velocity) * 2.1));
+            }
+        }
+    }
+    );
+
 
     let velocity = 0;
     let acceleration = 2;
@@ -92,21 +100,14 @@ k.scene("game", () => {
 
     onUpdate(() => {
         if (!paused) {
-            if (isKeyDown(["d", "right"]) || (isMouseDown() && mousePos().x > camPosition.x + 150)) {
+            if (isKeyDown(["d", "right"])) {
                 moveright();
-            } else if (isKeyDown(["a", "left"]) || (isMouseDown() && mousePos().x < camPosition.x - 150)) {
+            } else if (isKeyDown(["a", "left"])) {
                 moveleft();
             } else {
                 if (bean.isGrounded()) {
                     if (velocity > 0) velocity = Math.max(velocity - friction, 0);
                     if (velocity < 0) velocity = Math.min(velocity + friction, 0);
-                }
-            }
-            if (isKeyDown(["w", "up", "space"]) || (isMouseDown() && (mousePos().x > camPosition.x - 150 && mousePos().x < camPosition.x + 150))) {
-                if (!paused) {
-                    if (bean.isGrounded()) {
-                        bean.jump(Math.max(570, Math.abs(velocity) * 2.1));
-                    }
                 }
             }
 
@@ -124,20 +125,38 @@ k.scene("game", () => {
     });
 
 
-    // debug.log("mousePos", mousePos());
+    // let leftButton = add([
+    //     k.rect(100, 100),
+    //     k.pos(50, height() - 50),
+    //     k.color(255, 255, 255),
+    //     k.opacity(0.5),
+    //     k.anchor("botleft"),
+    //     k.fixed(),
+    //     k.area({ shape: new Rect(vec2(0, 0), 50, 50) }),
+    //     k.scale(0.5),
+    //     "leftbutton",
+    // ]);
 
-    // k.mousePos();
-    // onMouseDown(() => {
-    //     if (mousePos().x < camPosition.x) {
-    //         moveleft();
-    //         if (bean.isGrounded()) {
-    //             bean.jump(500);
-    //         }
-    //     } else {
-    //         moveright();
-    //         if (bean.isGrounded()) {
-    //             bean.jump(500);
-    //         }
+    // let rightButton = add([
+    //     k.rect(100, 100),
+    //     k.pos(width() - 50, height() - 50),
+    //     k.color(255, 255, 255),
+    //     k.opacity(0.5),
+    //     k.anchor("botright"),
+    //     k.fixed(),
+    //     k.area({ shape: new Rect(vec2(0, 0), 50, 50) }),
+    //     k.scale(0.5),
+    //     "rightbutton",
+    // ]);
+
+    // leftButton.onTouchStart(() => {
+    //     moveleft();
+    //     bean.jump(600);
+    // });
+
+    // rightButton.onMouseDown(() => {
+    //     if (!paused) {
+    //         // moveright();
     //     }
     // });
 

@@ -25,6 +25,7 @@ k.scene("game", () => {
     k.loadSound("track2", "audio/track2.mp3")
     k.loadSound("track4", "audio/track4.mp3")
     k.loadSound("track5", "audio/track5.mp3")
+    loadSound("fall", "audio/fall.mp3")
 
 
     // k.onLoad(() => {
@@ -212,7 +213,6 @@ k.scene("game", () => {
                     velocity = -velocity;
                 }
             });
-
             onCollideEnd("player", "wall", () => {
                 canJump = true;
             });
@@ -355,7 +355,7 @@ k.scene("game", () => {
         }
     }
 
-    let currentPlatform = platformSpawner(player.pos.y - 50);
+    let currentPlatform = platformSpawner(player.pos.y - 80);
 
     let platformInterval = setInterval(() => {
         if (!paused) {
@@ -402,7 +402,7 @@ k.scene("game", () => {
     function shakeOnDeath() {
         if (isDead && deathAnimation) {
             shake(20)
-
+            k.play("fall", { volume: 0.2 });
             deathAnimation = false;
         }
     }

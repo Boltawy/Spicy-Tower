@@ -5,18 +5,58 @@
     },
     "activeFile": "",
     "expandedProjectPaths": [
+        "."
     ],
+    "exportAsImage.useCurrentScale": true,
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "C:/Users/zeyad/Desktop/test.tmx": {
+            "scale": 0.9025,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 319.66759002770084,
+                "y": 480.33240997229916
+            }
+        },
+        "C:/Users/zeyad/Desktop/tile_castle_grey.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/zeyad/Desktop/untitled.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 248.25,
+                "y": 275.25
+            }
+        },
+        "Hehe.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 0.5
+        },
+        "tile_castle.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
     },
+    "last.exportedFilePath": "C:/Users/zeyad/Desktop",
     "last.imagePath": "C:/Users/zeyad/.vscode/practice-projects/spicy-tower/public/tiles",
     "map.fixedSize": true,
     "map.height": 30,
+    "map.lastUsedExportFilter": "All Files (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
     "map.width": 20,
     "openFiles": [
     ],
     "project": "spicy.tiled-project",
     "recentFiles": [
+        "C:/Users/zeyad/Desktop/untitled.tmx",
+        "C:/Users/zeyad/Desktop/tile_castle_grey.tsx",
+        "C:/Users/zeyad/Desktop/test.tmx",
+        "tile_castle.tsx",
+        "Hehe.tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

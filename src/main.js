@@ -62,7 +62,7 @@ k.scene("game", () => {
         fixed(),
         "score",
     ]);
-    
+
 
     let score = 0;
 
@@ -294,10 +294,17 @@ k.scene("game", () => {
 
     k.setGravity(1400)
 
-
+    loadSprite("platform", "sprites/platform.png")
+    loadSprite("startingPlatform", "sprites/startingPlatform.png")
     const startingPlatform = add([
-        rect(width(), 48),
-        pos(0, height() - 48),
+        sprite("startingPlatform"),
+        // rect(width(), 48),
+        scale(1),
+        pos(width() / 2, height() + 20),
+        anchor("center"),
+        // area({
+        //     shape: new Rect(vec2(0, 0), 170, 10),
+        // }),
         area(),
         body({ isStatic: true }),
         color(127, 200, 255),

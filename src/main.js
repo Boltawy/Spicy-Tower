@@ -94,7 +94,7 @@ k.scene("game", () => {
         k.pos(width() / 2, height() - 50),
         k.sprite("hooded", { anim: "idle1" }),
         k.body(),
-        area({ shape: new Rect(vec2(0, 5), 20, 23) }),
+        area({ shape: new Rect(vec2(0, 5), 20, 22) }),
         // scale(0.5),
         scale(2),
         anchor("center"),
@@ -302,9 +302,6 @@ k.scene("game", () => {
         scale(1),
         pos(width() / 2, height() + 20),
         anchor("center"),
-        // area({
-        //     shape: new Rect(vec2(0, 0), 170, 10),
-        // }),
         area(),
         body({ isStatic: true }),
         color(127, 200, 255),

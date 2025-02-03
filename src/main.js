@@ -20,10 +20,10 @@ let bgMusic;
 
 
 k.scene("game", () => {
-    k.loadSound("spicyTheme", "audio/spicy-theme.mp3")
-    k.loadSound("track1", "audio/track1.mp3")
-    k.loadSound("track2", "audio/track2.mp3")
-    k.loadSound("track4", "audio/track4.mp3")
+    // k.loadSound("spicyTheme", "audio/spicy-theme.mp3")
+    // k.loadSound("track1", "audio/track1.mp3")
+    // k.loadSound("track2", "audio/track2.mp3")
+    // k.loadSound("track4", "audio/track4.mp3")
     k.loadSound("track5", "audio/track5.mp3")
     loadSound("fall", "audio/fall.mp3")
     loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");

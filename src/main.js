@@ -35,7 +35,7 @@ k.scene("game", () => {
     //     k.play("spicyTheme", { volume: 0.2, loop: true });
 
     // });
-    
+
     let bg = add([
         sprite("bg2"),
         pos(width() / 2, height() / 2),
@@ -46,7 +46,7 @@ k.scene("game", () => {
 
     let bg2 = add([
         sprite("bg2"),
-        pos(width() / 2, -height() /2 ),
+        pos(width() / 2, -height() / 2),
         anchor("center"),
         scale(0.75),
         color(90, 90, 90),
@@ -336,7 +336,7 @@ k.scene("game", () => {
     loadSprite("platform8", "sprites/platform8.png")
     loadSprite("platform9", "sprites/platform9.png")
     loadSprite("platformFull", "sprites/platformFull.png")
-  
+
 
 
 
@@ -390,9 +390,12 @@ k.scene("game", () => {
     function platformSpawner(platformPosY) {
         if (!paused) {
             let spawnedPlatform;
+            let platformNumber;
             for (let i = 0; i < 10; i++) {
+                platformNumber = Math.floor(rand(1, 9));
+                // debug.log(platformNumber);
                 spawnedPlatform = add([
-                    sprite("platform4"),
+                    sprite(`platform${platformNumber}`),
                     pos(width() / 2, platformPosY),
                     outline(4),
                     scale(0.75),
@@ -403,8 +406,34 @@ k.scene("game", () => {
                     "platform",
                 ]);
 
-                // spawnedPlatform.pos.x = k.rand(0, width() - spawnedPlatform.width * spawnedPlatform.scale.x);
+                spawnedPlatform.pos.x = k.rand(0, width() - spawnedPlatform.width * spawnedPlatform.scale.x);
                 platformPosY -= 100;
+
+                switch (platformNumber) {
+                    case 1:
+                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -10), 60, 1) }))
+                        break;
+                    case 2:
+                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -11), 123, 1) }))
+                        break;
+                    case 3:
+                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -13), 187, 1) }))
+                        break;
+                    case 4:
+                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -11), 251, 1) }))
+                        break;
+                    case 5:
+                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -12), 315, 1) }))
+                        break;
+                    case 6:
+                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -13), 378, 1) }))
+                        break;
+                    case 7:
+                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -18), 440, 1) }))
+                        break;
+                    case 8:
+                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -21), 506, 1) }))
+                }
             }
 
             return spawnedPlatform; //return last generated platform

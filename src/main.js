@@ -28,7 +28,7 @@ k.scene("game", () => {
     loadSound("fall", "audio/fall.mp3")
     loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
     loadSprite("bg", "sprites/brick-wall.png");
-    loadSprite("bg2", "sprites/Dungeon_brick_wall_blue.png.png");
+    loadSprite("bg2", "sprites/Dungeon_brick_wall_purple.png.png");
 
 
     // k.onLoad(() => {
@@ -178,7 +178,7 @@ k.scene("game", () => {
     k.onKeyDown(["space", "w", "up", "ص"], () => {
         if (!paused && canJump) {
             if (player.isGrounded()) {
-                player.jump(Math.max(570, Math.abs(velocity) * 2.1));
+                player.jump(Math.max(590, Math.abs(velocity) * 2.1));
             }
         }
     }
@@ -399,41 +399,17 @@ k.scene("game", () => {
                     pos(width() / 2, platformPosY),
                     outline(4),
                     scale(0.75),
-                    area(),
                     anchor("center"),
                     body({ isStatic: true }),
                     // color(127, 200, 255),
                     "platform",
+                    `platform${platformNumber}`,
                 ]);
 
                 spawnedPlatform.pos.x = k.rand(0, width() - spawnedPlatform.width * spawnedPlatform.scale.x);
                 platformPosY -= 100;
 
-                switch (platformNumber) {
-                    case 1:
-                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -10), 60, 1) }))
-                        break;
-                    case 2:
-                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -11), 123, 1) }))
-                        break;
-                    case 3:
-                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -13), 187, 1) }))
-                        break;
-                    case 4:
-                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -11), 251, 1) }))
-                        break;
-                    case 5:
-                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -12), 315, 1) }))
-                        break;
-                    case 6:
-                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -13), 378, 1) }))
-                        break;
-                    case 7:
-                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -18), 440, 1) }))
-                        break;
-                    case 8:
-                        spawnedPlatform.use(area({ shape: new Rect(vec2(0, -21), 506, 1) }))
-                }
+
             }
 
             return spawnedPlatform; //return last generated platform
@@ -456,25 +432,48 @@ k.scene("game", () => {
     }, 500);
 
 
-    // onUpdate(() => { // Adds collision when the player is above any given platform
-    //     if (!paused) {
-    //         get("platform").forEach(platform => {
-    //             if (player.pos.y < platform.pos.y - 55) {
-    //                 platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
-    //             }
-    //         });
-    //     }
-    // });
+    onUpdate(() => { // Adds collision when the player is above any given platform
+        if (!paused) {
+            get("platform").forEach(platform => {
+                if (player.pos.y < platform.pos.y - 45) {
+                    if (platform.is("platform1")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -10), 60, 1) }));
+                    }
+                    else if (platform.is("platform2")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -11), 123, 1) }));
+                    }
+                    else if (platform.is("platform3")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -13), 187, 1) }));
+                    }
+                    else if (platform.is("platform4")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -11), 251, 1) }));
+                    }
+                    else if (platform.is("platform5")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -12), 315, 1) }));
+                    }
+                    else if (platform.is("platform6")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -13), 378, 1) }));
+                    }
+                    else if (platform.is("platform7")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -18), 440, 1) }));
+                    }
+                    else if (platform.is("platform8")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -21), 506, 1) }));
+                    }
+                }
+            });
+        }
+    });
 
-    // onUpdate(() => { // Removes collision when the player is below any given platform
-    //     if (!paused) {
-    //         get("platform").forEach(platform => {
-    //             if (player.pos.y > platform.pos.y) {
-    //                 platform.unuse("area");
-    //             }
-    //         });
-    //     }
-    // });
+    onUpdate(() => { // Removes collision when the player is below any given platform
+        if (!paused) {
+            get("platform").forEach(platform => {
+                if (player.pos.y > platform.pos.y) {
+                    platform.unuse("area");
+                }
+            });
+        }
+    });
 
     let camPosition = {
         x: width() / 2,

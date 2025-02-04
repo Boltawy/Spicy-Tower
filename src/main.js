@@ -299,7 +299,12 @@ k.scene("game", () => {
             ]);
 
             add([
-                text("PAUSED"),
+                text("PAUSED", {
+                    font: "VCR_OSD",
+                    size: 50,
+                    width: 500,
+                    align: "center",
+                }),
                 pos(getCamPos().x, getCamPos().y),
                 color(255, 255, 255),
                 anchor("center"),
@@ -334,8 +339,8 @@ k.scene("game", () => {
     loadSprite("platform6", "sprites/platform6.png")
     loadSprite("platform7", "sprites/platform7.png")
     loadSprite("platform8", "sprites/platform8.png")
-    loadSprite("platform9", "sprites/platform9.png")
-    loadSprite("platformFull", "sprites/platformFull.png")
+    // loadSprite("platform9", "sprites/platform9.png")
+    // loadSprite("platformFull", "sprites/platformFull.png")
 
 
 
@@ -406,7 +411,7 @@ k.scene("game", () => {
                     `platform${platformNumber}`,
                 ]);
 
-                spawnedPlatform.pos.x = k.rand(0, width() - spawnedPlatform.width * spawnedPlatform.scale.x);
+                spawnedPlatform.pos.x = k.rand(0, width());
                 platformPosY -= 100;
 
 
@@ -499,7 +504,7 @@ k.scene("game", () => {
     let startMusic = onUpdate(() => {
         if (startScroll) {
             // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
-            // bgMusic = k.play("track5", { volume: 0.2, loop: true });
+            bgMusic = k.play("track5", { volume: 0.2, loop: true });
             startMusic.cancel();
         }
     });
@@ -521,7 +526,7 @@ k.scene("game", () => {
             }
             if (player.pos.y > camPosition.y + height()) {
                 isDead = true;
-                startScroll = false;
+                // startScroll = false;
                 shakeOnDeath();
                 bgMusic?.stop();
                 pauseTheme?.stop();

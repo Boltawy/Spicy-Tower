@@ -8,6 +8,7 @@ const k = kaplay(
         global: true,
         width: 640,
         height: 800,
+        maxFPS: 60,
         letterbox: true,
         stretch: false,
 

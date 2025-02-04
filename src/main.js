@@ -32,7 +32,7 @@ k.scene("game", () => {
     loadSound("fall", "audio/fall.mp3")
     loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
     loadSprite("bg", "sprites/brick-wall.png");
-    loadSprite("bg2", "sprites/Dungeon_brick_wall_purple.png.png");
+    loadSprite("bg2", "sprites/Dungeon_brick_wall_blue.png.png");
 
 
     // k.onLoad(() => {
@@ -57,17 +57,18 @@ k.scene("game", () => {
     // ])
 
     let spawnedBg;
+    let camSpeed = 0;
+
 
 
     function bgSpawner(bgPositionY) {
         if (!paused) {
-             spawnedBg = add([
+            spawnedBg = add([
                 sprite("bg2"),
                 pos(width() / 2, bgPositionY),
                 anchor("center"),
                 scale(0.75),
                 color(90, 90, 90),
-                // move(UP, 40),
                 z(-1),
                 "bg",
             ])
@@ -83,6 +84,19 @@ k.scene("game", () => {
             currentBg = bgSpawner(currentBg.pos.y - height());
         }
     }, 500)
+
+    function updateBgSpeed() {
+        if (!paused) {
+            get("bg").forEach(bg => {
+                bg.use(move(DOWN, camSpeed * 0.7));
+            });
+        }
+        if (isDead) {
+            get("bg").forEach(bg => {
+                bg.unuse("move");
+            });
+        }
+    }
 
 
     let scoreCounter = add([
@@ -314,7 +328,10 @@ k.scene("game", () => {
         if (paused) {
             bgMusicTime = bgMusic?.time();
             bgMusic?.stop();
-            pauseTheme = k.play("track5", { volume: 0.2, loop: true, speed: 0.7, seek: bgMusicTime });
+            get("bg").forEach(bg => {
+                bg.unuse("move")
+            })
+            pauseTheme = k.play("track5", { volume: 0.1, loop: true, speed: 0.7, seek: bgMusicTime });
 
             add([
                 rect(width(), height()),
@@ -522,7 +539,6 @@ k.scene("game", () => {
         }
     }
 
-    let camsSpeed = -height() / 800;
 
     let startScroll = false;
 
@@ -530,10 +546,11 @@ k.scene("game", () => {
     let startMusic = onUpdate(() => {
         if (startScroll) {
             // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
-            bgMusic = k.play("track5", { volume: 0.2, loop: true });
+            bgMusic = k.play("track5", { volume: 0.1, loop: true });
             startMusic.cancel();
         }
     });
+
 
     k.onUpdate(() => {
         if (!paused) {
@@ -542,18 +559,21 @@ k.scene("game", () => {
             }
             if (startScroll) {
                 if (player.pos.y < camPosition.y - height() / 3) {
-                    camsSpeed = -height() / 2;
+                    camSpeed = -height() / 2;
+                    updateBgSpeed();
                 }
                 else {
-                    camsSpeed = -height() / 6;
+                    camSpeed = -height() / 6;
+                    updateBgSpeed();
                 }
                 setCamPos(camPosition.x, camPosition.y);
-                camPosition.y += camsSpeed * dt();
+                camPosition.y += camSpeed * dt();
             }
             if (player.pos.y > camPosition.y + height()) {
                 isDead = true;
-                // startScroll = false;
+                startScroll = false;
                 shakeOnDeath();
+                updateBgSpeed();
                 bgMusic?.stop();
                 pauseTheme?.stop();
             }

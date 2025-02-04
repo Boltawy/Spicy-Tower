@@ -27,12 +27,30 @@ k.scene("game", () => {
     k.loadSound("track5", "audio/track5.mp3")
     loadSound("fall", "audio/fall.mp3")
     loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
+    loadSprite("bg", "sprites/brick-wall.png");
+    loadSprite("bg2", "sprites/Dungeon_brick_wall_blue.png.png");
 
 
     // k.onLoad(() => {
     //     k.play("spicyTheme", { volume: 0.2, loop: true });
 
     // });
+    
+    let bg = add([
+        sprite("bg2"),
+        pos(width() / 2, height() / 2),
+        anchor("center"),
+        scale(0.75),
+        color(90, 90, 90),
+    ])
+
+    let bg2 = add([
+        sprite("bg2"),
+        pos(width() / 2, -height() /2 ),
+        anchor("center"),
+        scale(0.75),
+        color(90, 90, 90),
+    ])
 
 
 
@@ -78,6 +96,20 @@ k.scene("game", () => {
 
 
     k.loadSprite("bean", "sprites/bean.png");
+    loadSprite("startingPlatform", "sprites/startingPlatform.png")
+
+    const startingPlatform = add([
+        sprite("startingPlatform"),
+        // rect(width(), 48),
+        scale(1.01),
+        pos(width() / 2, height() + 20),
+        anchor("center"),
+        area(),
+        body({ isStatic: true }),
+        // color(127, 200, 255),
+        "startingPlatform",
+    ]);
+
     loadSprite("hooded", "sprites/hooded.png", {
         sliceX: 8,
         sliceY: 9,
@@ -91,10 +123,10 @@ k.scene("game", () => {
 
 
     const player = k.add([
-        k.pos(width() / 2, height() - 50),
+        k.pos(width() / 2, height() - 90),
         k.sprite("hooded", { anim: "idle1" }),
         k.body(),
-        area({ shape: new Rect(vec2(0, 5), 20, 22) }),
+        area({ shape: new Rect(vec2(0, 3), 10, 24) }),
         // scale(0.5),
         scale(2),
         anchor("center"),
@@ -143,7 +175,7 @@ k.scene("game", () => {
     let canJump = true;
 
 
-    k.onKeyDown(["space", "w", "up"], () => {
+    k.onKeyDown(["space", "w", "up", "ص"], () => {
         if (!paused && canJump) {
             if (player.isGrounded()) {
                 player.jump(Math.max(570, Math.abs(velocity) * 2.1));
@@ -179,9 +211,9 @@ k.scene("game", () => {
 
     onUpdate(() => {
         if (!paused) {
-            if (isKeyDown(["d", "right"])) {
+            if (isKeyDown(["d", "right", "ي"])) {
                 moveright();
-            } else if (isKeyDown(["a", "left"])) {
+            } else if (isKeyDown(["a", "left", "ش"])) {
                 moveleft();
             } else {
                 if (player.isGrounded()) {
@@ -245,7 +277,7 @@ k.scene("game", () => {
     let pauseThemeTime;
     let pauseThemeDuration;
     let bgMusicTime;
-    k.onKeyPress(["p", "escape"], () => {
+    k.onKeyPress(["p", "escape", "ح"], () => {
         paused = !paused;
         if (player.has("body")) {
             player.unuse("body");
@@ -294,19 +326,17 @@ k.scene("game", () => {
 
     k.setGravity(1400)
 
-    loadSprite("platform", "sprites/platform.png")
-    loadSprite("startingPlatform", "sprites/startingPlatform.png")
-    const startingPlatform = add([
-        sprite("startingPlatform"),
-        // rect(width(), 48),
-        scale(1),
-        pos(width() / 2, height() + 20),
-        anchor("center"),
-        area(),
-        body({ isStatic: true }),
-        color(127, 200, 255),
-        "startingPlatform",
-    ]);
+    loadSprite("platform1", "sprites/platform1.png")
+    loadSprite("platform2", "sprites/platform2.png")
+    loadSprite("platform3", "sprites/platform3.png")
+    loadSprite("platform4", "sprites/platform4.png")
+    loadSprite("platform5", "sprites/platform5.png")
+    loadSprite("platform6", "sprites/platform6.png")
+    loadSprite("platform7", "sprites/platform7.png")
+    loadSprite("platform8", "sprites/platform8.png")
+    loadSprite("platform9", "sprites/platform9.png")
+    loadSprite("platformFull", "sprites/platformFull.png")
+  
 
 
 
@@ -321,6 +351,7 @@ k.scene("game", () => {
                     area(),
                     body({ isStatic: true }),
                     color(127, 200, 255),
+                    opacity(0),
                     "wall",
                     "leftwall",
                 ]);
@@ -330,6 +361,7 @@ k.scene("game", () => {
                     area(),
                     body({ isStatic: true }),
                     color(127, 200, 255),
+                    opacity(0),
                     "wall",
                     "rightwall",
                 ]);
@@ -360,17 +392,18 @@ k.scene("game", () => {
             let spawnedPlatform;
             for (let i = 0; i < 10; i++) {
                 spawnedPlatform = add([
-                    rect(rand(150, 600), 30),
-                    pos(0, platformPosY),
+                    sprite("platform4"),
+                    pos(width() / 2, platformPosY),
                     outline(4),
-                    scale(0.5),
-                    anchor("botleft"),
+                    scale(0.75),
+                    area(),
+                    anchor("center"),
                     body({ isStatic: true }),
-                    color(127, 200, 255),
+                    // color(127, 200, 255),
                     "platform",
                 ]);
 
-                spawnedPlatform.pos.x = k.rand(0, width() - spawnedPlatform.width * spawnedPlatform.scale.x);
+                // spawnedPlatform.pos.x = k.rand(0, width() - spawnedPlatform.width * spawnedPlatform.scale.x);
                 platformPosY -= 100;
             }
 
@@ -378,7 +411,7 @@ k.scene("game", () => {
         }
     }
 
-    let currentPlatform = platformSpawner(player.pos.y - 80);
+    let currentPlatform = platformSpawner(player.pos.y - 60);
 
     let platformInterval = setInterval(() => {
         if (!paused) {
@@ -394,25 +427,25 @@ k.scene("game", () => {
     }, 500);
 
 
-    onUpdate(() => { // Adds collision when the player is above any given platform
-        if (!paused) {
-            get("platform").forEach(platform => {
-                if (player.pos.y < platform.pos.y - 55) {
-                    platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
-                }
-            });
-        }
-    });
+    // onUpdate(() => { // Adds collision when the player is above any given platform
+    //     if (!paused) {
+    //         get("platform").forEach(platform => {
+    //             if (player.pos.y < platform.pos.y - 55) {
+    //                 platform.use(area({ shape: new Rect(vec2(0, -platform.height), platform.width, 1) }))
+    //             }
+    //         });
+    //     }
+    // });
 
-    onUpdate(() => { // Removes collision when the player is below any given platform
-        if (!paused) {
-            get("platform").forEach(platform => {
-                if (player.pos.y > platform.pos.y) {
-                    platform.unuse("area");
-                }
-            });
-        }
-    });
+    // onUpdate(() => { // Removes collision when the player is below any given platform
+    //     if (!paused) {
+    //         get("platform").forEach(platform => {
+    //             if (player.pos.y > platform.pos.y) {
+    //                 platform.unuse("area");
+    //             }
+    //         });
+    //     }
+    // });
 
     let camPosition = {
         x: width() / 2,
@@ -438,7 +471,7 @@ k.scene("game", () => {
     let startMusic = onUpdate(() => {
         if (startScroll) {
             // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
-            bgMusic = k.play("track5", { volume: 0.2, loop: true });
+            // bgMusic = k.play("track5", { volume: 0.2, loop: true });
             startMusic.cancel();
         }
     });
@@ -469,7 +502,7 @@ k.scene("game", () => {
     });
 
     onkeydown = (e) => {
-        if (e.key == "r") {
+        if (e.key == "r" || e.key == "R" || e.key == "ق") {
             bgMusic?.stop();
             pauseTheme?.stop();
             k.destroyAll("platform");

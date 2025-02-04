@@ -327,12 +327,15 @@ k.scene("game", () => {
             player.use(body());
         }
         if (paused) {
-            bgMusicTime = bgMusic?.time();
-            bgMusic?.stop();
+            if (startScroll) {
+                bgMusicTime = bgMusic?.time();
+                bgMusic?.stop();
+                pauseTheme = k.play("track5", { volume: 0.1, loop: true, speed: 0.7, seek: bgMusicTime });
+            }
+
             get("bg").forEach(bg => {
                 bg.unuse("move")
             })
-            pauseTheme = k.play("track5", { volume: 0.1, loop: true, speed: 0.7, seek: bgMusicTime });
 
             add([
                 rect(width(), height()),
@@ -361,10 +364,12 @@ k.scene("game", () => {
             // });
         }
         else {
-            pauseThemeDuration = pauseTheme?.duration();
-            pauseThemeTime = (pauseTheme?.time() * 0.7) + bgMusicTime;
-            pauseTheme?.stop();
-            bgMusic?.play(pauseThemeTime);
+            if (startScroll) {
+                pauseThemeDuration = pauseTheme?.duration();
+                pauseThemeTime = (pauseTheme?.time() * 0.7) + bgMusicTime;
+                pauseTheme?.stop();
+                bgMusic?.play(pauseThemeTime);
+            }
             k.get("pauseoverlay").forEach(overlay => overlay.destroy());
         }
 
@@ -455,7 +460,7 @@ k.scene("game", () => {
                     `platform${platformNumber}`,
                 ]);
 
-                spawnedPlatform.pos.x = k.rand(50, width() - 50);
+                spawnedPlatform.pos.x = k.rand(75, width() - 75);
                 platformPosY -= 100;
 
 

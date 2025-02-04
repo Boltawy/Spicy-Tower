@@ -455,7 +455,7 @@ k.scene("game", () => {
                     `platform${platformNumber}`,
                 ]);
 
-                spawnedPlatform.pos.x = k.rand(0, width());
+                spawnedPlatform.pos.x = k.rand(50, width() - 50);
                 platformPosY -= 100;
 
 

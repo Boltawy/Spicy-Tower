@@ -16,6 +16,10 @@ const k = kaplay(
 
 let pauseTheme;
 let bgMusic;
+let paused = false;
+let pauseThemeTime;
+let pauseThemeDuration;
+let bgMusicTime
 
 
 
@@ -36,23 +40,49 @@ k.scene("game", () => {
 
     // });
 
-    let bg = add([
-        sprite("bg2"),
-        pos(width() / 2, height() / 2),
-        anchor("center"),
-        scale(0.75),
-        color(90, 90, 90),
-    ])
+    // let bg = add([
+    //     sprite("bg2"),
+    //     pos(width() / 2, height() / 2),
+    //     anchor("center"),
+    //     scale(0.75),
+    //     color(90, 90, 90),
+    // ])
 
-    let bg2 = add([
-        sprite("bg2"),
-        pos(width() / 2, -height() / 2),
-        anchor("center"),
-        scale(0.75),
-        color(90, 90, 90),
-    ])
+    // let bg2 = add([
+    //     sprite("bg2"),
+    //     pos(width() / 2, -height() / 2),
+    //     anchor("center"),
+    //     scale(0.75),
+    //     color(90, 90, 90),
+    // ])
+
+    let spawnedBg;
 
 
+    function bgSpawner(bgPositionY) {
+        if (!paused) {
+             spawnedBg = add([
+                sprite("bg2"),
+                pos(width() / 2, bgPositionY),
+                anchor("center"),
+                scale(0.75),
+                color(90, 90, 90),
+                // move(UP, 40),
+                z(-1),
+                "bg",
+            ])
+            bgPositionY -= height();
+        }
+        return spawnedBg;
+    }
+
+    let currentBg = bgSpawner(height() / 2);
+
+    let bgSpawnInterval = setInterval(() => {
+        if (!paused && currentBg.pos.y > getCamPos().y - 500) {
+            currentBg = bgSpawner(currentBg.pos.y - height());
+        }
+    }, 500)
 
 
     let scoreCounter = add([
@@ -273,10 +303,6 @@ k.scene("game", () => {
     });
 
 
-    let paused = false;
-    let pauseThemeTime;
-    let pauseThemeDuration;
-    let bgMusicTime;
     k.onKeyPress(["p", "escape", "ح"], () => {
         paused = !paused;
         if (player.has("body")) {

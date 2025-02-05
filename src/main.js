@@ -44,7 +44,6 @@ k.scene("game", () => {
         clearInterval(wallInterval);
         k.destroyAll("bg");
         clearInterval(bgInterval);
-        k.destroyAll("player");
         k.go("game");
     }
 
@@ -157,7 +156,7 @@ k.scene("game", () => {
     });
 
 
-    const player = k.add([
+    const player = k.make([
         k.pos(width() / 2, height() - 90),
         k.sprite("hooded", { anim: "idle1" }),
         k.body(),
@@ -167,6 +166,10 @@ k.scene("game", () => {
         anchor("center"),
         "player",
     ]);
+
+    wait(0.5, () => {
+        add(player);
+    });
 
 
     let idleAnimationCounter = 0;

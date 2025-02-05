@@ -156,7 +156,7 @@ k.scene("game", () => {
     });
 
 
-    const player = k.make([
+    const player = k.add([
         k.pos(width() / 2, height() - 90),
         k.sprite("hooded", { anim: "idle1" }),
         k.body(),
@@ -167,9 +167,6 @@ k.scene("game", () => {
         "player",
     ]);
 
-    wait(0.1, () => {
-        add(player);
-    });
 
     let idleAnimationCounter = 0;
     let blinkTimer = 0;
@@ -622,7 +619,7 @@ k.scene("game", () => {
                 onClick(() => {
                     restartGame();
                 })
-
+                
                 let gameOverScreen = add([
                     rect(width() * 2, height() * 2),
                     pos(getCamPos().x, height() / 2),
@@ -660,7 +657,7 @@ k.scene("game", () => {
                 })
             });
 
-
+           
             deathAnimation = false;
         }
     }

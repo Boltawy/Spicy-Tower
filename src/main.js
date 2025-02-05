@@ -73,7 +73,7 @@ k.scene("game", () => {
                 z(-1),
                 "bg",
             ])
-            bgPositionY -= height();
+            // bgPositionY -= height();
         }
         return spawnedBg;
     }

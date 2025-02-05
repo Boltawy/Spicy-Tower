@@ -237,8 +237,7 @@ k.scene("game", () => {
 
     let isMovingRight = false;
     let isMovingLeft = false;
-    // let isTouchJump = false;
-
+    
     if (isTouchscreen()) {
         add([
             polygon([
@@ -248,7 +247,7 @@ k.scene("game", () => {
 
             ]),
             color(255, 255, 255),
-            opacity(0.3),
+            opacity(0.1),
             fixed()
         ])
 
@@ -260,7 +259,7 @@ k.scene("game", () => {
 
             ]),
             color(255, 255, 255),
-            opacity(0.3),
+            opacity(0.1),
             fixed()
         ])
 
@@ -268,7 +267,7 @@ k.scene("game", () => {
             pos(width() - 75, height() - 100),
             circle(45),
             color(255, 255, 255),
-            opacity(0.3),
+            opacity(0.1),
             fixed()
         ])
     }

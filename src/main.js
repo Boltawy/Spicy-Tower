@@ -118,7 +118,6 @@ k.scene("game", () => {
 
 
 
-    k.loadSprite("bean", "sprites/bean.png");
     loadSprite("startingPlatform", "sprites/startingPlatform.png")
 
     const startingPlatform = add([
@@ -232,6 +231,11 @@ k.scene("game", () => {
 
     }
 
+    onTouchStart(() => {
+        debug.log("touched");
+        player.jump(500);
+    });
+
     onUpdate(() => {
         if (!paused) {
             if (isKeyDown(["d", "right", "ي"])) {
@@ -248,6 +252,8 @@ k.scene("game", () => {
                     if (velocity < 0) velocity = Math.min(velocity + friction / 3 * dt(), 0);
                 }
             }
+
+           
 
 
             if (player.isGrounded() && Math.abs(velocity) > 100) {
@@ -349,7 +355,7 @@ k.scene("game", () => {
     });
 
 
-    k.onClick(() => k.addKaboom(k.mousePos()));
+    // k.onClick(() => k.addKaboom(k.mousePos()));
 
     k.setGravity(1400)
 

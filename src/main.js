@@ -108,7 +108,7 @@ k.scene("game", () => {
             font: "VCR_OSD",
             size: 64,
         }),
-        z(10),
+        z(15),
         pos(width() / 2 + 3, 50 + 3),
         color(255, 255, 255),
         anchor("center"),

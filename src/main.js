@@ -7,7 +7,7 @@ const k = kaplay(
         debugKey: "t",
         global: true,
         width: 640,
-        height: 800,
+        height: window.screen.height * 1.3,
         maxFPS: 60,
         letterbox: true,
         stretch: false,
@@ -66,8 +66,8 @@ k.scene("game", () => {
         if (!paused) {
             spawnedBg = add([
                 sprite("bg2"),
-                pos(width() / 2, bgPositionY),
-                anchor("center"),
+                pos(-width() / 4, bgPositionY),
+                anchor("topleft"),
                 scale(0.75),
                 color(90, 90, 90),
                 z(-1),
@@ -81,8 +81,8 @@ k.scene("game", () => {
     let currentBg = bgSpawner(height() / 2);
 
     let bgSpawnInterval = setInterval(() => {
-        if (!paused && currentBg.pos.y > getCamPos().y - 500) {
-            currentBg = bgSpawner(currentBg.pos.y - height());
+        if (!paused && currentBg.pos.y > getCamPos().y - height()) {
+            currentBg = bgSpawner(currentBg.pos.y - height() / 1.4);
         }
     }, 500)
 
@@ -231,7 +231,7 @@ k.scene("game", () => {
 
 
     let velocity = 0;
-    let acceleration = 20;
+    let acceleration = 23;
     const maxSpeed = 1000;
     const friction = 1000; // Slow down when no key is pressed
 
@@ -300,13 +300,8 @@ k.scene("game", () => {
 
 
             onCollide("player", "wall", () => {
-                canJump = false;
-                if (player.isGrounded()) {
-                    velocity = 0;
-                }
-                else {
-                    velocity = -velocity;
-                }
+                // canJump = false;
+                velocity = -velocity;
             });
             onCollideEnd("player", "wall", () => {
                 canJump = true;
@@ -474,11 +469,11 @@ k.scene("game", () => {
 
     let platformInterval = setInterval(() => {
         if (!paused) {
-            if (currentPlatform.pos.y > getCamPos().y - 500) {
+            if (currentPlatform.pos.y > getCamPos().y - height()) {
                 currentPlatform = platformSpawner(currentPlatform.pos.y - 100);
             }
             get("platform").forEach(platform => {
-                if (platform.pos.y > getCamPos().y + 500) {
+                if (platform.pos.y > getCamPos().y + height() / 1.7) {
                     platform.destroy();
                 }
             })

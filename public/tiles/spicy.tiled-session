@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "C:/Users/zeyad/Desktop/untitled2.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -30,6 +30,14 @@
                 "y": 298.25
             }
         },
+        "C:/Users/zeyad/Desktop/untitled2.tmx": {
+            "scale": 3,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 272.16666666666663,
+                "y": 289.8333333333333
+            }
+        },
         "Hehe.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 0.5
@@ -49,13 +57,17 @@
     "map.tileWidth": 32,
     "map.width": 20,
     "openFiles": [
+        "C:/Users/zeyad/Desktop/untitled.tmx",
+        "C:/Users/zeyad/Desktop/untitled2.tmx",
+        "tile_castle.tsx"
     ],
     "project": "spicy.tiled-project",
     "recentFiles": [
         "C:/Users/zeyad/Desktop/untitled.tmx",
+        "tile_castle.tsx",
+        "C:/Users/zeyad/Desktop/untitled2.tmx",
         "C:/Users/zeyad/Desktop/tile_castle_grey.tsx",
         "C:/Users/zeyad/Desktop/test.tmx",
-        "tile_castle.tsx",
         "Hehe.tsx"
     ],
     "tileset.lastUsedFormat": "tsx"

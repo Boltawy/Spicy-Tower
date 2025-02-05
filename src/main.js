@@ -93,7 +93,7 @@ k.scene("game", () => {
     let scoreCounter = add([
         k.text("0", {
             font: "VCR_OSD",
-            size: 48,
+            size: 64,
         }),
         z(10),
         pos(width() / 2, 50),
@@ -106,7 +106,7 @@ k.scene("game", () => {
     add([
         k.text("0", {
             font: "VCR_OSD",
-            size: 48,
+            size: 64,
         }),
         z(10),
         pos(width() / 2 + 3, 50 + 3),

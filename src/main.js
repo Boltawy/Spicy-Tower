@@ -266,6 +266,7 @@ k.scene("game", () => {
                     else {
                         isMovingLeft = false;
                         isMovingRight = true;
+                        isTouchJump = false;
                     }
                 } else if (pos.x < innerWidth / 2) {
                     if (isMovingRight) {
@@ -275,9 +276,11 @@ k.scene("game", () => {
                     else {
                         isMovingRight = false;
                         isMovingLeft = true;
+                        isTouchJump = false;
                     }
                 }
             });
+
             onTouchEnd(() => {
                 if (!isTouchJump) {
                     isMovingRight = false;

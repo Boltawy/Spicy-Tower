@@ -243,10 +243,10 @@ k.scene("game", () => {
     //     debug.log("end");
     // });
 
-    let isMovingRightPrev = false;
+    let prevMove = false;
     let isMovingRight = false;
     let isMovingLeft = false;
-    let isMovingLeftPrev = false;
+    // let prevMove = false;
 
 
 
@@ -273,16 +273,16 @@ k.scene("game", () => {
                 if (pos.x > innerWidth / 2) {
                     isMovingLeft = false;
                     isMovingRight = true;
-                    if (isMovingRight != isMovingRightPrev) {
+                    if (isMovingRight != prevMove) {
                         moveright();
-                        isMovingRightPrev = isMovingRight;
+                        prevMove = isMovingRight;
                     }
                 } else if (pos.x < innerWidth / 2) {
                     isMovingRight = false;
                     isMovingLeft = true;
-                    if (isMovingLeft != isMovingLeftPrev) {
+                    if (isMovingLeft != prevMove) {
                         moveleft();
-                        isMovingLeftPrev = isMovingLeft;
+                        prevMove = isMovingLeft;
                     }
                     onTouchEnd(() => {
                         isMovingRight = false;

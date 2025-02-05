@@ -614,7 +614,7 @@ k.scene("game", () => {
             shake(20)
             k.play("fall", { volume: 0.2 });
 
-            wait(1.5, () => {
+            wait(1.7, () => {
                 let gameOverScreen = add([
                     rect(width() * 2, height() * 2),
                     pos(getCamPos().x, height() / 2),
@@ -627,7 +627,7 @@ k.scene("game", () => {
                 let gameOverText = add([
                     text("GAME OVER", {
                         font: "VCR_OSD",
-                        size: 64
+                        size: 90
                     }),
                     pos(getCamPos().x, height() / 2),
                     anchor("center"),
@@ -641,7 +641,7 @@ k.scene("game", () => {
                     add([
                         text("Tap or Press R to restart.", {
                             font: "VCR_OSD",
-                            size: 28
+                            size: 34
                         }),
                         pos(getCamPos().x, height() / 2 + 80),
                         anchor("center"),

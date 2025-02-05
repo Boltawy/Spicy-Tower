@@ -35,28 +35,6 @@ k.scene("game", () => {
     loadSprite("bg", "sprites/brick-wall.png");
     loadSprite("bg2", "sprites/Dungeon_brick_wall_blue.png.png");
 
-
-    // k.onLoad(() => {
-    //     k.play("spicyTheme", { volume: 0.2, loop: true });
-
-    // });
-
-    // let bg = add([
-    //     sprite("bg2"),
-    //     pos(width() / 2, height() / 2),
-    //     anchor("center"),
-    //     scale(0.75),
-    //     color(90, 90, 90),
-    // ])
-
-    // let bg2 = add([
-    //     sprite("bg2"),
-    //     pos(width() / 2, -height() / 2),
-    //     anchor("center"),
-    //     scale(0.75),
-    //     color(90, 90, 90),
-    // ])
-
     let spawnedBg;
     let camSpeed = 0;
 
@@ -73,14 +51,14 @@ k.scene("game", () => {
                 z(-1),
                 "bg",
             ])
-            // bgPositionY -= height();
         }
         return spawnedBg;
     }
 
     let currentBg = bgSpawner(height() / 2);
+    currentBg = bgSpawner(currentBg.pos.y - height() / 1.4);
 
-    let bgSpawnInterval = setInterval(() => {
+    let bgInterval = setInterval(() => {
         if (!paused && currentBg.pos.y > getCamPos().y - height()) {
             currentBg = bgSpawner(currentBg.pos.y - height() / 1.4);
         }
@@ -589,6 +567,8 @@ k.scene("game", () => {
             clearInterval(platformInterval);
             k.destroyAll("wall");
             clearInterval(wallInterval);
+            k.destroyAll("bg");
+            clearInterval(bgInterval);
             k.go("game");
         }
     }

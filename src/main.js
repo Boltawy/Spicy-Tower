@@ -235,6 +235,7 @@ k.scene("game", () => {
 
     let isMovingRight = false;
     let isMovingLeft = false;
+    let isTouchJump = false;
 
 
 
@@ -260,6 +261,7 @@ k.scene("game", () => {
                 if (pos.x > innerWidth / 2) {
                     if (isMovingLeft) {
                         playerJump();
+                        isTouchJump = true;
                     }
                     else {
                         isMovingLeft = false;
@@ -268,6 +270,7 @@ k.scene("game", () => {
                 } else if (pos.x < innerWidth / 2) {
                     if (isMovingRight) {
                         playerJump();
+                        isTouchJump = true;
                     }
                     else {
                         isMovingRight = false;
@@ -275,8 +278,13 @@ k.scene("game", () => {
                     }
                 }
                 onTouchEnd(() => {
-                    isMovingRight = false;
-                    isMovingLeft = false;
+                    if (!isTouchJump) {
+                        isMovingRight = false;
+                        isMovingLeft = false;
+                    }
+                    else{
+                        isTouchJump = false;
+                    }
                 });
             });
 

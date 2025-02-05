@@ -278,14 +278,14 @@ k.scene("game", () => {
 
 
     onTouchStart((pos) => {
-        if (pos.x > 0 && pos.x < 60) {
+        if (pos.x > 0 && pos.x < 80) {
             isMovingLeft = true;
             isMovingRight = false;
-        } else if (pos.x > 60 && pos.x < 160) {
+        } else if (pos.x > 80 && pos.x < 190) {
             isMovingRight = true;
             isMovingLeft = false;
         }
-        if (pos.x > 300 && pos.x < width()) {
+        if (pos.x > 250 && pos.x < width()) {
             playerJump();
         }
     });

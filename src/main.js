@@ -278,7 +278,6 @@ k.scene("game", () => {
 
 
     onTouchStart((pos) => {
-        debug.log(pos.x);
         if (pos.x > 0 && pos.x < 90) {
             isMovingLeft = true;
             isMovingRight = false;

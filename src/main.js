@@ -277,15 +277,15 @@ k.scene("game", () => {
                         isMovingLeft = true;
                     }
                 }
-                onTouchEnd(() => {
-                    if (!isTouchJump) {
-                        isMovingRight = false;
-                        isMovingLeft = false;
-                    }
-                    else{
-                        isTouchJump = false;
-                    }
-                });
+            });
+            onTouchEnd(() => {
+                if (!isTouchJump) {
+                    isMovingRight = false;
+                    isMovingLeft = false;
+                }
+                else{
+                    isTouchJump = false;
+                }
             });
 
 

@@ -614,10 +614,10 @@ k.scene("game", () => {
             shake(20)
             k.play("fall", { volume: 0.2 });
 
-            wait(1.4, () => {
+            wait(1.5, () => {
                 let gameOverScreen = add([
                     rect(width() * 2, height() * 2),
-                    pos(getCamPos().x,height() / 2),
+                    pos(getCamPos().x, height() / 2),
                     color(0, 0, 0),
                     anchor("center"),
                     opacity(0.5),
@@ -629,7 +629,7 @@ k.scene("game", () => {
                         font: "VCR_OSD",
                         size: 64
                     }),
-                    pos(getCamPos().x,height() / 2),
+                    pos(getCamPos().x, height() / 2),
                     anchor("center"),
                     z(15),
                     fixed(),
@@ -643,7 +643,7 @@ k.scene("game", () => {
                             font: "VCR_OSD",
                             size: 28
                         }),
-                        pos(getCamPos().x,height() / 2 + 80),
+                        pos(getCamPos().x, height() / 2 + 80),
                         anchor("center"),
                         z(15),
                         fixed(),
@@ -674,10 +674,16 @@ k.scene("game", () => {
 
     k.onUpdate(() => {
         if (!paused) {
-            if (player.pos.y < height() / 2) {
-                startScroll = true;
+            if (player.pos.y > camPosition.y + height()) {
+                setCamPos(camPosition.x, camPosition.y);
+                isDead = true;
+                startScroll = false;
+                shakeOnDeath();
+                updateBgSpeed();
+                bgMusic?.stop();
+                pauseTheme?.stop();
             }
-            if (startScroll) {
+            else if (startScroll) {
                 if (player.pos.y < camPosition.y - height() / 3) {
                     camSpeed = -height() / 2;
                     updateBgSpeed();
@@ -689,13 +695,8 @@ k.scene("game", () => {
                 setCamPos(camPosition.x, camPosition.y);
                 camPosition.y += camSpeed * dt();
             }
-            if (player.pos.y > camPosition.y + height()) {
-                isDead = true;
-                startScroll = false;
-                shakeOnDeath();
-                updateBgSpeed();
-                bgMusic?.stop();
-                pauseTheme?.stop();
+            if (player.pos.y < height() / 2) {
+                startScroll = true;
             }
         }
     })

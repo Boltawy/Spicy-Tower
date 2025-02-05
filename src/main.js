@@ -635,13 +635,13 @@ k.scene("game", () => {
 
                 ]);
 
-                wait(2, () => {
+                wait(1.8, () => {
                     add([
                         text("Tap or Press R to restart.", {
                             font: "VCR_OSD",
                             size: 28
                         }),
-                        pos(getCamPos().x, getCamPos().y + 100),
+                        pos(getCamPos().x, getCamPos().y + 80),
                         anchor("center"),
                         z(15),
                         "gameovertext",

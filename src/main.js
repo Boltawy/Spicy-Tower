@@ -44,6 +44,7 @@ k.scene("game", () => {
         clearInterval(wallInterval);
         k.destroyAll("bg");
         clearInterval(bgInterval);
+        k.destroyAll("player");
         k.go("game");
     }
 

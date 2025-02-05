@@ -235,39 +235,65 @@ k.scene("game", () => {
 
     let isMovingRight = false;
     let isMovingLeft = false;
-    let isTouchJump = false;
+    // let isTouchJump = false;
+
+    if (isTouchscreen()) {
+        add([
+            polygon([
+                vec2(25, height() - 100),
+                vec2(75, height() - 150),
+                vec2(75, height() - 50),
+
+            ]),
+            color(255, 255, 255),
+            opacity(0.3),
+            fixed()
+            // area({ isTrigger: true }),
+        ])
+
+        add([
+            polygon([
+                vec2(250, height() - 100),
+                vec2(200, height() - 150),
+                vec2(200, height() - 50),
+
+            ]),
+            color(255, 255, 255),
+            opacity(0.3),
+            fixed()
+            // area({ isTrigger: true }),
+        ])
+
+        add([
+            pos(width() - 75, height() - 100),
+            circle(45),
+            color(255, 255, 255),
+            opacity(0.3),
+            fixed()
+            // area({ isTrigger: true }),
+        ])
+    }
+
+
 
 
     onTouchStart((pos) => {
-        if (pos.x > innerWidth / 2) {
-            if (isMovingLeft) {
-                playerJump();
-                isTouchJump = true;
-            }
-            else {
-                isMovingLeft = false;
-                isMovingRight = true;
-            }
-        } else if (pos.x < innerWidth / 2) {
-            if (isMovingRight) {
-                playerJump();
-                isTouchJump = true;
-            }
-            else {
-                isMovingRight = false;
-                isMovingLeft = true;
-            }
-        }
-    });
-    
-    onTouchEnd(() => {
-        if (!isTouchJump) {
+        debug.log(pos.x);
+        if (pos.x > 0 && pos.x < 90) {
+            isMovingLeft = true;
             isMovingRight = false;
+        } else if (pos.x > 90 && pos.x < 215) {
+            isMovingRight = true;
             isMovingLeft = false;
         }
-        else{
-            isTouchJump = false;
+        if (pos.x > 300 && pos.x < width()) {
+            playerJump();
         }
+    });
+
+    onTouchEnd(() => {
+        isMovingRight = false;
+        isMovingLeft = false;
     });
 
     onUpdate(() => {
@@ -287,7 +313,7 @@ k.scene("game", () => {
                 }
             }
 
-            
+
 
 
 

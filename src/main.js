@@ -238,7 +238,37 @@ k.scene("game", () => {
     let isTouchJump = false;
 
 
-
+    onTouchStart((pos) => {
+        if (pos.x > innerWidth / 2) {
+            if (isMovingLeft) {
+                playerJump();
+                isTouchJump = true;
+            }
+            else {
+                isMovingLeft = false;
+                isMovingRight = true;
+            }
+        } else if (pos.x < innerWidth / 2) {
+            if (isMovingRight) {
+                playerJump();
+                isTouchJump = true;
+            }
+            else {
+                isMovingRight = false;
+                isMovingLeft = true;
+            }
+        }
+    });
+    
+    onTouchEnd(() => {
+        if (!isTouchJump) {
+            isMovingRight = false;
+            isMovingLeft = false;
+        }
+        else{
+            isTouchJump = false;
+        }
+    });
 
     onUpdate(() => {
         if (!paused) {
@@ -257,39 +287,7 @@ k.scene("game", () => {
                 }
             }
 
-            onTouchStart((pos) => {
-                if (pos.x > innerWidth / 2) {
-                    if (isMovingLeft) {
-                        playerJump();
-                        isTouchJump = true;
-                    }
-                    else {
-                        isMovingLeft = false;
-                        isMovingRight = true;
-                        isTouchJump = false;
-                    }
-                } else if (pos.x < innerWidth / 2) {
-                    if (isMovingRight) {
-                        playerJump();
-                        isTouchJump = true;
-                    }
-                    else {
-                        isMovingRight = false;
-                        isMovingLeft = true;
-                        isTouchJump = false;
-                    }
-                }
-            });
-
-            onTouchEnd(() => {
-                if (!isTouchJump) {
-                    isMovingRight = false;
-                    isMovingLeft = false;
-                }
-                else{
-                    isTouchJump = false;
-                }
-            });
+            
 
 
 

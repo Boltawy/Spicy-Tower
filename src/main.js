@@ -279,7 +279,6 @@ k.scene("game", () => {
 
 
     onTouchStart((pos) => {
-        // debug.log(pos.x)
         if (pos.x > 0 && pos.x < 80) {
             isMovingLeft = true;
             isMovingRight = false;
@@ -287,6 +286,16 @@ k.scene("game", () => {
             isMovingRight = true;
             isMovingLeft = false;
         }
+
+        onTouchMove((pos2) => {
+            if (pos2.x > 0 && pos2.x < 80) {
+                isMovingLeft = true;
+                isMovingRight = false;
+            } else if (pos2.x > 80 && pos2.x < 190) {
+                isMovingRight = true;
+                isMovingLeft = false;
+            }
+        });
         if (pos.x > 250 && pos.x < width()) {
             isPlayerJumping = true
         }

@@ -248,6 +248,7 @@ k.scene("game", () => {
             ]),
             color(255, 255, 255),
             opacity(0.1),
+            z(10),
             fixed()
         ])
 
@@ -260,6 +261,7 @@ k.scene("game", () => {
             ]),
             color(255, 255, 255),
             opacity(0.1),
+            z(10),
             fixed()
         ])
 
@@ -268,6 +270,7 @@ k.scene("game", () => {
             circle(45),
             color(255, 255, 255),
             opacity(0.1),
+            z(10),
             fixed()
         ])
     }

@@ -55,12 +55,12 @@ k.scene("game", () => {
         return spawnedBg;
     }
 
-    let currentBg = bgSpawner(height() / 2);
-    currentBg = bgSpawner(currentBg.pos.y - height() / 1.4);
+    let currentBg = bgSpawner(innerHeight / 2);
+    currentBg = bgSpawner(currentBg.pos.y - innerHeight / 1.4);
 
     let bgInterval = setInterval(() => {
-        if (!paused && currentBg.pos.y > getCamPos().y - height()) {
-            currentBg = bgSpawner(currentBg.pos.y - height() / 1.4);
+        if (!paused && currentBg.pos.y > getCamPos().y - innerHeight) {
+            currentBg = bgSpawner(currentBg.pos.y - innerHeight / 1.4);
         }
     }, 500)
 
@@ -196,13 +196,16 @@ k.scene("game", () => {
     let playerFlip = false;
     let canJump = true;
 
-
-    k.onKeyDown(["space", "w", "up", "ص"], () => {
+    function playerJump() {
         if (!paused && canJump) {
             if (player.isGrounded()) {
                 player.jump(Math.max(590, Math.abs(velocity) * 2.1));
             }
         }
+    }
+
+    k.onKeyDown(["space", "w", "up", "ص"], () => {
+        playerJump();
     }
     );
 
@@ -227,20 +230,20 @@ k.scene("game", () => {
         velocity = Math.min(velocity + acceleration * acceleration * dt(), maxSpeed);
         playerFlip ? player.scale.x *= -1 : null;
         playerFlip = false;
-
-
     }
 
-    onTouchStart(() => {
-        debug.log("touched");
-        player.jump(500);
-    });
+
+    let isMovingRight = false;
+    let isMovingLeft = false;
+
+
+
 
     onUpdate(() => {
         if (!paused) {
-            if (isKeyDown(["d", "right", "ي"])) {
+            if (isKeyDown(["d", "right", "ي"]) || isMovingRight) {
                 moveright();
-            } else if (isKeyDown(["a", "left", "ش"])) {
+            } else if (isKeyDown(["a", "left", "ش"]) || isMovingLeft) {
                 moveleft();
             } else {
                 if (player.isGrounded()) {
@@ -253,7 +256,32 @@ k.scene("game", () => {
                 }
             }
 
-           
+            onTouchStart((pos) => {
+                if (pos.x > innerWidth / 2) {
+                    if (isMovingLeft) {
+                        playerJump();
+                    }
+                    else {
+                        isMovingLeft = false;
+                        isMovingRight = true;
+                    }
+                } else if (pos.x < innerWidth / 2) {
+                    if (isMovingRight) {
+                        playerJump();
+                    }
+                    else {
+                        isMovingRight = false;
+                        isMovingLeft = true;
+                    }
+                }
+                onTouchEnd(() => {
+                    isMovingRight = false;
+                    isMovingLeft = false;
+                });
+            });
+
+
+
 
 
             if (player.isGrounded() && Math.abs(velocity) > 100) {

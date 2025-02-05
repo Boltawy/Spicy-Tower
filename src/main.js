@@ -55,12 +55,12 @@ k.scene("game", () => {
         return spawnedBg;
     }
 
-    let currentBg = bgSpawner(height() / 2);
-    currentBg = bgSpawner(currentBg.pos.y - height() / 1.4);
+    let currentBg = bgSpawner(innerHeight / 2);
+    currentBg = bgSpawner(currentBg.pos.y - innerHeight / 1.4);
 
     let bgInterval = setInterval(() => {
-        if (!paused && currentBg.pos.y > getCamPos().y - height()) {
-            currentBg = bgSpawner(currentBg.pos.y - height() / 1.4);
+        if (!paused && currentBg.pos.y > getCamPos().y - innerHeight) {
+            currentBg = bgSpawner(currentBg.pos.y - innerHeight / 1.4);
         }
     }, 500)
 
@@ -227,20 +227,36 @@ k.scene("game", () => {
         velocity = Math.min(velocity + acceleration * acceleration * dt(), maxSpeed);
         playerFlip ? player.scale.x *= -1 : null;
         playerFlip = false;
-
-
     }
 
-    onTouchStart(() => {
-        debug.log("touched");
-        player.jump(500);
-    });
+    let moveRightEvent;
+
+    // onTouchStart((pos) => {
+    //     moveRightEvent = onUpdate(() => {
+    //         moveright();
+    //         debug.log("start");
+    //     })
+    // });
+
+    // onTouchEnd((pos) => {
+    //     moveRightEvent.cancel();
+    //     debug.log("end");
+    // });
+
+    let isMovingRightPrev = false;
+    let isMovingRight = false;
+    let isMovingLeft = false;
+    let isMovingLeftPrev = false;
+
+
+
 
     onUpdate(() => {
         if (!paused) {
-            if (isKeyDown(["d", "right", "ي"])) {
+            if (isKeyDown(["d", "right", "ي"]) || isMovingRight) {
                 moveright();
-            } else if (isKeyDown(["a", "left", "ش"])) {
+                // debug.log("right");
+            } else if (isKeyDown(["a", "left", "ش"]) || isMovingLeft) {
                 moveleft();
             } else {
                 if (player.isGrounded()) {
@@ -253,7 +269,30 @@ k.scene("game", () => {
                 }
             }
 
-           
+            onTouchStart((pos) => {
+                if (pos.x > innerWidth / 2) {
+                    isMovingLeft = false;
+                    isMovingRight = true;
+                    if (isMovingRight != isMovingRightPrev) {
+                        moveright();
+                        isMovingRightPrev = isMovingRight;
+                    }
+                } else if (pos.x < innerWidth / 2) {
+                    isMovingRight = false;
+                    isMovingLeft = true;
+                    if (isMovingLeft != isMovingLeftPrev) {
+                        moveleft();
+                        isMovingLeftPrev = isMovingLeft;
+                    }
+                    onTouchEnd(() => {
+                        isMovingRight = false;
+                        isMovingLeft = false;
+                    });
+                }
+            });
+
+
+
 
 
             if (player.isGrounded() && Math.abs(velocity) > 100) {

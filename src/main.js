@@ -35,6 +35,18 @@ k.scene("game", () => {
     loadSprite("bg", "sprites/brick-wall.png");
     loadSprite("bg2", "sprites/Dungeon_brick_wall_blue.png.png");
 
+    function restartGame() {
+        bgMusic?.stop();
+        pauseTheme?.stop();
+        k.destroyAll("platform");
+        clearInterval(platformInterval);
+        k.destroyAll("wall");
+        clearInterval(wallInterval);
+        k.destroyAll("bg");
+        clearInterval(bgInterval);
+        k.go("game");
+    }
+
     let spawnedBg;
     let camSpeed = 0;
 
@@ -237,7 +249,7 @@ k.scene("game", () => {
 
     let isMovingRight = false;
     let isMovingLeft = false;
-    
+
     if (isTouchscreen()) {
         add([
             polygon([
@@ -601,6 +613,45 @@ k.scene("game", () => {
         if (isDead && deathAnimation) {
             shake(20)
             k.play("fall", { volume: 0.2 });
+
+            wait(1.4, () => {
+                let gameOverScreen = add([
+                    rect(width() * 2, height() * 2),
+                    pos(getCamPos().x, getCamPos().y),
+                    color(0, 0, 0),
+                    anchor("center"),
+                    opacity(0.5),
+                    "gameoveroverlay",
+                ]);
+                let gameOverText = add([
+                    text("GAME OVER", {
+                        font: "VCR_OSD",
+                        size: 64
+                    }),
+                    pos(getCamPos().x, getCamPos().y),
+                    anchor("center"),
+                    z(15),
+                    "gameovertext",
+
+                ]);
+
+                wait(2, () => {
+                    add([
+                        text("Tap or Press R to restart.", {
+                            font: "VCR_OSD",
+                            size: 28
+                        }),
+                        pos(getCamPos().x, getCamPos().y + 100),
+                        anchor("center"),
+                        z(15),
+                        "gameovertext",
+                    ])
+                })
+            });
+
+            onClick(() => {
+                restartGame();
+            })
             deathAnimation = false;
         }
     }
@@ -644,19 +695,11 @@ k.scene("game", () => {
                 pauseTheme?.stop();
             }
         }
-    });
+    })
 
     onkeydown = (e) => {
         if (e.key == "r" || e.key == "R" || e.key == "ق") {
-            bgMusic?.stop();
-            pauseTheme?.stop();
-            k.destroyAll("platform");
-            clearInterval(platformInterval);
-            k.destroyAll("wall");
-            clearInterval(wallInterval);
-            k.destroyAll("bg");
-            clearInterval(bgInterval);
-            k.go("game");
+            restartGame();
         }
     }
 

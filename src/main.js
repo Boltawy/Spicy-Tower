@@ -278,10 +278,10 @@ k.scene("game", () => {
 
 
     onTouchStart((pos) => {
-        if (pos.x > 0 && pos.x < 90) {
+        if (pos.x > 0 && pos.x < 60) {
             isMovingLeft = true;
             isMovingRight = false;
-        } else if (pos.x > 90 && pos.x < 215) {
+        } else if (pos.x > 60 && pos.x < 160) {
             isMovingRight = true;
             isMovingLeft = false;
         }
@@ -290,9 +290,11 @@ k.scene("game", () => {
         }
     });
 
-    onTouchEnd(() => {
-        isMovingRight = false;
-        isMovingLeft = false;
+    onTouchEnd((pos) => {
+        if (pos.x < 300) {
+            isMovingLeft = false;
+            isMovingRight = false;
+        }
     });
 
     onUpdate(() => {

@@ -615,6 +615,11 @@ k.scene("game", () => {
             k.play("fall", { volume: 0.2 });
 
             wait(1.7, () => {
+
+                onClick(() => {
+                    restartGame();
+                })
+                
                 let gameOverScreen = add([
                     rect(width() * 2, height() * 2),
                     pos(getCamPos().x, height() / 2),
@@ -652,9 +657,7 @@ k.scene("game", () => {
                 })
             });
 
-            onClick(() => {
-                restartGame();
-            })
+           
             deathAnimation = false;
         }
     }

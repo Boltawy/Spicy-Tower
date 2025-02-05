@@ -621,6 +621,7 @@ k.scene("game", () => {
                     color(0, 0, 0),
                     anchor("center"),
                     opacity(0.5),
+                    fixed(),
                     "gameoveroverlay",
                 ]);
                 let gameOverText = add([
@@ -631,6 +632,7 @@ k.scene("game", () => {
                     pos(getCamPos().x, getCamPos().y),
                     anchor("center"),
                     z(15),
+                    fixed(),
                     "gameovertext",
 
                 ]);
@@ -644,6 +646,7 @@ k.scene("game", () => {
                         pos(getCamPos().x, getCamPos().y + 80),
                         anchor("center"),
                         z(15),
+                        fixed(),
                         "gameovertext",
                     ])
                 })

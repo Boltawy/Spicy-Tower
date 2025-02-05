@@ -617,7 +617,7 @@ k.scene("game", () => {
             wait(1.4, () => {
                 let gameOverScreen = add([
                     rect(width() * 2, height() * 2),
-                    pos(getCamPos().x, getCamPos().y),
+                    pos(getCamPos().x,height() / 2),
                     color(0, 0, 0),
                     anchor("center"),
                     opacity(0.5),
@@ -629,7 +629,7 @@ k.scene("game", () => {
                         font: "VCR_OSD",
                         size: 64
                     }),
-                    pos(getCamPos().x, getCamPos().y),
+                    pos(getCamPos().x,height() / 2),
                     anchor("center"),
                     z(15),
                     fixed(),
@@ -643,7 +643,7 @@ k.scene("game", () => {
                             font: "VCR_OSD",
                             size: 28
                         }),
-                        pos(getCamPos().x, getCamPos().y + 80),
+                        pos(getCamPos().x,height() / 2 + 80),
                         anchor("center"),
                         z(15),
                         fixed(),

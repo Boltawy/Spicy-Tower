@@ -232,6 +232,8 @@ k.scene("game", () => {
         playerFlip = false;
     }
 
+    let isPlayerJumping = false;
+
 
     let isMovingRight = false;
     let isMovingLeft = false;
@@ -248,7 +250,6 @@ k.scene("game", () => {
             color(255, 255, 255),
             opacity(0.3),
             fixed()
-            // area({ isTrigger: true }),
         ])
 
         add([
@@ -261,7 +262,6 @@ k.scene("game", () => {
             color(255, 255, 255),
             opacity(0.3),
             fixed()
-            // area({ isTrigger: true }),
         ])
 
         add([
@@ -270,7 +270,6 @@ k.scene("game", () => {
             color(255, 255, 255),
             opacity(0.3),
             fixed()
-            // area({ isTrigger: true }),
         ])
     }
 
@@ -286,7 +285,7 @@ k.scene("game", () => {
             isMovingLeft = false;
         }
         if (pos.x > 250 && pos.x < width()) {
-            playerJump();
+            isPlayerJumping = true
         }
     });
 
@@ -294,6 +293,9 @@ k.scene("game", () => {
         if (pos.x < 300) {
             isMovingLeft = false;
             isMovingRight = false;
+        }
+        else if (pos.x > 300) {
+            isPlayerJumping = false;
         }
     });
 
@@ -316,6 +318,9 @@ k.scene("game", () => {
 
 
 
+            if (isPlayerJumping) {
+                playerJump();
+            }
 
 
 

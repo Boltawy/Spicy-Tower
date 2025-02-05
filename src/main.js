@@ -167,7 +167,7 @@ k.scene("game", () => {
         "player",
     ]);
 
-    wait(0, () => {
+    wait(0.1, () => {
         add(player);
     });
 

@@ -196,13 +196,16 @@ k.scene("game", () => {
     let playerFlip = false;
     let canJump = true;
 
-
-    k.onKeyDown(["space", "w", "up", "ص"], () => {
+    function playerJump() {
         if (!paused && canJump) {
             if (player.isGrounded()) {
                 player.jump(Math.max(590, Math.abs(velocity) * 2.1));
             }
         }
+    }
+
+    k.onKeyDown(["space", "w", "up", "ص"], () => {
+        playerJump();
     }
     );
 
@@ -229,24 +232,9 @@ k.scene("game", () => {
         playerFlip = false;
     }
 
-    let moveRightEvent;
 
-    // onTouchStart((pos) => {
-    //     moveRightEvent = onUpdate(() => {
-    //         moveright();
-    //         debug.log("start");
-    //     })
-    // });
-
-    // onTouchEnd((pos) => {
-    //     moveRightEvent.cancel();
-    //     debug.log("end");
-    // });
-
-    let prevMove = false;
     let isMovingRight = false;
     let isMovingLeft = false;
-    // let prevMove = false;
 
 
 
@@ -255,7 +243,6 @@ k.scene("game", () => {
         if (!paused) {
             if (isKeyDown(["d", "right", "ي"]) || isMovingRight) {
                 moveright();
-                // debug.log("right");
             } else if (isKeyDown(["a", "left", "ش"]) || isMovingLeft) {
                 moveleft();
             } else {
@@ -271,24 +258,26 @@ k.scene("game", () => {
 
             onTouchStart((pos) => {
                 if (pos.x > innerWidth / 2) {
-                    isMovingLeft = false;
-                    isMovingRight = true;
-                    if (isMovingRight != prevMove) {
-                        moveright();
-                        prevMove = isMovingRight;
+                    if (isMovingLeft) {
+                        playerJump();
+                    }
+                    else {
+                        isMovingLeft = false;
+                        isMovingRight = true;
                     }
                 } else if (pos.x < innerWidth / 2) {
-                    isMovingRight = false;
-                    isMovingLeft = true;
-                    if (isMovingLeft != prevMove) {
-                        moveleft();
-                        prevMove = isMovingLeft;
+                    if (isMovingRight) {
+                        playerJump();
                     }
-                    onTouchEnd(() => {
+                    else {
                         isMovingRight = false;
-                        isMovingLeft = false;
-                    });
+                        isMovingLeft = true;
+                    }
                 }
+                onTouchEnd(() => {
+                    isMovingRight = false;
+                    isMovingLeft = false;
+                });
             });
 
 

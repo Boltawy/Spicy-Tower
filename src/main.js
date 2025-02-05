@@ -643,7 +643,7 @@ k.scene("game", () => {
                             font: "VCR_OSD",
                             size: 34
                         }),
-                        pos(getCamPos().x, height() / 2 + 80),
+                        pos(getCamPos().x, height() / 2 + 100),
                         anchor("center"),
                         z(15),
                         fixed(),

@@ -241,9 +241,9 @@ k.scene("game", () => {
     if (isTouchscreen()) {
         add([
             polygon([
-                vec2(25, height() - 100),
-                vec2(75, height() - 150),
-                vec2(75, height() - 50),
+                vec2(25, height() - 80),
+                vec2(75, height() - 130),
+                vec2(75, height() - 30),
 
             ]),
             color(255, 255, 255),
@@ -253,9 +253,9 @@ k.scene("game", () => {
 
         add([
             polygon([
-                vec2(250, height() - 100),
-                vec2(200, height() - 150),
-                vec2(200, height() - 50),
+                vec2(250, height() - 80),
+                vec2(200, height() - 130),
+                vec2(200, height() - 30),
 
             ]),
             color(255, 255, 255),
@@ -264,7 +264,7 @@ k.scene("game", () => {
         ])
 
         add([
-            pos(width() - 75, height() - 100),
+            pos(width() - 75, height() - 80),
             circle(45),
             color(255, 255, 255),
             opacity(0.1),

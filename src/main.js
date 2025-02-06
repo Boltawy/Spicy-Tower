@@ -48,10 +48,12 @@ scene("pretitle", () => {
 
 
 k.scene("title", () => {
-    let mainTheme = play("spicyTheme2", { volume: 0.6, loop: true });
     loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
     loadSprite("title", "sprites/title-black.png");
-
+    let mainTheme
+    onLoad(() => {
+        mainTheme = play("spicyTheme2", { volume: 0.6, loop: true });
+    })
 
     add([
         sprite("bg"),

@@ -819,7 +819,7 @@ k.scene("game", () => {
     let startMusic = onUpdate(() => {
         if (startScroll) {
             // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
-            bgMusic = k.play("track5", { volume: 0.3, loop: true });
+            bgMusic = k.play("track5", { volume: 0.2, loop: true });
             startMusic.cancel();
         }
     });

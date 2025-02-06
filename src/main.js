@@ -66,7 +66,7 @@ scene("pretitle", () => {
 
 k.scene("title", () => {
 
-    let mainTheme = play("spicyTheme2", { volume: 0.6, loop: true });
+    let mainTheme = play("spicyTheme2", { volume: 1, loop: true });
     loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
     loadSprite("title", "sprites/title-black.png");
 
@@ -755,7 +755,7 @@ k.scene("game", () => {
     function shakeOnDeath() {
         if (isDead && deathAnimation) {
             shake(20)
-            k.play("fall", { volume: 0.2 });
+            k.play("fall", { volume: 0.4 });
 
             wait(1.7, () => {
 
@@ -789,7 +789,7 @@ k.scene("game", () => {
 
                 ]);
 
-                play("game-over", { volume: 0.2 });
+                play("game-over", { volume: 0.4 });
 
 
                 wait(1.8, () => {
@@ -819,7 +819,7 @@ k.scene("game", () => {
     let startMusic = onUpdate(() => {
         if (startScroll) {
             // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
-            bgMusic = k.play("track5", { volume: 0.1, loop: true });
+            bgMusic = k.play("track5", { volume: 0.3, loop: true });
             startMusic.cancel();
         }
     });

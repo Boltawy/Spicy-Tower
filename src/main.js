@@ -90,7 +90,7 @@ k.scene("title", () => {
     ])
     let titleLogo = add([
         sprite("title"),
-        pos(width() / 2, height() / 2 - 75),
+        pos(width() / 2, height() / 2 - 50),
         anchor("center"),
         rotate(-20),
         fixed(),
@@ -102,7 +102,7 @@ k.scene("title", () => {
     tween(
         5, // Start scaling
         1.5,  // End scaling
-        1,   // Duration in seconds
+        1.6,   // Duration in seconds
         (val) => titleLogo.scale = vec2(val), // Apply value to angle
         easings.easeOutBounce, // Easing function (use "easings.easeInOutQuad" for smoother effect)
     );

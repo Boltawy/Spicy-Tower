@@ -99,7 +99,7 @@ k.scene("title", () => {
     let titleInterval = setInterval(() => {
         wait(1, () => {
             add([
-                text("PRESS ANYTHING TO START", {
+                text("PRESS SPACE TO START", {
                     font: "VCR_OSD",
                     size: 40,
                 }),

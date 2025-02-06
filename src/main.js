@@ -99,6 +99,15 @@ k.scene("title", () => {
 
     }, 1500);
 
+    onClick(() => {
+        destroyAll();
+        mainTheme?.stop();
+        clearInterval(titleInterval);
+        wait(0.1, () => {
+            k.go("game");
+
+        })
+    })
 
     onKeyPress(["space", "enter"], () => {
         destroyAll();

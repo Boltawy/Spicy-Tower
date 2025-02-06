@@ -31,9 +31,9 @@ scene("pretitle", () => {
 
     if (isTouchscreen()) {
         add([
-            text("TAP Here", {
+            text("TAP ANYWHERE", {
                 font: "VCR_OSD",
-                size: 40,
+                size: 64,
             }),
             pos(width() / 2, height() / 2),
             fixed(),
@@ -46,9 +46,9 @@ scene("pretitle", () => {
         })
     } else {
         add([
-            text("Press SPACE", {
+            text("PRESS SPACE", {
                 font: "VCR_OSD",
-                size: 40,
+                size: 64,
             }),
             pos(width() / 2, height() / 2),
             fixed(),
@@ -115,7 +115,7 @@ k.scene("title", () => {
                 add([
                     text("TAP TO START", {
                         font: "VCR_OSD",
-                        size: 40,
+                        size: 64,
                     }),
                     pos(width() / 2, height() - 100),
                     anchor("center"),

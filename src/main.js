@@ -39,7 +39,7 @@ scene("pretitle", () => {
             fixed(),
             anchor("center"),
         ])
-        onTouchStart(() => {
+        onTouchEnd(() => {
             wait(0.2, () => {
                 go("title");
             })

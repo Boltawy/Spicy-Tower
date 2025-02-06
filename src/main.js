@@ -74,14 +74,14 @@ k.scene("title", () => {
     add([
         sprite("bg"),
         pos(0, 0),
-        color(90, 90, 90),
+        color(140, 140, 140),
         fixed(),
         "bg",
     ])
     add([
         sprite("bg"),
         pos(0, height() / 2),
-        color(90, 90, 90),
+        color(140, 140, 140),
         fixed(),
         "bg",
     ])

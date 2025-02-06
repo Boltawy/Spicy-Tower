@@ -109,6 +109,18 @@ k.scene("title", () => {
         titleBGSpawner(-height() * 2 + 280);
     })
 
+    // add([
+    //     text("BY: ZEYAD (BOLT) ISMAIL", {
+    //         font: "VCR_OSD",
+    //         size: 32,
+    //     }),
+    //     pos(width() / 2, 50),
+    //     anchor("center"),
+    //     fixed(),
+    //     opacity(0.5),
+    //     z(10),
+    //     "credits",
+    // ])
 
     let titleLogo = add([
         sprite("title"),

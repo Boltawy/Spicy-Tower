@@ -31,6 +31,12 @@ k.scene("game", () => {
     // k.loadSound("track4", "audio/track4.mp3")
     k.loadSound("track5", "audio/track5.mp3")
     loadSound("fall", "audio/fall.mp3")
+    loadSound("pause-start", "audio/pause-start.mp3")
+    loadSound("pause-end", "audio/pause-end.mp3")
+
+
+
+
     loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
     loadSprite("bg", "sprites/brick-wall.png");
     loadSprite("bg2", "sprites/Dungeon_brick_wall_blue.png.png");
@@ -404,10 +410,11 @@ k.scene("game", () => {
             player.use(body());
         }
         if (paused) {
+            play("pause-start", { volume: 0.2 });
             if (startScroll) {
                 bgMusicTime = bgMusic?.time();
                 bgMusic?.stop();
-                pauseTheme = k.play("track5", { volume: 0.1, loop: true, speed: 0.7, seek: bgMusicTime });
+                // pauseTheme = k.play("track5", { volume: 0.1, loop: true, speed: 0.7, seek: bgMusicTime });
             }
 
             get("bg").forEach(bg => {
@@ -442,11 +449,12 @@ k.scene("game", () => {
             // });
         }
         else {
+            play("pause-end", { volume: 0.2 });
             if (startScroll) {
-                pauseThemeDuration = pauseTheme?.duration();
-                pauseThemeTime = (pauseTheme?.time() * 0.7) + bgMusicTime;
-                pauseTheme?.stop();
-                bgMusic?.play(pauseThemeTime);
+                wait(0.2, () => {
+                    bgMusic?.play(bgMusicTime);
+
+                })
             }
             k.get("pauseoverlay").forEach(overlay => overlay.destroy());
         }
@@ -630,7 +638,7 @@ k.scene("game", () => {
                 onKeyPress("space", () => {
                     restartGame();
                 })
-                
+
                 let gameOverScreen = add([
                     rect(width() * 2, height() * 2),
                     pos(getCamPos().x, height() / 2),
@@ -654,7 +662,7 @@ k.scene("game", () => {
 
                 ]);
 
-                    play("game-over", {volume: 0.2});
+                play("game-over", { volume: 0.2 });
 
 
                 wait(1.8, () => {
@@ -672,7 +680,7 @@ k.scene("game", () => {
                 })
             });
 
-           
+
             deathAnimation = false;
         }
     }

@@ -70,24 +70,46 @@ k.scene("title", () => {
     loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
     loadSprite("title", "sprites/title-black.png");
 
+    function titleBGSpawner(posY) {
+        for (let i = 0; i < 10; i++) {
+            add([
+                sprite("bg"),
+                pos(0, posY),
+                color(140, 140, 140),
+                fixed(),
+                move(DOWN, 90),
+                "bg",
+            ])
+            posY -= height() - 120;
+        }
+        wait(10, () => {
+            titleBGSpawner(posY);
+        })
+    }
 
     add([
         sprite("bg"),
-        pos(0, 0),
+        pos(0, 120),
         color(140, 140, 140),
         fixed(),
-        // move(DOWN, 50),
         "bg",
-
     ])
+
     add([
         sprite("bg"),
-        pos(0, height() / 2),
+        pos(0, -height() + 240),
         color(140, 140, 140),
         fixed(),
-        // move(DOWN, 50),
         "bg",
     ])
+    wait(2.25, () => {
+        get("bg").forEach(bg => {
+            bg.use(move(DOWN, 90));
+        })
+        titleBGSpawner(-height() * 2 + 280);
+    })
+
+
     let titleLogo = add([
         sprite("title"),
         pos(width() / 2, height() / 2 - 50),
@@ -156,7 +178,7 @@ k.scene("title", () => {
     })
 
     onKeyPress(["space", "enter"], () => {
-        destroyAll();
+        destroyAll("bg");
         mainTheme?.stop();
         clearInterval(titleInterval);
         wait(0.1, () => {

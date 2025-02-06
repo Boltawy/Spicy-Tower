@@ -115,7 +115,7 @@ k.scene("title", () => {
                 add([
                     text("TAP TO START", {
                         font: "VCR_OSD",
-                        size: 52,
+                        size: 48,
                     }),
                     pos(width() / 2, height() - 100),
                     anchor("center"),

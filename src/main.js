@@ -96,7 +96,7 @@ k.scene("game", () => {
             size: 64,
         }),
         z(15),
-        pos(width() / 2, 50),
+        pos(width() / 2, 50 + 3),
         color(20, 20, 20),
         anchor("center"),
         fixed(),
@@ -109,7 +109,7 @@ k.scene("game", () => {
             size: 64,
         }),
         z(15),
-        pos(width() / 2 + 3, 50 + 3),
+        pos(width() / 2 + 3, 50),
         color(255, 255, 255),
         anchor("center"),
         fixed(),
@@ -426,6 +426,7 @@ k.scene("game", () => {
                     font: "VCR_OSD",
                     size: 50,
                     width: 500,
+                    letterSpacing: 5,
                     align: "center",
                 }),
                 pos(getCamPos().x, getCamPos().y),
@@ -613,6 +614,8 @@ k.scene("game", () => {
     let isDead = false;
     let deathAnimation = true;
 
+    let gameOver = k.loadSound("game-over", "audio/game-over.mp3")
+
     function shakeOnDeath() {
         if (isDead && deathAnimation) {
             shake(20)
@@ -636,7 +639,8 @@ k.scene("game", () => {
                 let gameOverText = add([
                     text("GAME OVER", {
                         font: "VCR_OSD",
-                        size: 90
+                        size: 90,
+                        letterSpacing: 5,
                     }),
                     pos(getCamPos().x, height() / 2),
                     anchor("center"),
@@ -646,9 +650,12 @@ k.scene("game", () => {
 
                 ]);
 
+                    play("game-over", {volume: 0.2});
+
+
                 wait(1.8, () => {
                     add([
-                        text("Tap or Press R to restart.", {
+                        text("Tap or Press R to Restart", {
                             font: "VCR_OSD",
                             size: 34
                         }),

@@ -323,12 +323,9 @@ k.scene("game", () => {
         "player",
     ]);
 
-    let playerSpawnInterval = setInterval(() => {
-        if (startingPlatform.exists()) {
-            add(player);
-            clearInterval(playerSpawnInterval);
-        }
-    }, 50);
+    wait(0.4, () => {
+        add(player);
+    })
 
 
 

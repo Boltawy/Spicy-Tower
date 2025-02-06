@@ -305,10 +305,10 @@ k.scene("game", () => {
         }
 
         onTouchMove((pos2) => {
-            if (pos2.x > 0 && pos2.x < 100 && pos.y > height() / 2) {
+            if (pos2.x > 0 && pos2.x < 100 && pos2.y > height() / 2) {
                 isMovingLeft = true;
                 isMovingRight = false;
-            } else if (pos2.x > 100 && pos2.x < 190 && pos.y > height() / 2) {
+            } else if (pos2.x > 100 && pos2.x < 190 && pos2.y > height() / 2) {
                 isMovingRight = true;
                 isMovingLeft = false;
             }

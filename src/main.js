@@ -38,20 +38,20 @@ scene("pretitle", () => {
         anchor("center"),
     ])
     onClick(() => {
-        go("title")
+        wait(0.1, () => {
+            go("title");
+        })
     })
     onKeyPress("space", () => {
-        go("title")
+        wait(0.1, () => {
+            go("title");
+        })
     })
 })
 
 
 
 k.scene("title", () => {
-
-    if (k.audio && k.audio.ctx && k.audio.ctx.state === "suspended") {
-        k.audio.ctx.resume()
-    }
 
     let mainTheme = play("spicyTheme2", { volume: 0.6, loop: true });
     loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");

@@ -18,6 +18,19 @@ const k = kaplay(
 
 loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
 loadSound("spicyTheme2", "audio/spicy-theme2.mp3")
+loadSprite("hooded", "sprites/hooded.png", {
+    sliceX: 8,
+    sliceY: 9,
+    anims: {
+        idle1: { from: 0, to: 1, loop: false, speed: 4 },
+        idle2: { from: 8, to: 9, loop: false, speed: 4 },
+        walk: { from: 16, to: 19, loop: true, speed: 4 },
+        run: { from: 24, to: 31, loop: true, speed: 8 },
+    },
+});
+loadSprite("startingPlatform", "sprites/startingPlatform.png")
+
+
 
 
 scene("pretitle", () => {
@@ -320,7 +333,6 @@ k.scene("game", () => {
 
 
 
-    loadSprite("startingPlatform", "sprites/startingPlatform.png")
 
     const startingPlatform = add([
         sprite("startingPlatform"),
@@ -334,17 +346,7 @@ k.scene("game", () => {
         "startingPlatform",
     ]);
 
-    loadSprite("hooded", "sprites/hooded.png", {
-        sliceX: 8,
-        sliceY: 9,
-        anims: {
-            idle1: { from: 0, to: 1, loop: false, speed: 4 },
-            idle2: { from: 8, to: 9, loop: false, speed: 4 },
-            walk: { from: 16, to: 19, loop: true, speed: 4 },
-            run: { from: 24, to: 31, loop: true, speed: 8 },
-        },
-    });
-
+    
 
     const player = k.make([
         k.pos(width() / 2, height() - 90),

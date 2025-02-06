@@ -49,8 +49,8 @@ scene("pretitle", () => {
 
 k.scene("title", () => {
 
-    if (kaplay.audio.ctx.state === "suspended") {
-        kaplay.audio.ctx.resume()
+    if (k.audio && k.audio.ctx && k.audio.ctx.state === "suspended") {
+        k.audio.ctx.resume()
     }
 
     let mainTheme = play("spicyTheme2", { volume: 0.6, loop: true });

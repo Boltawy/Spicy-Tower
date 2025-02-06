@@ -11,35 +11,130 @@ const k = kaplay(
         maxFPS: 60,
         letterbox: true,
         stretch: false,
+        background: [10, 10, 10],
 
     }
 );
 
-let pauseTheme;
-let bgMusic;
-let paused = false;
-let pauseThemeTime;
-let pauseThemeDuration;
-let bgMusicTime
+loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
+
+
+scene("pretitle", () => {
+    add([
+        rect(width(), height()),
+        pos(0, 0),
+        color(0, 0, 0),
+        fixed(),
+
+    ])
+    add([
+        text("Tap Here", {
+            font: "VCR_OSD",
+            size: 40,
+        }),
+        pos(width() / 2, height() / 2),
+        fixed(),
+        anchor("center"),
+    ])
+    onClick(() => {
+        go("title")
+    })
+    onKeyPress("space", () => {
+        go("title")
+    })
+})
+
+
+
+k.scene("title", () => {
+    loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
+    loadSprite("title", "sprites/title-black.png");
+    loadSound("spicyTheme2", "audio/spicy-theme2.mp3")
+
+    let mainTheme = play("spicyTheme2", { volume: 0.6, loop: true });
+
+    add([
+        sprite("bg"),
+        pos(0, 0),
+        color(90, 90, 90),
+        fixed(),
+        "bg",
+    ])
+    add([
+        sprite("bg"),
+        pos(0, height() / 2),
+        color(90, 90, 90),
+        fixed(),
+        "bg",
+    ])
+    add([
+        sprite("title"),
+        pos(width() / 2, 250),
+        anchor("center"),
+        fixed(),
+        scale(1.5),
+        z(10),
+        "title",
+    ])
+
+
+    let titleInterval = setInterval(() => {
+        wait(1, () => {
+            add([
+                text("PRESS ANYTHING TO START", {
+                    font: "VCR_OSD",
+                    size: 40,
+                }),
+                pos(width() / 2, height() - 100),
+                anchor("center"),
+                z(10),
+                fixed(),
+                "starttext",
+            ])
+        })
+        wait(0.2, () => {
+            destroyAll("starttext");
+        })
+
+
+    }, 1500);
+
+
+    onKeyPress(["space", "enter"], () => {
+        destroyAll();
+        mainTheme?.stop();
+        clearInterval(titleInterval);
+        wait(0.1, () => {
+            k.go("game");
+
+        })
+    })
+})
 
 
 
 k.scene("game", () => {
+
+    let pauseTheme;
+    let bgMusic;
+    let paused = false;
+    let pauseThemeTime;
+    let pauseThemeDuration;
+    let bgMusicTime
     // k.loadSound("spicyTheme", "audio/spicy-theme.mp3")
     // k.loadSound("track1", "audio/track1.mp3")
     // k.loadSound("track2", "audio/track2.mp3")
     // k.loadSound("track4", "audio/track4.mp3")
-    k.loadSound("track5", "audio/track5.mp3")
+    loadSound("track5", "audio/track5.mp3")
     loadSound("fall", "audio/fall.mp3")
     loadSound("pause-start", "audio/pause-start.mp3")
     loadSound("pause-end", "audio/pause-end.mp3")
-    // loadSound("spicy-theme2", "audio/spicy-theme2.mp3")
 
 
-    loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
-    loadSprite("bg", "sprites/brick-wall.png");
-    loadSprite("bg2", "sprites/Dungeon_brick_wall_blue.png.png");
-    loadSprite("pause-button", "sprites/pause-button.png");
+
+
+    // loadSprite("bg", "sprites/brick-wall.png");
+    loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
 
     function restartGame() {
         bgMusic?.stop();
@@ -61,7 +156,7 @@ k.scene("game", () => {
     function bgSpawner(bgPositionY) {
         if (!paused) {
             spawnedBg = add([
-                sprite("bg2"),
+                sprite("bg"),
                 pos(-width() / 4, bgPositionY),
                 anchor("topleft"),
                 scale(0.75),
@@ -295,24 +390,13 @@ k.scene("game", () => {
             z(10),
             fixed()
         ])
-
     }
-    add([
-        pos(width() - 90, 80),
-        scale(0.06),
-        fixed(),
-        z(10),
-        anchor("center"),
-        sprite("pause-button"),
-        opacity(0.5),
-        "pausebutton"
-    ])
 
 
 
 
     onTouchStart((pos) => {
-        debug.log(pos.x)
+        // debug.log(pos.x)
         if (pos.x > 0 && pos.x < 100 && pos.y > height() / 2) {
             isMovingLeft = true;
             isMovingRight = false;
@@ -320,10 +404,6 @@ k.scene("game", () => {
             isMovingRight = true;
             isMovingLeft = false;
         }
-
-        // else if (pos.x > 300 && pos.x < width() && pos.y < height() / 2) {
-        //     pause = true;
-        // }
 
         onTouchMove((pos2) => {
             if (pos2.x > 0 && pos2.x < 100 && pos2.y > height() / 2) {
@@ -426,7 +506,6 @@ k.scene("game", () => {
         }
         if (paused) {
             play("pause-start", { volume: 0.2 });
-            destroyAll("pausebutton")
             if (startScroll) {
                 bgMusicTime = bgMusic?.time();
                 bgMusic?.stop();
@@ -466,18 +545,6 @@ k.scene("game", () => {
         }
         else if (!paused) {
             play("pause-end", { volume: 0.2 });
-
-            add([
-                pos(width() - 90, 80),
-                scale(0.06),
-                fixed(),
-                z(10),
-                anchor("center"),
-                sprite("pause-button"),
-                opacity(0.5),
-                "pausebutton"
-            ])
-
             if (startScroll) {
                 wait(0.2, () => {
                     bgMusic?.play(bgMusicTime);
@@ -769,4 +836,7 @@ k.scene("game", () => {
 
 })
 
-k.go("game");
+
+// k.go("game");
+// k.go("title");
+go("pretitle");

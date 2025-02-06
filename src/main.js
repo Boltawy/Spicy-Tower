@@ -29,7 +29,7 @@ scene("pretitle", () => {
 
     ])
     add([
-        text("TAP or Press SPACE", {
+        text("Tap Here", {
             font: "VCR_OSD",
             size: 40,
         }),
@@ -37,12 +37,15 @@ scene("pretitle", () => {
         fixed(),
         anchor("center"),
     ])
-    
     onTouchStart(() => {
+        wait(0.1, () => {
             go("title");
+        })
     })
     onKeyPress("space", () => {
+        wait(0.1, () => {
             go("title");
+        })
     })
 })
 

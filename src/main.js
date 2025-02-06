@@ -40,7 +40,7 @@ scene("pretitle", () => {
             anchor("center"),
         ])
         onTouchStart(() => {
-            wait(0.1, () => {
+            wait(0.2, () => {
                 go("title");
             })
         })
@@ -55,7 +55,7 @@ scene("pretitle", () => {
             anchor("center"),
         ])
         onKeyPress("space", () => {
-            wait(0.1, () => {
+            wait(0.2, () => {
                 go("title");
             })
         })

@@ -17,10 +17,10 @@ const k = kaplay(
 );
 
 loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
+loadSound("spicyTheme2", "audio/spicy-theme2.mp3")
 
 
 scene("pretitle", () => {
-    loadSound("spicyTheme2", "audio/spicy-theme2.mp3")
     add([
         rect(width(), height()),
         pos(0, 0),

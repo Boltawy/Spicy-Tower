@@ -26,26 +26,38 @@ scene("pretitle", () => {
         pos(0, 0),
         color(0, 0, 0),
         fixed(),
+    ])
 
-    ])
-    add([
-        text("Tap Here", {
-            font: "VCR_OSD",
-            size: 40,
-        }),
-        pos(width() / 2, height() / 2),
-        fixed(),
-        anchor("center"),
-    ])
-    onTouchStart(() => {
-        wait(0.1, () => {
+    if (isTouchscreen()) {
+        add([
+            text("Tap Here", {
+                font: "VCR_OSD",
+                size: 40,
+            }),
+            pos(width() / 2, height() / 2),
+            fixed(),
+            anchor("center"),
+        ])
+        onTouchStart(() => {
             go("title");
         })
-    })
+    } else {
+        add([
+            text("Press Space", {
+                font: "VCR_OSD",
+                size: 40,
+            }),
+            pos(width() / 2, height() / 2),
+            fixed(),
+            anchor("center"),
+        ])
+        onClick(() => {
+            go("title");
+        })
+    }
+
     onKeyPress("space", () => {
-        wait(0.1, () => {
-            go("title");
-        })
+        go("title");
     })
 })
 

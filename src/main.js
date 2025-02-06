@@ -98,17 +98,33 @@ k.scene("title", () => {
 
     let titleInterval = setInterval(() => {
         wait(1, () => {
-            add([
-                text("PRESS SPACE TO START", {
-                    font: "VCR_OSD",
-                    size: 40,
-                }),
-                pos(width() / 2, height() - 100),
-                anchor("center"),
-                z(10),
-                fixed(),
-                "starttext",
-            ])
+            if(isTouchscreen())
+            {
+                add([
+                    text("TAP TO START", {
+                        font: "VCR_OSD",
+                        size: 40,
+                    }),
+                    pos(width() / 2, height() - 100),
+                    anchor("center"),
+                    z(10),
+                    fixed(),
+                    "starttext",
+                ])
+            }
+            else {
+                add([
+                    text("PRESS SPACE TO START", {
+                        font: "VCR_OSD",
+                        size: 40,
+                    }),
+                    pos(width() / 2, height() - 100),
+                    anchor("center"),
+                    z(10),
+                    fixed(),
+                    "starttext",
+                ])
+            }
         })
         wait(0.2, () => {
             destroyAll("starttext");

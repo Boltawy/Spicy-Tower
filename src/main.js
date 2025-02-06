@@ -47,11 +47,11 @@ scene("pretitle", () => {
 
 
 k.scene("title", () => {
+    loadSound("spicyTheme2", "audio/spicy-theme2.mp3")
+    let mainTheme = play("spicyTheme2", { volume: 0.6, loop: true });
     loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
     loadSprite("title", "sprites/title-black.png");
-    loadSound("spicyTheme2", "audio/spicy-theme2.mp3")
 
-    let mainTheme = play("spicyTheme2", { volume: 0.6, loop: true });
 
     add([
         sprite("bg"),

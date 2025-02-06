@@ -33,13 +33,13 @@ k.scene("game", () => {
     loadSound("fall", "audio/fall.mp3")
     loadSound("pause-start", "audio/pause-start.mp3")
     loadSound("pause-end", "audio/pause-end.mp3")
-
-
+    // loadSound("spicy-theme2", "audio/spicy-theme2.mp3")
 
 
     loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
     loadSprite("bg", "sprites/brick-wall.png");
     loadSprite("bg2", "sprites/Dungeon_brick_wall_blue.png.png");
+    loadSprite("pause-button", "sprites/pause-button.png");
 
     function restartGame() {
         bgMusic?.stop();
@@ -295,13 +295,24 @@ k.scene("game", () => {
             z(10),
             fixed()
         ])
+
     }
+    add([
+        pos(width() - 90, 80),
+        scale(0.06),
+        fixed(),
+        z(10),
+        anchor("center"),
+        sprite("pause-button"),
+        opacity(0.5),
+        "pausebutton"
+    ])
 
 
 
 
     onTouchStart((pos) => {
-        // debug.log(pos.x)
+        debug.log(pos.x)
         if (pos.x > 0 && pos.x < 100 && pos.y > height() / 2) {
             isMovingLeft = true;
             isMovingRight = false;
@@ -309,6 +320,10 @@ k.scene("game", () => {
             isMovingRight = true;
             isMovingLeft = false;
         }
+
+        // else if (pos.x > 300 && pos.x < width() && pos.y < height() / 2) {
+        //     pause = true;
+        // }
 
         onTouchMove((pos2) => {
             if (pos2.x > 0 && pos2.x < 100 && pos2.y > height() / 2) {
@@ -411,6 +426,7 @@ k.scene("game", () => {
         }
         if (paused) {
             play("pause-start", { volume: 0.2 });
+            destroyAll("pausebutton")
             if (startScroll) {
                 bgMusicTime = bgMusic?.time();
                 bgMusic?.stop();
@@ -450,6 +466,18 @@ k.scene("game", () => {
         }
         else if (!paused) {
             play("pause-end", { volume: 0.2 });
+
+            add([
+                pos(width() - 90, 80),
+                scale(0.06),
+                fixed(),
+                z(10),
+                anchor("center"),
+                sprite("pause-button"),
+                opacity(0.5),
+                "pausebutton"
+            ])
+
             if (startScroll) {
                 wait(0.2, () => {
                     bgMusic?.play(bgMusicTime);

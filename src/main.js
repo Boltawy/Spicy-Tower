@@ -82,7 +82,7 @@ k.scene("title", () => {
             ])
             posY -= height() - 120;
         }
-        wait(10, () => {
+        wait(9.5, () => {
             titleBGSpawner(posY);
         })
     }
@@ -102,7 +102,7 @@ k.scene("title", () => {
         fixed(),
         "bg",
     ])
-    wait(2.25, () => {
+    wait(2.3, () => {
         get("bg").forEach(bg => {
             bg.use(move(DOWN, 90));
         })

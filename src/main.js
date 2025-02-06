@@ -94,14 +94,14 @@ k.scene("title", () => {
         anchor("center"),
         rotate(-20),
         fixed(),
-        scale(1.5),
+        scale(1.8),
         z(10),
         "title",
     ])
 
     tween(
         5, // Start scaling
-        1.5,  // End scaling
+        1.8,  // End scaling
         1.6,   // Duration in seconds
         (val) => titleLogo.scale = vec2(val), // Apply value to angle
         easings.easeOutBounce, // Easing function (use "easings.easeInOutQuad" for smoother effect)

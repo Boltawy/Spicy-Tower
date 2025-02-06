@@ -257,9 +257,9 @@ k.scene("game", () => {
     if (isTouchscreen()) {
         add([
             polygon([
-                vec2(25, height() - 80),
-                vec2(75, height() - 130),
-                vec2(75, height() - 30),
+                vec2(50, height() - 80),
+                vec2(100, height() - 130),
+                vec2(100, height() - 30),
 
             ]),
             color(255, 255, 255),
@@ -282,7 +282,7 @@ k.scene("game", () => {
         ])
 
         add([
-            pos(width() - 75, height() - 80),
+            pos(width() - 125, height() - 80),
             circle(45),
             color(255, 255, 255),
             opacity(0.1),
@@ -295,24 +295,25 @@ k.scene("game", () => {
 
 
     onTouchStart((pos) => {
-        if (pos.x > 0 && pos.x < 80) {
+        // debug.log(pos.x)
+        if (pos.x > 0 && pos.x < 100 && pos.y > height() / 2) {
             isMovingLeft = true;
             isMovingRight = false;
-        } else if (pos.x > 80 && pos.x < 190) {
+        } else if (pos.x > 100 && pos.x < 190 && pos.y > height() / 2) {
             isMovingRight = true;
             isMovingLeft = false;
         }
 
         onTouchMove((pos2) => {
-            if (pos2.x > 0 && pos2.x < 80) {
+            if (pos2.x > 0 && pos2.x < 100 && pos.y > height() / 2) {
                 isMovingLeft = true;
                 isMovingRight = false;
-            } else if (pos2.x > 80 && pos2.x < 190) {
+            } else if (pos2.x > 100 && pos2.x < 190 && pos.y > height() / 2) {
                 isMovingRight = true;
                 isMovingLeft = false;
             }
         });
-        if (pos.x > 250 && pos.x < width()) {
+        if (pos.x > 200 && pos.x < width() && pos.y > height() / 2) {
             isPlayerJumping = true
         }
     });
@@ -624,6 +625,9 @@ k.scene("game", () => {
             wait(1.7, () => {
 
                 onClick(() => {
+                    restartGame();
+                })
+                onKeyPress("space", () => {
                     restartGame();
                 })
                 

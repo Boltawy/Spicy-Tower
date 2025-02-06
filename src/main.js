@@ -76,18 +76,21 @@ k.scene("title", () => {
         pos(0, 0),
         color(140, 140, 140),
         fixed(),
+        // move(DOWN, 50),
         "bg",
+
     ])
     add([
         sprite("bg"),
         pos(0, height() / 2),
         color(140, 140, 140),
         fixed(),
+        // move(DOWN, 50),
         "bg",
     ])
     let titleLogo = add([
         sprite("title"),
-        pos(width() / 2, 250),
+        pos(width() / 2, height() / 2 - 75),
         anchor("center"),
         rotate(-20),
         fixed(),
@@ -95,6 +98,14 @@ k.scene("title", () => {
         z(10),
         "title",
     ])
+
+    tween(
+        5, // Start scaling
+        1.5,  // End scaling
+        1,   // Duration in seconds
+        (val) => titleLogo.scale = vec2(val), // Apply value to angle
+        easings.easeOutBounce, // Easing function (use "easings.easeInOutQuad" for smoother effect)
+    );
 
 
 
@@ -321,570 +332,570 @@ k.scene("game", () => {
 
 
 
-        let idleAnimationCounter = 0;
-        let blinkTimer = 0;
-        player.on("animEnd", (anim) => {
-            blinkTimer = rand(5, 10)
-            if (anim === "idle1" && idleAnimationCounter < blinkTimer) {
-                player.play("idle1");
-                idleAnimationCounter++;
-            } else if (anim === "idle1" && idleAnimationCounter >= blinkTimer) {
-                player.play("idle2");  // Switch to idle2 after idle1 finishes 2 times
-                idleAnimationCounter = 0;  // Reset counter for next cycle
-            } else if (anim === "idle2") {
-                player.play("idle1");  // Play idle1 after idle2 finishes
+    let idleAnimationCounter = 0;
+    let blinkTimer = 0;
+    player.on("animEnd", (anim) => {
+        blinkTimer = rand(5, 10)
+        if (anim === "idle1" && idleAnimationCounter < blinkTimer) {
+            player.play("idle1");
+            idleAnimationCounter++;
+        } else if (anim === "idle1" && idleAnimationCounter >= blinkTimer) {
+            player.play("idle2");  // Switch to idle2 after idle1 finishes 2 times
+            idleAnimationCounter = 0;  // Reset counter for next cycle
+        } else if (anim === "idle2") {
+            player.play("idle1");  // Play idle1 after idle2 finishes
+        }
+    });
+
+    let canWalk = false;
+    let isWalking = false;
+    let isRunning = false;
+    let canRun = false;
+    let isIdle = false;
+    let canIdle = false;
+
+    function mainAnimations() {
+        if (isWalking && canWalk) {
+            player.play("walk");
+            canWalk = false;
+        }
+        else if (isRunning && canRun) {
+            player.play("run");
+            canRun = false;
+        }
+        else if (isIdle) {
+            player.play("idle1");
+            isIdle = false;
+        }
+    }
+
+    let playerFlip = false;
+    let canJump = true;
+
+    function playerJump() {
+        if (!paused && canJump) {
+            if (player.isGrounded()) {
+                player.jump(Math.max(590, Math.abs(velocity) * 2.1));
             }
-        });
+        }
+    }
 
-        let canWalk = false;
-        let isWalking = false;
-        let isRunning = false;
-        let canRun = false;
-        let isIdle = false;
-        let canIdle = false;
+    k.onKeyDown(["space", "w", "up", "ص"], () => {
+        playerJump();
+    }
+    );
 
-        function mainAnimations() {
-            if (isWalking && canWalk) {
-                player.play("walk");
-                canWalk = false;
-            }
-            else if (isRunning && canRun) {
-                player.play("run");
-                canRun = false;
-            }
-            else if (isIdle) {
-                player.play("idle1");
-                isIdle = false;
-            }
+
+    let velocity = 0;
+    let acceleration = 23;
+    const maxSpeed = 1000;
+    const friction = 1000; // Slow down when no key is pressed
+
+    function moveleft() {
+        if (velocity > 0) velocity = Math.max(velocity - friction * dt(), 0);
+        if (velocity > 0 && !player.isGrounded()) velocity = Math.max(velocity - friction / 1.5 * dt(), 0);
+        velocity = Math.max(velocity - acceleration * acceleration * dt(), -maxSpeed);
+        playerFlip ? null : player.scale.x *= -1;
+        playerFlip = true;
+
+    }
+
+    function moveright() {
+        if (velocity < 0) velocity = Math.min(velocity + friction * dt(), 0);
+        if (velocity < 0 && !player.isGrounded()) velocity = Math.min(velocity + friction / 1.5 * dt(), 0);
+        velocity = Math.min(velocity + acceleration * acceleration * dt(), maxSpeed);
+        playerFlip ? player.scale.x *= -1 : null;
+        playerFlip = false;
+    }
+
+    let isPlayerJumping = false;
+
+
+    let isMovingRight = false;
+    let isMovingLeft = false;
+
+    if (isTouchscreen()) {
+        add([
+            polygon([
+                vec2(50, height() - 80),
+                vec2(100, height() - 130),
+                vec2(100, height() - 30),
+
+            ]),
+            color(255, 255, 255),
+            opacity(0.1),
+            z(10),
+            fixed()
+        ])
+
+        add([
+            polygon([
+                vec2(250, height() - 80),
+                vec2(200, height() - 130),
+                vec2(200, height() - 30),
+
+            ]),
+            color(255, 255, 255),
+            opacity(0.1),
+            z(10),
+            fixed()
+        ])
+
+        add([
+            pos(width() - 125, height() - 80),
+            circle(45),
+            color(255, 255, 255),
+            opacity(0.1),
+            z(10),
+            fixed()
+        ])
+    }
+
+
+
+
+    onTouchStart((pos) => {
+        // debug.log(pos.x)
+        if (pos.x > 0 && pos.x < 100 && pos.y > height() / 2) {
+            isMovingLeft = true;
+            isMovingRight = false;
+        } else if (pos.x > 100 && pos.x < 190 && pos.y > height() / 2) {
+            isMovingRight = true;
+            isMovingLeft = false;
         }
 
-        let playerFlip = false;
-        let canJump = true;
-
-        function playerJump() {
-            if (!paused && canJump) {
-                if (player.isGrounded()) {
-                    player.jump(Math.max(590, Math.abs(velocity) * 2.1));
-                }
-            }
-        }
-
-        k.onKeyDown(["space", "w", "up", "ص"], () => {
-            playerJump();
-        }
-        );
-
-
-        let velocity = 0;
-        let acceleration = 23;
-        const maxSpeed = 1000;
-        const friction = 1000; // Slow down when no key is pressed
-
-        function moveleft() {
-            if (velocity > 0) velocity = Math.max(velocity - friction * dt(), 0);
-            if (velocity > 0 && !player.isGrounded()) velocity = Math.max(velocity - friction / 1.5 * dt(), 0);
-            velocity = Math.max(velocity - acceleration * acceleration * dt(), -maxSpeed);
-            playerFlip ? null : player.scale.x *= -1;
-            playerFlip = true;
-
-        }
-
-        function moveright() {
-            if (velocity < 0) velocity = Math.min(velocity + friction * dt(), 0);
-            if (velocity < 0 && !player.isGrounded()) velocity = Math.min(velocity + friction / 1.5 * dt(), 0);
-            velocity = Math.min(velocity + acceleration * acceleration * dt(), maxSpeed);
-            playerFlip ? player.scale.x *= -1 : null;
-            playerFlip = false;
-        }
-
-        let isPlayerJumping = false;
-
-
-        let isMovingRight = false;
-        let isMovingLeft = false;
-
-        if (isTouchscreen()) {
-            add([
-                polygon([
-                    vec2(50, height() - 80),
-                    vec2(100, height() - 130),
-                    vec2(100, height() - 30),
-
-                ]),
-                color(255, 255, 255),
-                opacity(0.1),
-                z(10),
-                fixed()
-            ])
-
-            add([
-                polygon([
-                    vec2(250, height() - 80),
-                    vec2(200, height() - 130),
-                    vec2(200, height() - 30),
-
-                ]),
-                color(255, 255, 255),
-                opacity(0.1),
-                z(10),
-                fixed()
-            ])
-
-            add([
-                pos(width() - 125, height() - 80),
-                circle(45),
-                color(255, 255, 255),
-                opacity(0.1),
-                z(10),
-                fixed()
-            ])
-        }
-
-
-
-
-        onTouchStart((pos) => {
-            // debug.log(pos.x)
-            if (pos.x > 0 && pos.x < 100 && pos.y > height() / 2) {
+        onTouchMove((pos2) => {
+            if (pos2.x > 0 && pos2.x < 100 && pos2.y > height() / 2) {
                 isMovingLeft = true;
                 isMovingRight = false;
-            } else if (pos.x > 100 && pos.x < 190 && pos.y > height() / 2) {
+            } else if (pos2.x > 100 && pos2.x < 190 && pos2.y > height() / 2) {
                 isMovingRight = true;
                 isMovingLeft = false;
             }
+        });
+        if (pos.x > 200 && pos.x < width() && pos.y > height() / 2) {
+            isPlayerJumping = true
+        }
+    });
 
-            onTouchMove((pos2) => {
-                if (pos2.x > 0 && pos2.x < 100 && pos2.y > height() / 2) {
-                    isMovingLeft = true;
-                    isMovingRight = false;
-                } else if (pos2.x > 100 && pos2.x < 190 && pos2.y > height() / 2) {
-                    isMovingRight = true;
-                    isMovingLeft = false;
+    onTouchEnd((pos) => {
+        if (pos.x < 200) {
+            isMovingLeft = false;
+            isMovingRight = false;
+        }
+        else if (pos.x > 200) {
+            isPlayerJumping = false;
+        }
+    });
+
+    onUpdate(() => {
+        if (!paused) {
+            if (isKeyDown(["d", "right", "ي"]) || isMovingRight) {
+                moveright();
+            } else if (isKeyDown(["a", "left", "ش"]) || isMovingLeft) {
+                moveleft();
+            } else {
+                if (player.isGrounded()) {
+                    if (velocity > 0) velocity = Math.max(velocity - friction / 1.4 * dt(), 0);
+                    if (velocity < 0) velocity = Math.min(velocity + friction / 1.4 * dt(), 0);
+                }
+                else {
+                    if (velocity > 0) velocity = Math.max(velocity - friction / 3 * dt(), 0);
+                    if (velocity < 0) velocity = Math.min(velocity + friction / 3 * dt(), 0);
+                }
+            }
+
+
+
+            if (isPlayerJumping) {
+                playerJump();
+            }
+
+
+
+
+            if (player.isGrounded() && Math.abs(velocity) > 100) {
+                isWalking = true;
+            }
+            else if (player.isGrounded() && Math.abs(velocity) < 100) {
+                isWalking = false;
+                canWalk = true;
+                isRunning = false;
+                canRun = true;
+                isIdle = true;
+            }
+
+            if ((player.isGrounded() && Math.abs(velocity) > 100) && player.isGrounded() && Math.abs(velocity) < 300) {
+                isWalking = true;
+            }
+            else if (player.isGrounded() && Math.abs(velocity) < 100) {
+                isWalking = false;
+                canWalk = true;
+                isRunning = false;
+                canRun = true;
+                isIdle = true;
+            }
+
+
+
+
+
+
+            onCollide("player", "wall", () => {
+                // canJump = false;
+                velocity = -velocity;
+            });
+            onCollideEnd("player", "wall", () => {
+                canJump = true;
+            });
+
+            mainAnimations();
+            player.move(velocity, 0);
+        }
+    });
+
+
+    k.onKeyPress(["p", "escape", "ح"], () => {
+        paused = !paused;
+        if (player.has("body")) {
+            player.unuse("body");
+        }
+        else {
+            player.use(body());
+        }
+        if (paused) {
+            play("pause-start", { volume: 0.2 });
+            if (startScroll) {
+                bgMusicTime = bgMusic?.time();
+                bgMusic?.stop();
+                // pauseTheme = k.play("track5", { volume: 0.1, loop: true, speed: 0.7, seek: bgMusicTime });
+            }
+
+            get("bg").forEach(bg => {
+                bg.unuse("move")
+            })
+
+            add([
+                rect(width(), height()),
+                pos(getCamPos().x - width() / 2, getCamPos().y - height() / 2),
+                color(0, 0, 0),
+                opacity(0.5),
+                "pauseoverlay",
+            ]);
+
+            add([
+                text("PAUSED", {
+                    font: "VCR_OSD",
+                    size: 50,
+                    width: 500,
+                    letterSpacing: 5,
+                    align: "center",
+                }),
+                pos(getCamPos().x, getCamPos().y),
+                color(255, 255, 255),
+                anchor("center"),
+                "pauseoverlay",
+                "pausetext",
+            ]);
+
+            // get("pausetext").forEach(text => {
+            //     text.;
+            // });
+        }
+        else if (!paused) {
+            play("pause-end", { volume: 0.2 });
+            if (startScroll) {
+                wait(0.2, () => {
+                    bgMusic?.play(bgMusicTime);
+
+                })
+            }
+            k.get("pauseoverlay").forEach(overlay => overlay.destroy());
+        }
+
+        // onKeyPress("space", () => {
+        //     if (paused) {
+        //         paused = false;
+        //     }
+
+    });
+
+
+    // k.onClick(() => k.addKaboom(k.mousePos()));
+
+    k.setGravity(1400)
+
+    loadSprite("platform1", "sprites/platform1.png")
+    loadSprite("platform2", "sprites/platform2.png")
+    loadSprite("platform3", "sprites/platform3.png")
+    loadSprite("platform4", "sprites/platform4.png")
+    loadSprite("platform5", "sprites/platform5.png")
+    loadSprite("platform6", "sprites/platform6.png")
+    loadSprite("platform7", "sprites/platform7.png")
+    loadSprite("platform8", "sprites/platform8.png")
+    // loadSprite("platform9", "sprites/platform9.png")
+    // loadSprite("platformFull", "sprites/platformFull.png")
+
+
+
+
+    // k.viewport.follow(player);
+
+    function wallSpawner(wallPosY) {
+        if (!paused) {
+            for (let i = 0; i < 10; i++) {
+                const leftWall = add([
+                    rect(-100, height()),
+                    pos(0, wallPosY),
+                    area(),
+                    body({ isStatic: true }),
+                    color(127, 200, 255),
+                    opacity(0),
+                    "wall",
+                    "leftwall",
+                ]);
+                const rightWall = add([
+                    rect(100, height()),
+                    pos(width(), wallPosY),
+                    area(),
+                    body({ isStatic: true }),
+                    color(127, 200, 255),
+                    opacity(0),
+                    "wall",
+                    "rightwall",
+                ]);
+
+                wallPosY -= height();
+                return leftWall;
+            }
+        }
+    }
+
+    let leftWall = wallSpawner(0);
+    let wallInterval = setInterval(() => {
+        if (!paused) {
+            if (leftWall.pos.y > getCamPos().y - height()) {
+                leftWall = wallSpawner(leftWall.pos.y - height());
+            }
+            get("wall").forEach(wall => {
+                if (wall.pos.y > getCamPos().y + 500) {
+                    wall.destroy();
                 }
             });
-            if (pos.x > 200 && pos.x < width() && pos.y > height() / 2) {
-                isPlayerJumping = true
-            }
-        });
-
-        onTouchEnd((pos) => {
-            if (pos.x < 200) {
-                isMovingLeft = false;
-                isMovingRight = false;
-            }
-            else if (pos.x > 200) {
-                isPlayerJumping = false;
-            }
-        });
-
-        onUpdate(() => {
-            if (!paused) {
-                if (isKeyDown(["d", "right", "ي"]) || isMovingRight) {
-                    moveright();
-                } else if (isKeyDown(["a", "left", "ش"]) || isMovingLeft) {
-                    moveleft();
-                } else {
-                    if (player.isGrounded()) {
-                        if (velocity > 0) velocity = Math.max(velocity - friction / 1.4 * dt(), 0);
-                        if (velocity < 0) velocity = Math.min(velocity + friction / 1.4 * dt(), 0);
-                    }
-                    else {
-                        if (velocity > 0) velocity = Math.max(velocity - friction / 3 * dt(), 0);
-                        if (velocity < 0) velocity = Math.min(velocity + friction / 3 * dt(), 0);
-                    }
-                }
+        }
+    }, 500);
 
 
-
-                if (isPlayerJumping) {
-                    playerJump();
-                }
-
-
-
-
-                if (player.isGrounded() && Math.abs(velocity) > 100) {
-                    isWalking = true;
-                }
-                else if (player.isGrounded() && Math.abs(velocity) < 100) {
-                    isWalking = false;
-                    canWalk = true;
-                    isRunning = false;
-                    canRun = true;
-                    isIdle = true;
-                }
-
-                if ((player.isGrounded() && Math.abs(velocity) > 100) && player.isGrounded() && Math.abs(velocity) < 300) {
-                    isWalking = true;
-                }
-                else if (player.isGrounded() && Math.abs(velocity) < 100) {
-                    isWalking = false;
-                    canWalk = true;
-                    isRunning = false;
-                    canRun = true;
-                    isIdle = true;
-                }
-
-
-
-
-
-
-                onCollide("player", "wall", () => {
-                    // canJump = false;
-                    velocity = -velocity;
-                });
-                onCollideEnd("player", "wall", () => {
-                    canJump = true;
-                });
-
-                mainAnimations();
-                player.move(velocity, 0);
-            }
-        });
-
-
-        k.onKeyPress(["p", "escape", "ح"], () => {
-            paused = !paused;
-            if (player.has("body")) {
-                player.unuse("body");
-            }
-            else {
-                player.use(body());
-            }
-            if (paused) {
-                play("pause-start", { volume: 0.2 });
-                if (startScroll) {
-                    bgMusicTime = bgMusic?.time();
-                    bgMusic?.stop();
-                    // pauseTheme = k.play("track5", { volume: 0.1, loop: true, speed: 0.7, seek: bgMusicTime });
-                }
-
-                get("bg").forEach(bg => {
-                    bg.unuse("move")
-                })
-
-                add([
-                    rect(width(), height()),
-                    pos(getCamPos().x - width() / 2, getCamPos().y - height() / 2),
-                    color(0, 0, 0),
-                    opacity(0.5),
-                    "pauseoverlay",
-                ]);
-
-                add([
-                    text("PAUSED", {
-                        font: "VCR_OSD",
-                        size: 50,
-                        width: 500,
-                        letterSpacing: 5,
-                        align: "center",
-                    }),
-                    pos(getCamPos().x, getCamPos().y),
-                    color(255, 255, 255),
+    function platformSpawner(platformPosY) {
+        if (!paused) {
+            let spawnedPlatform;
+            let platformNumber;
+            for (let i = 0; i < 10; i++) {
+                platformNumber = Math.floor(rand(1, 9));
+                // debug.log(platformNumber);
+                spawnedPlatform = add([
+                    sprite(`platform${platformNumber}`),
+                    pos(width() / 2, platformPosY),
+                    outline(4),
+                    scale(0.75),
                     anchor("center"),
-                    "pauseoverlay",
-                    "pausetext",
+                    body({ isStatic: true }),
+                    // color(127, 200, 255),
+                    "platform",
+                    `platform${platformNumber}`,
                 ]);
 
-                // get("pausetext").forEach(text => {
-                //     text.;
-                // });
-            }
-            else if (!paused) {
-                play("pause-end", { volume: 0.2 });
-                if (startScroll) {
-                    wait(0.2, () => {
-                        bgMusic?.play(bgMusicTime);
+                spawnedPlatform.pos.x = k.rand(75, width() - 75);
+                platformPosY -= 100;
 
-                    })
-                }
-                k.get("pauseoverlay").forEach(overlay => overlay.destroy());
+
             }
 
-            // onKeyPress("space", () => {
-            //     if (paused) {
-            //         paused = false;
-            //     }
-
-        });
-
-
-        // k.onClick(() => k.addKaboom(k.mousePos()));
-
-        k.setGravity(1400)
-
-        loadSprite("platform1", "sprites/platform1.png")
-        loadSprite("platform2", "sprites/platform2.png")
-        loadSprite("platform3", "sprites/platform3.png")
-        loadSprite("platform4", "sprites/platform4.png")
-        loadSprite("platform5", "sprites/platform5.png")
-        loadSprite("platform6", "sprites/platform6.png")
-        loadSprite("platform7", "sprites/platform7.png")
-        loadSprite("platform8", "sprites/platform8.png")
-        // loadSprite("platform9", "sprites/platform9.png")
-        // loadSprite("platformFull", "sprites/platformFull.png")
-
-
-
-
-        // k.viewport.follow(player);
-
-        function wallSpawner(wallPosY) {
-            if (!paused) {
-                for (let i = 0; i < 10; i++) {
-                    const leftWall = add([
-                        rect(-100, height()),
-                        pos(0, wallPosY),
-                        area(),
-                        body({ isStatic: true }),
-                        color(127, 200, 255),
-                        opacity(0),
-                        "wall",
-                        "leftwall",
-                    ]);
-                    const rightWall = add([
-                        rect(100, height()),
-                        pos(width(), wallPosY),
-                        area(),
-                        body({ isStatic: true }),
-                        color(127, 200, 255),
-                        opacity(0),
-                        "wall",
-                        "rightwall",
-                    ]);
-
-                    wallPosY -= height();
-                    return leftWall;
-                }
-            }
+            return spawnedPlatform; //return last generated platform
         }
+    }
 
-        let leftWall = wallSpawner(0);
-        let wallInterval = setInterval(() => {
-            if (!paused) {
-                if (leftWall.pos.y > getCamPos().y - height()) {
-                    leftWall = wallSpawner(leftWall.pos.y - height());
-                }
-                get("wall").forEach(wall => {
-                    if (wall.pos.y > getCamPos().y + 500) {
-                        wall.destroy();
-                    }
-                });
+    let currentPlatform = platformSpawner(player.pos.y - 60);
+
+    let platformInterval = setInterval(() => {
+        if (!paused) {
+            if (currentPlatform.pos.y > getCamPos().y - height()) {
+                currentPlatform = platformSpawner(currentPlatform.pos.y - 100);
             }
-        }, 500);
-
-
-        function platformSpawner(platformPosY) {
-            if (!paused) {
-                let spawnedPlatform;
-                let platformNumber;
-                for (let i = 0; i < 10; i++) {
-                    platformNumber = Math.floor(rand(1, 9));
-                    // debug.log(platformNumber);
-                    spawnedPlatform = add([
-                        sprite(`platform${platformNumber}`),
-                        pos(width() / 2, platformPosY),
-                        outline(4),
-                        scale(0.75),
-                        anchor("center"),
-                        body({ isStatic: true }),
-                        // color(127, 200, 255),
-                        "platform",
-                        `platform${platformNumber}`,
-                    ]);
-
-                    spawnedPlatform.pos.x = k.rand(75, width() - 75);
-                    platformPosY -= 100;
-
-
+            get("platform").forEach(platform => {
+                if (platform.pos.y > getCamPos().y + height() / 1.7) {
+                    platform.destroy();
                 }
-
-                return spawnedPlatform; //return last generated platform
-            }
+            })
         }
+    }, 500);
 
-        let currentPlatform = platformSpawner(player.pos.y - 60);
 
-        let platformInterval = setInterval(() => {
-            if (!paused) {
-                if (currentPlatform.pos.y > getCamPos().y - height()) {
-                    currentPlatform = platformSpawner(currentPlatform.pos.y - 100);
-                }
-                get("platform").forEach(platform => {
-                    if (platform.pos.y > getCamPos().y + height() / 1.7) {
-                        platform.destroy();
+    onUpdate(() => { // Adds collision when the player is above any given platform
+        if (!paused) {
+            get("platform").forEach(platform => {
+                if (player.pos.y < platform.pos.y - 45) {
+                    if (platform.is("platform1")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -10), 60, 1) }));
                     }
+                    else if (platform.is("platform2")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -11), 123, 1) }));
+                    }
+                    else if (platform.is("platform3")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -13), 187, 1) }));
+                    }
+                    else if (platform.is("platform4")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -11), 251, 1) }));
+                    }
+                    else if (platform.is("platform5")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -12), 315, 1) }));
+                    }
+                    else if (platform.is("platform6")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -13), 378, 1) }));
+                    }
+                    else if (platform.is("platform7")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -18), 440, 1) }));
+                    }
+                    else if (platform.is("platform8")) {
+                        platform.use(area({ shape: new Rect(vec2(0, -21), 506, 1) }));
+                    }
+                }
+            });
+        }
+    });
+
+    onUpdate(() => { // Removes collision when the player is below any given platform
+        if (!paused) {
+            get("platform").forEach(platform => {
+                if (player.pos.y > platform.pos.y) {
+                    platform.unuse("area");
+                }
+            });
+        }
+    });
+
+    let camPosition = {
+        x: width() / 2,
+        y: height() / 2
+    }
+
+    let isDead = false;
+    let deathAnimation = true;
+
+    let gameOver = k.loadSound("game-over", "audio/game-over.mp3")
+
+    function shakeOnDeath() {
+        if (isDead && deathAnimation) {
+            shake(20)
+            k.play("fall", { volume: 0.4 });
+
+            wait(1.7, () => {
+
+                onClick(() => {
+                    restartGame();
                 })
-            }
-        }, 500);
+                onKeyPress("space", () => {
+                    restartGame();
+                })
+
+                let gameOverScreen = add([
+                    rect(width() * 2, height() * 2),
+                    pos(getCamPos().x, height() / 2),
+                    color(0, 0, 0),
+                    anchor("center"),
+                    opacity(0.5),
+                    fixed(),
+                    "gameoveroverlay",
+                ]);
+                let gameOverText = add([
+                    text("GAME OVER", {
+                        font: "VCR_OSD",
+                        size: 90,
+                        letterSpacing: 5,
+                    }),
+                    pos(getCamPos().x, height() / 2),
+                    anchor("center"),
+                    z(15),
+                    fixed(),
+                    "gameovertext",
+
+                ]);
+
+                play("game-over", { volume: 0.4 });
 
 
-        onUpdate(() => { // Adds collision when the player is above any given platform
-            if (!paused) {
-                get("platform").forEach(platform => {
-                    if (player.pos.y < platform.pos.y - 45) {
-                        if (platform.is("platform1")) {
-                            platform.use(area({ shape: new Rect(vec2(0, -10), 60, 1) }));
-                        }
-                        else if (platform.is("platform2")) {
-                            platform.use(area({ shape: new Rect(vec2(0, -11), 123, 1) }));
-                        }
-                        else if (platform.is("platform3")) {
-                            platform.use(area({ shape: new Rect(vec2(0, -13), 187, 1) }));
-                        }
-                        else if (platform.is("platform4")) {
-                            platform.use(area({ shape: new Rect(vec2(0, -11), 251, 1) }));
-                        }
-                        else if (platform.is("platform5")) {
-                            platform.use(area({ shape: new Rect(vec2(0, -12), 315, 1) }));
-                        }
-                        else if (platform.is("platform6")) {
-                            platform.use(area({ shape: new Rect(vec2(0, -13), 378, 1) }));
-                        }
-                        else if (platform.is("platform7")) {
-                            platform.use(area({ shape: new Rect(vec2(0, -18), 440, 1) }));
-                        }
-                        else if (platform.is("platform8")) {
-                            platform.use(area({ shape: new Rect(vec2(0, -21), 506, 1) }));
-                        }
-                    }
-                });
-            }
-        });
-
-        onUpdate(() => { // Removes collision when the player is below any given platform
-            if (!paused) {
-                get("platform").forEach(platform => {
-                    if (player.pos.y > platform.pos.y) {
-                        platform.unuse("area");
-                    }
-                });
-            }
-        });
-
-        let camPosition = {
-            x: width() / 2,
-            y: height() / 2
-        }
-
-        let isDead = false;
-        let deathAnimation = true;
-
-        let gameOver = k.loadSound("game-over", "audio/game-over.mp3")
-
-        function shakeOnDeath() {
-            if (isDead && deathAnimation) {
-                shake(20)
-                k.play("fall", { volume: 0.4 });
-
-                wait(1.7, () => {
-
-                    onClick(() => {
-                        restartGame();
-                    })
-                    onKeyPress("space", () => {
-                        restartGame();
-                    })
-
-                    let gameOverScreen = add([
-                        rect(width() * 2, height() * 2),
-                        pos(getCamPos().x, height() / 2),
-                        color(0, 0, 0),
-                        anchor("center"),
-                        opacity(0.5),
-                        fixed(),
-                        "gameoveroverlay",
-                    ]);
-                    let gameOverText = add([
-                        text("GAME OVER", {
+                wait(1.8, () => {
+                    add([
+                        text("Tap or Press R to Restart", {
                             font: "VCR_OSD",
-                            size: 90,
-                            letterSpacing: 5,
+                            size: 34
                         }),
-                        pos(getCamPos().x, height() / 2),
+                        pos(getCamPos().x, height() / 2 + 100),
                         anchor("center"),
                         z(15),
                         fixed(),
                         "gameovertext",
-
-                    ]);
-
-                    play("game-over", { volume: 0.4 });
-
-
-                    wait(1.8, () => {
-                        add([
-                            text("Tap or Press R to Restart", {
-                                font: "VCR_OSD",
-                                size: 34
-                            }),
-                            pos(getCamPos().x, height() / 2 + 100),
-                            anchor("center"),
-                            z(15),
-                            fixed(),
-                            "gameovertext",
-                        ])
-                    })
-                });
+                    ])
+                })
+            });
 
 
-                deathAnimation = false;
-            }
+            deathAnimation = false;
         }
+    }
 
 
-        let startScroll = false;
+    let startScroll = false;
 
 
-        let startMusic = onUpdate(() => {
-            if (startScroll) {
-                // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
-                bgMusic = k.play("track5", { volume: 0.2, loop: true });
-                startMusic.cancel();
+    let startMusic = onUpdate(() => {
+        if (startScroll) {
+            // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
+            bgMusic = k.play("track5", { volume: 0.2, loop: true });
+            startMusic.cancel();
+        }
+    });
+
+
+    k.onUpdate(() => {
+        if (!paused) {
+            if (player.pos.y > camPosition.y + height()) {
+                setCamPos(camPosition.x, camPosition.y);
+                isDead = true;
+                startScroll = false;
+                shakeOnDeath();
+                updateBgSpeed();
+                bgMusic?.stop();
+                pauseTheme?.stop();
             }
-        });
-
-
-        k.onUpdate(() => {
-            if (!paused) {
-                if (player.pos.y > camPosition.y + height()) {
-                    setCamPos(camPosition.x, camPosition.y);
-                    isDead = true;
-                    startScroll = false;
-                    shakeOnDeath();
+            else if (startScroll) {
+                if (player.pos.y < camPosition.y - height() / 3) {
+                    camSpeed = -height() / 2;
                     updateBgSpeed();
-                    bgMusic?.stop();
-                    pauseTheme?.stop();
                 }
-                else if (startScroll) {
-                    if (player.pos.y < camPosition.y - height() / 3) {
-                        camSpeed = -height() / 2;
-                        updateBgSpeed();
-                    }
-                    else {
-                        camSpeed = -height() / 6;
-                        updateBgSpeed();
-                    }
-                    setCamPos(camPosition.x, camPosition.y);
-                    camPosition.y += camSpeed * dt();
+                else {
+                    camSpeed = -height() / 6;
+                    updateBgSpeed();
                 }
-                if (player.pos.y < height() / 2) {
-                    startScroll = true;
-                }
+                setCamPos(camPosition.x, camPosition.y);
+                camPosition.y += camSpeed * dt();
             }
-        })
-
-        onkeydown = (e) => {
-            if (e.key == "r" || e.key == "R" || e.key == "ق") {
-                restartGame();
+            if (player.pos.y < height() / 2) {
+                startScroll = true;
             }
         }
-
-
     })
 
+    onkeydown = (e) => {
+        if (e.key == "r" || e.key == "R" || e.key == "ق") {
+            restartGame();
+        }
+    }
 
-    // k.go("game");
-    // k.go("title");
-    go("pretitle");
+
+})
+
+
+// k.go("game");
+// k.go("title");
+go("pretitle");

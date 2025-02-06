@@ -12,7 +12,7 @@ const k = kaplay(
         letterbox: true,
         stretch: false,
         background: [10, 10, 10],
-
+        
     }
 );
 
@@ -29,6 +29,17 @@ loadSprite("hooded", "sprites/hooded.png", {
     },
 });
 loadSprite("startingPlatform", "sprites/startingPlatform.png")
+loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
+loadSound("track5", "audio/track5.mp3")
+
+loadSprite("platform1", "sprites/platform1.png")
+loadSprite("platform2", "sprites/platform2.png")
+loadSprite("platform3", "sprites/platform3.png")
+loadSprite("platform4", "sprites/platform4.png")
+loadSprite("platform5", "sprites/platform5.png")
+loadSprite("platform6", "sprites/platform6.png")
+loadSprite("platform7", "sprites/platform7.png")
+loadSprite("platform8", "sprites/platform8.png")
 
 
 
@@ -80,7 +91,6 @@ scene("pretitle", () => {
 k.scene("title", () => {
 
     let mainTheme = play("spicyTheme2", { volume: 1, loop: true });
-    loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
     loadSprite("title", "sprites/title-black.png");
 
     function titleBGSpawner(posY) {
@@ -227,7 +237,6 @@ k.scene("game", () => {
     // k.loadSound("track1", "audio/track1.mp3")
     // k.loadSound("track2", "audio/track2.mp3")
     // k.loadSound("track4", "audio/track4.mp3")
-    loadSound("track5", "audio/track5.mp3")
     loadSound("fall", "audio/fall.mp3")
     loadSound("pause-start", "audio/pause-start.mp3")
     loadSound("pause-end", "audio/pause-end.mp3")
@@ -236,7 +245,7 @@ k.scene("game", () => {
 
 
     // loadSprite("bg", "sprites/brick-wall.png");
-    loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
+    // loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
 
     function restartGame() {
         bgMusic?.stop();
@@ -658,14 +667,7 @@ k.scene("game", () => {
 
     k.setGravity(1400)
 
-    loadSprite("platform1", "sprites/platform1.png")
-    loadSprite("platform2", "sprites/platform2.png")
-    loadSprite("platform3", "sprites/platform3.png")
-    loadSprite("platform4", "sprites/platform4.png")
-    loadSprite("platform5", "sprites/platform5.png")
-    loadSprite("platform6", "sprites/platform6.png")
-    loadSprite("platform7", "sprites/platform7.png")
-    loadSprite("platform8", "sprites/platform8.png")
+
     // loadSprite("platform9", "sprites/platform9.png")
     // loadSprite("platformFull", "sprites/platformFull.png")
 

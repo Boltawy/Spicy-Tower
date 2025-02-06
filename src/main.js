@@ -448,7 +448,7 @@ k.scene("game", () => {
             //     text.;
             // });
         }
-        else {
+        else if (!paused) {
             play("pause-end", { volume: 0.2 });
             if (startScroll) {
                 wait(0.2, () => {
@@ -458,6 +458,11 @@ k.scene("game", () => {
             }
             k.get("pauseoverlay").forEach(overlay => overlay.destroy());
         }
+
+        // onKeyPress("space", () => {
+        //     if (paused) {
+        //         paused = false;
+        //     }
 
     });
 

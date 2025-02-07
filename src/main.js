@@ -231,9 +231,8 @@ k.scene("game", () => {
     let pauseTheme;
     let bgMusic;
     let paused = false;
-    let pauseThemeTime;
-    let pauseThemeDuration;
-    let bgMusicTime
+    let bgMusicTime;
+    let gameOverSound;
     // k.loadSound("spicyTheme", "audio/spicy-theme.mp3")
     // k.loadSound("track1", "audio/track1.mp3")
     // k.loadSound("track2", "audio/track2.mp3")
@@ -257,7 +256,8 @@ k.scene("game", () => {
         clearInterval(wallInterval);
         k.destroyAll("bg");
         clearInterval(bgInterval);
-        play("try-again", { volume: 0.2 });
+        gameOverSound?.stop();
+        play("try-again", { volume: 0.3 });
         k.go("game");
     }
 
@@ -818,7 +818,7 @@ k.scene("game", () => {
     let isDead = false;
     let deathAnimation = true;
 
-    let gameOver = k.loadSound("game-over", "audio/game-over.mp3")
+    k.loadSound("game-over", "audio/game-over.mp3")
 
     function shakeOnDeath() {
         if (isDead && deathAnimation) {
@@ -857,13 +857,13 @@ k.scene("game", () => {
 
                 ]);
 
-                play("game-over", { volume: 0.4 });
+                gameOverSound = play("game-over", { volume: 0.4 });
 
 
                 wait(2.4, () => {
                     if (isTouchscreen()) {
                         add([
-                            text("Tap to Restart", {
+                            text("TAP to Restart", {
                                 font: "VCR_OSD",
                                 size: 28,
                             }),

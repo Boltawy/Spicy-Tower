@@ -257,8 +257,8 @@ k.scene("game", () => {
         clearInterval(wallInterval);
         k.destroyAll("bg");
         clearInterval(bgInterval);
-        k.go("game");
         play("try-again", { volume: 0.2 });
+        k.go("game");
     }
 
     let spawnedBg;
@@ -830,7 +830,7 @@ k.scene("game", () => {
                 onClick(() => {
                     restartGame();
                 })
-                onKeyPress("space", () => {
+                onKeyPress(["space", "r", "R", "ق", "enter"], () => {
                     restartGame();
                 })
 
@@ -922,11 +922,11 @@ k.scene("game", () => {
         }
     })
 
-    onkeydown = (e) => {
-        if (e.key == "r" || e.key == "R" || e.key == "ق") {
-            restartGame();
-        }
-    }
+    // onkeydown = (e) => {
+    //     if (e.key == "r" || e.key == "R" || e.key == "ق") {
+    //         restartGame();
+    //     }
+    // }
 
 
 })

@@ -29,8 +29,13 @@ loadSprite("hooded", "sprites/hooded.png", {
         run: { from: 24, to: 31, loop: true, speed: 8 },
     },
 });
+
 loadSprite("startingPlatform", "sprites/startingPlatform.png")
 loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
+loadSound("track1", "audio/track1.mp3")
+loadSound("track2", "audio/track2.mp3")
+loadSound("track3", "audio/track3.mp3")
+loadSound("track4", "audio/track4.mp3")
 loadSound("track5", "audio/track5.mp3")
 loadSound("try-again", "audio/try-again.mp3")
 
@@ -234,9 +239,6 @@ k.scene("game", () => {
     let bgMusicTime;
     let gameOverSound;
     // k.loadSound("spicyTheme", "audio/spicy-theme.mp3")
-    // k.loadSound("track1", "audio/track1.mp3")
-    // k.loadSound("track2", "audio/track2.mp3")
-    // k.loadSound("track4", "audio/track4.mp3")
     loadSound("fall", "audio/fall.mp3")
     loadSound("pause-start", "audio/pause-start.mp3")
     loadSound("pause-end", "audio/pause-end.mp3")
@@ -898,10 +900,10 @@ k.scene("game", () => {
     let startScroll = false;
 
 
+
     let startMusic = onUpdate(() => {
         if (startScroll) {
-            // bgMusic = k.play("spicyTheme", { volume: 0.2, loop: true });
-            bgMusic = k.play("track5", { volume: 0.2, loop: true });
+            bgMusic = k.play(`track${Math.floor(k.rand(1, 6))}`, { volume: 0.2, loop: true });
             startMusic.cancel();
         }
     });

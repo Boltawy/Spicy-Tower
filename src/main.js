@@ -860,18 +860,32 @@ k.scene("game", () => {
                 play("game-over", { volume: 0.4 });
 
 
-                wait(1.8, () => {
-                    add([
-                        text("Tap or Press R to Restart", {
-                            font: "VCR_OSD",
-                            size: 34
-                        }),
-                        pos(getCamPos().x, height() / 2 + 100),
-                        anchor("center"),
-                        z(15),
-                        fixed(),
-                        "gameovertext",
-                    ])
+                wait(2.4, () => {
+                    if (isTouchscreen()) {
+                        add([
+                            text("Tap to Restart", {
+                                font: "VCR_OSD",
+                                size: 28,
+                            }),
+                            pos(getCamPos().x, height() / 2 + 100),
+                            anchor("center"),
+                            z(15),
+                            fixed(),
+                            "gameovertext",
+                        ])
+                    } else {
+                        add([
+                            text("Press SPACE or R to restart", {
+                                font: "VCR_OSD",
+                                size: 28,
+                            }),
+                            pos(getCamPos().x, height() / 2 + 100),
+                            anchor("center"),
+                            z(15),
+                            fixed(),
+                            "gameovertext",
+                        ])
+                    }
                 })
             });
 

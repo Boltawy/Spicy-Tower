@@ -16,6 +16,7 @@ const k = kaplay(
     }
 );
 
+loadSprite("title", "sprites/title-black.png");
 loadFont("VCR_OSD", "fonts/VCR_OSD_Mono.ttf");
 loadSound("spicyTheme2", "audio/spicy-theme2.mp3")
 loadSprite("hooded", "sprites/hooded.png", {
@@ -91,7 +92,6 @@ scene("pretitle", () => {
 k.scene("title", () => {
 
     let mainTheme = play("spicyTheme2", { volume: 1, loop: true });
-    loadSprite("title", "sprites/title-black.png");
 
     function titleBGSpawner(posY) {
         for (let i = 0; i < 10; i++) {

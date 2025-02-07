@@ -163,11 +163,11 @@ k.scene("title", () => {
     ])
 
     tween(
-        5, // Start scaling
-        1.8,  // End scaling
-        1.6,   // Duration in seconds
-        (val) => titleLogo.scale = vec2(val), // Apply value to angle
-        easings.easeOutBounce, // Easing function (use "easings.easeInOutQuad" for smoother effect)
+        5, 
+        1.8, 
+        1.6,  
+        (val) => titleLogo.scale = vec2(val), 
+        easings.easeOutBounce, 
     );
 
 
@@ -926,7 +926,7 @@ k.scene("game", () => {
                     updateBgSpeed();
                 }
                 else {
-                    camSpeed = -height() / 6;
+                    camSpeed = -height() / 8; //value should tween (inscrease) over time
                     updateBgSpeed();
                 }
                 setCamPos(camPosition.x, camPosition.y);
@@ -948,6 +948,4 @@ k.scene("game", () => {
 })
 
 
-// k.go("game");
-// k.go("title");
 go("pretitle");

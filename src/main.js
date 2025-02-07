@@ -12,7 +12,7 @@ const k = kaplay(
         letterbox: true,
         stretch: false,
         background: [10, 10, 10],
-        
+
     }
 );
 
@@ -32,6 +32,7 @@ loadSprite("hooded", "sprites/hooded.png", {
 loadSprite("startingPlatform", "sprites/startingPlatform.png")
 loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
 loadSound("track5", "audio/track5.mp3")
+loadSound("try-again", "audio/try-again.mp3")
 
 loadSprite("platform1", "sprites/platform1.png")
 loadSprite("platform2", "sprites/platform2.png")
@@ -257,6 +258,7 @@ k.scene("game", () => {
         k.destroyAll("bg");
         clearInterval(bgInterval);
         k.go("game");
+        play("try-again", { volume: 0.2 });
     }
 
     let spawnedBg;
@@ -355,7 +357,7 @@ k.scene("game", () => {
         "startingPlatform",
     ]);
 
-    
+
 
     const player = k.make([
         k.pos(width() / 2, height() - 90),

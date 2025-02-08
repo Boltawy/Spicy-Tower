@@ -922,15 +922,69 @@ k.scene("game", () => {
                 bgMusic?.stop();
                 pauseTheme?.stop();
             }
-            else if (startScroll) {
+            if (startScroll) {
                 if (player.pos.y < camPosition.y - height() / 3) {
                     camSpeed = -height() / 2;
                     updateBgSpeed();
+                    score += Math.floor(200 * dt());
                 }
-                else {
-                    camSpeed = -height() / 6; //value should tween (inscrease) over time
+                else if (score < 1250) {
+                    camSpeed = -height() / 8.5; //value should tween (inscrease) over time
                     updateBgSpeed();
                 }
+                else if (score < 3000) {
+                    camSpeed = -height() / 8;
+                    updateBgSpeed();
+                }
+                else if (score < 5000) {
+                    camSpeed = -height() / 7.25;
+                    updateBgSpeed();
+                }
+                else if (score < 7000) {
+                    camSpeed = -height() / 6.75;
+                    updateBgSpeed();
+                }
+                else if (score < 9000) {
+                    camSpeed = -height() / 6.25;
+                    updateBgSpeed();
+                }
+                else if (score < 12000) {
+                    camSpeed = -height() / 5.75;
+                    updateBgSpeed();
+                }
+                else if (score < 16000) {
+                    camSpeed = -height() / 5;
+                    updateBgSpeed();
+                }
+                else if (score < 20000) {
+                    camSpeed = -height() / 4.75;
+                    updateBgSpeed();
+                }
+                else {
+                    camSpeed = -height() / 4.25;
+                    updateBgSpeed();
+                }
+                // if (score < 3000) {
+                // else if (score < 9000) {
+                //     camSpeed = -height() / 6;
+                //     updateBgSpeed();
+                // }
+                // else if (score < 15000) {
+                //     camSpeed = -height() / 5.5;
+                //     updateBgSpeed();
+                // }
+                // else if (score < 22000) {
+                //     camSpeed = -height() / 5;
+                //     updateBgSpeed();
+                // }
+                // else if (score < 28000) {
+                //     camSpeed = -height() / 4.75;
+                //     updateBgSpeed();
+                // }
+                // else {
+                //     camSpeed = -height() / 4;
+                //     updateBgSpeed();
+                // }
                 setCamPos(camPosition.x, camPosition.y);
                 camPosition.y += camSpeed * dt();
             }

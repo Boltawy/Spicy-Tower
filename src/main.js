@@ -725,6 +725,23 @@ k.scene("game", () => {
         }
     }, 500);
 
+    let platformSpawnOffset = 150;
+
+    onUpdate(() => {
+        if (score < 3000) {
+            platformSpawnOffset = 150;
+        }
+        else if (score < 6000) {
+            platformSpawnOffset = 125;
+        }
+        else if (score < 9000) {
+            platformSpawnOffset = 100;
+        }
+        else {
+            platformSpawnOffset = 75;
+        }
+    })
+
 
     function platformSpawner(platformPosY) {
         if (!paused) {
@@ -745,7 +762,7 @@ k.scene("game", () => {
                     `platform${platformNumber}`,
                 ]);
 
-                spawnedPlatform.pos.x = k.rand(75, width() - 75);
+                spawnedPlatform.pos.x = k.rand(platformSpawnOffset, width() - platformSpawnOffset);
                 platformPosY -= 100;
 
 
@@ -754,6 +771,8 @@ k.scene("game", () => {
             return spawnedPlatform; //return last generated platform
         }
     }
+
+
 
     let currentPlatform = platformSpawner(player.pos.y - 60);
 
@@ -945,23 +964,23 @@ k.scene("game", () => {
                     updateBgSpeed();
                 }
                 else if (score < 9000) {
-                    camSpeed = -height() / 7.25;
+                    camSpeed = -height() / 7.5;
                     updateBgSpeed();
                 }
                 else if (score < 12000) {
-                    camSpeed = -height() / 6.75;
+                    camSpeed = -height() / 7;
                     updateBgSpeed();
                 }
                 else if (score < 16000) {
-                    camSpeed = -height() / 6.25;
+                    camSpeed = -height() / 6.5;
                     updateBgSpeed();
                 }
                 else if (score < 20000) {
-                    camSpeed = -height() / 5.75;
+                    camSpeed = -height() / 6;
                     updateBgSpeed();
                 }
                 else {
-                    camSpeed = -height() / 5;
+                    camSpeed = -height() / 5.5;
                     updateBgSpeed();
                 }
                 // if (score < 3000) {

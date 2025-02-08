@@ -32,11 +32,6 @@ loadSprite("hooded", "sprites/hooded.png", {
 
 loadSprite("startingPlatform", "sprites/startingPlatform.png")
 loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
-loadSound("track1", "audio/track1.mp3")
-loadSound("track2", "audio/track2.mp3")
-loadSound("track3", "audio/track3.mp3")
-loadSound("track4", "audio/track4.mp3")
-loadSound("track5", "audio/track5.mp3")
 loadSound("try-again", "audio/try-again.mp3")
 
 loadSprite("platform1", "sprites/platform1.png")
@@ -98,6 +93,13 @@ scene("pretitle", () => {
 k.scene("title", () => {
 
     let mainTheme = play("spicyTheme2", { volume: 1, loop: true });
+
+    loadSound("track1", "audio/track1.mp3")
+    loadSound("track2", "audio/track2.mp3")
+    loadSound("track3", "audio/track3.mp3")
+    loadSound("track4", "audio/track4.mp3")
+    loadSound("track5", "audio/track5.mp3")
+
 
     function titleBGSpawner(posY) {
         for (let i = 0; i < 10; i++) {
@@ -163,11 +165,11 @@ k.scene("title", () => {
     ])
 
     tween(
-        5, 
-        1.8, 
-        1.6,  
-        (val) => titleLogo.scale = vec2(val), 
-        easings.easeOutBounce, 
+        5,
+        1.8,
+        1.6,
+        (val) => titleLogo.scale = vec2(val),
+        easings.easeOutBounce,
     );
 
 
@@ -926,7 +928,7 @@ k.scene("game", () => {
                     updateBgSpeed();
                 }
                 else {
-                    camSpeed = -height() / 8; //value should tween (inscrease) over time
+                    camSpeed = -height() / 6; //value should tween (inscrease) over time
                     updateBgSpeed();
                 }
                 setCamPos(camPosition.x, camPosition.y);
@@ -938,11 +940,9 @@ k.scene("game", () => {
         }
     })
 
-    // onkeydown = (e) => {
-    //     if (e.key == "r" || e.key == "R" || e.key == "ق") {
-    //         restartGame();
-    //     }
-    // }
+    onKeyPress(";", () => {
+        restartGame();
+    })
 
 
 })

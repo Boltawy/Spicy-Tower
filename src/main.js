@@ -725,17 +725,20 @@ k.scene("game", () => {
         }
     }, 500);
 
-    let platformSpawnOffset = 150;
+    let platformSpawnOffset = 175;
 
     onUpdate(() => {
         if (score < 3000) {
-            platformSpawnOffset = 150;
+            platformSpawnOffset = 175;
         }
         else if (score < 6000) {
-            platformSpawnOffset = 125;
+            platformSpawnOffset = 150;
         }
         else if (score < 9000) {
-            platformSpawnOffset = 100;
+            platformSpawnOffset = 125;
+        }
+        else if (score < 12000) {
+            platformSpawnOffset = 100
         }
         else {
             platformSpawnOffset = 75;

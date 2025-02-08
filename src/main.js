@@ -929,39 +929,39 @@ k.scene("game", () => {
                     score += Math.floor(200 * dt());
                 }
                 else if (score < 1250) {
-                    camSpeed = -height() / 8.5; //value should tween (inscrease) over time
+                    camSpeed = -height() / 12; //value should tween (inscrease) over time
                     updateBgSpeed();
                 }
                 else if (score < 3000) {
-                    camSpeed = -height() / 8;
+                    camSpeed = -height() / 10;
                     updateBgSpeed();
                 }
                 else if (score < 5000) {
-                    camSpeed = -height() / 7.25;
+                    camSpeed = -height() / 9;
                     updateBgSpeed();
                 }
                 else if (score < 7000) {
-                    camSpeed = -height() / 6.75;
+                    camSpeed = -height() / 8.5;
                     updateBgSpeed();
                 }
                 else if (score < 9000) {
-                    camSpeed = -height() / 6.25;
+                    camSpeed = -height() / 7.25;
                     updateBgSpeed();
                 }
                 else if (score < 12000) {
-                    camSpeed = -height() / 5.75;
+                    camSpeed = -height() / 6.75;
                     updateBgSpeed();
                 }
                 else if (score < 16000) {
-                    camSpeed = -height() / 5;
+                    camSpeed = -height() / 6;
                     updateBgSpeed();
                 }
                 else if (score < 20000) {
-                    camSpeed = -height() / 4.75;
+                    camSpeed = -height() / 5.5;
                     updateBgSpeed();
                 }
                 else {
-                    camSpeed = -height() / 4.25;
+                    camSpeed = -height() / 5;
                     updateBgSpeed();
                 }
                 // if (score < 3000) {

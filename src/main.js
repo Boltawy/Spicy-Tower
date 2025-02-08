@@ -953,11 +953,11 @@ k.scene("game", () => {
                     updateBgSpeed();
                 }
                 else if (score < 16000) {
-                    camSpeed = -height() / 6;
+                    camSpeed = -height() / 6.25;
                     updateBgSpeed();
                 }
                 else if (score < 20000) {
-                    camSpeed = -height() / 5.5;
+                    camSpeed = -height() / 5.75;
                     updateBgSpeed();
                 }
                 else {

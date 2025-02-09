@@ -1,5 +1,7 @@
+//  Made By : Zeyad Ismail (Bolt Action), Using KAPLAY.js
+
 import kaplay from "kaplay";
-import "kaplay/global"; // uncomment if you want to use without the k. prefix
+import "kaplay/global";
 
 const k = kaplay(
     {

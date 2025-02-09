@@ -6,7 +6,7 @@ import "kaplay/global";
 const k = kaplay(
     {
         debug: true,
-        // debugKey: "t",
+        debugKey: "t",
         global: true,
         width: 640,
         height: window.screen.height * 1.3,
@@ -719,7 +719,7 @@ k.scene("game", () => {
                     sprite(`platform${platformNumber}`),
                     pos(width() / 2, platformPosY),
                     outline(4),
-                    scale(0.75),
+                    scale(0.9),
                     anchor("center"),
                     body({ isStatic: true }),
                     // color(127, 200, 255),
@@ -914,27 +914,27 @@ k.scene("game", () => {
                 }
                 else if (score < 1250) {
                     camSpeed = -height() / 12; //value should tween (inscrease) over time
-                    platformSpawnOffset = 200;
+                    platformSpawnOffset = 150;
                     updateBgSpeed();
                 }
                 else if (score < 3000) {
                     camSpeed = -height() / 10;
-                    platformSpawnOffset = 175;
+                    platformSpawnOffset = 125;
                     updateBgSpeed();
                 }
                 else if (score < 5000) {
                     camSpeed = -height() / 9;
-                    platformSpawnOffset = 150;
+                    platformSpawnOffset = 100;
                     updateBgSpeed();
                 }
                 else if (score < 7000) {
                     camSpeed = -height() / 8.5;
-                    platformSpawnOffset = 125
+                    platformSpawnOffset = 75
                     updateBgSpeed();
                 }
                 else if (score < 9000) {
                     camSpeed = -height() / 7.5;
-                    platformSpawnOffset = 100;
+                    platformSpawnOffset = 60;
                     updateBgSpeed();
                 }
                 else if (score < 12000) {
@@ -954,7 +954,7 @@ k.scene("game", () => {
                     updateBgSpeed();
                 }
                 if (score > 9000) {
-                    platformSpawnOffset = 75;
+                    platformSpawnOffset = 50;
                 }
                 // if (score < 3000) {
                 // else if (score < 9000) {

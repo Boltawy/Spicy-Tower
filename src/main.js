@@ -6,7 +6,7 @@ import "kaplay/global";
 const k = kaplay(
     {
         debug: true,
-        debugKey: "t",
+        // debugKey: "t",
         global: true,
         width: 640,
         height: window.screen.height * 1.3,
@@ -707,27 +707,6 @@ k.scene("game", () => {
 
     let platformSpawnOffset = 200;
 
-    onUpdate(() => {
-        if (score < 3000) {
-            platformSpawnOffset = 200;
-        }
-        else if (score < 6000) {
-            platformSpawnOffset = 175;
-        }
-        else if (score < 9000) {
-            platformSpawnOffset = 150;
-        }
-        else if (score < 12000) {
-            platformSpawnOffset = 125
-        }
-        else if (score < 15000) {
-            platformSpawnOffset = 100;
-        }
-        else {
-            platformSpawnOffset = 75;
-        }
-    })
-
 
     function platformSpawner(platformPosY) {
         if (!paused) {
@@ -935,22 +914,27 @@ k.scene("game", () => {
                 }
                 else if (score < 1250) {
                     camSpeed = -height() / 12; //value should tween (inscrease) over time
+                    platformSpawnOffset = 200;
                     updateBgSpeed();
                 }
                 else if (score < 3000) {
                     camSpeed = -height() / 10;
+                    platformSpawnOffset = 175;
                     updateBgSpeed();
                 }
                 else if (score < 5000) {
                     camSpeed = -height() / 9;
+                    platformSpawnOffset = 150;
                     updateBgSpeed();
                 }
                 else if (score < 7000) {
                     camSpeed = -height() / 8.5;
+                    platformSpawnOffset = 125
                     updateBgSpeed();
                 }
                 else if (score < 9000) {
                     camSpeed = -height() / 7.5;
+                    platformSpawnOffset = 100;
                     updateBgSpeed();
                 }
                 else if (score < 12000) {
@@ -968,6 +952,9 @@ k.scene("game", () => {
                 else {
                     camSpeed = -height() / 5.5;
                     updateBgSpeed();
+                }
+                if (score > 9000) {
+                    platformSpawnOffset = 75;
                 }
                 // if (score < 3000) {
                 // else if (score < 9000) {

@@ -249,10 +249,6 @@ k.scene("game", () => {
 
 
 
-
-    // loadSprite("bg", "sprites/brick-wall.png");
-    // loadSprite("bg", "sprites/Dungeon_brick_wall_blue.png.png");
-
     function restartGame() {
         bgMusic?.stop();
         pauseTheme?.stop();
@@ -353,13 +349,11 @@ k.scene("game", () => {
 
     const startingPlatform = add([
         sprite("startingPlatform"),
-        // rect(width(), 48),
         scale(1.01),
         pos(width() / 2, height() + 20),
         anchor("center"),
         area(),
         body({ isStatic: true }),
-        // color(127, 200, 255),
         "startingPlatform",
     ]);
 
@@ -370,7 +364,6 @@ k.scene("game", () => {
         k.sprite("hooded", { anim: "idle1" }),
         k.body(),
         area({ shape: new Rect(vec2(0, 3), 10, 24) }),
-        // scale(0.5),
         scale(2),
         anchor("center"),
         "player",
@@ -504,7 +497,6 @@ k.scene("game", () => {
 
 
     onTouchStart((pos) => {
-        // debug.log(pos.x)
         if (pos.x > 0 && pos.x < 100 && pos.y > height() / 2) {
             isMovingLeft = true;
             isMovingRight = false;
@@ -617,7 +609,6 @@ k.scene("game", () => {
             if (startScroll) {
                 bgMusicTime = bgMusic?.time();
                 bgMusic?.stop();
-                // pauseTheme = k.play("track5", { volume: 0.1, loop: true, speed: 0.7, seek: bgMusicTime });
             }
 
             get("bg").forEach(bg => {
@@ -647,9 +638,6 @@ k.scene("game", () => {
                 "pausetext",
             ]);
 
-            // get("pausetext").forEach(text => {
-            //     text.;
-            // });
         }
         else if (!paused) {
             play("pause-end", { volume: 0.2 });
@@ -670,18 +658,8 @@ k.scene("game", () => {
     });
 
 
-    // k.onClick(() => k.addKaboom(k.mousePos()));
 
     k.setGravity(1400)
-
-
-    // loadSprite("platform9", "sprites/platform9.png")
-    // loadSprite("platformFull", "sprites/platformFull.png")
-
-
-
-
-    // k.viewport.follow(player);
 
     function wallSpawner(wallPosY) {
         if (!paused) {
@@ -727,20 +705,23 @@ k.scene("game", () => {
         }
     }, 500);
 
-    let platformSpawnOffset = 175;
+    let platformSpawnOffset = 200;
 
     onUpdate(() => {
         if (score < 3000) {
-            platformSpawnOffset = 175;
+            platformSpawnOffset = 200;
         }
         else if (score < 6000) {
-            platformSpawnOffset = 150;
+            platformSpawnOffset = 175;
         }
         else if (score < 9000) {
-            platformSpawnOffset = 125;
+            platformSpawnOffset = 150;
         }
         else if (score < 12000) {
-            platformSpawnOffset = 100
+            platformSpawnOffset = 125
+        }
+        else if (score < 15000) {
+            platformSpawnOffset = 100;
         }
         else {
             platformSpawnOffset = 75;

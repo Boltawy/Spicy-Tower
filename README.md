@@ -1,27 +1,39 @@
-# Folder structure
+# 🌶️ Spicy Tower
 
-- `src` - source code for your kaplay project
-- `dist` - distribution folder, contains your index.html, built js bundle and static assets
+> A lightweight **Icy Tower** clone made with [Kaplay.js](https://kaplayjs.com)!
+![spicy-logo](https://github.com/user-attachments/assets/172b06e4-2ad2-4370-8efc-fadf3530ba33)
 
+### A fast-paced, rage-inducing vertical scroller  
+*(Is that even a real term? Who cares)*
 
-## Development
+---
 
-```sh
-$ npm run dev
-```
+## 🕹️ Features
 
-will start a dev server at http://localhost:8000
+- Very ***Spicy*** gameplay that'll test your reflexes 🌶️
+- 💀 Difficulty increases the higher you go
+- ⏫ The faster you move, the higher you jump — and the faster your score climbs!
+- 🎧 Retro SFX and music for max nostalgia
+- 🎨 Parallax scrolling for that sweet, sweet depth
+- 🧪 90% code, 10% duct tape, 100% passion — it’s a fun little mess
+- 🧙‍♂️ An epic final boss? Maybe. You'll have to find out...
 
-## Distribution
+---
 
-```sh
-$ npm run build
-```
+## 🎮 Controls
 
-will build your js files into `dist/`
+### PC:
+- **WASD** or **Arrow Keys** to move
+- **Spacebar** to jump
 
-```sh
-$ npm run zip
-```
+### Mobile:
+- On-screen **touch controls**!
 
-will build your game and package into a .zip file, you can upload to your server or itch.io / newground etc.
+---
+
+## 🧠 Backstory
+
+I built this project in just **one week** for a competition at **Route Academy**.  
+It's chaotic, fun, and may cause mild keyboard damage — but I hope you enjoy it even a little bit ❤️
+
+## -Boltawy

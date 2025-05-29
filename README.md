@@ -36,5 +36,7 @@
 I built this project in just **one week** for a competition at **Route Academy**.  
 It's chaotic, fun, and may cause mild keyboard damage — but I hope you enjoy it even a little bit ❤️
 
+## What are you waiting for ? Go try it out ! https://spicy-tower.vercel.app
+
 ---
 ## -***Boltawy***

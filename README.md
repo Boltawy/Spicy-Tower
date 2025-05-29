@@ -1,4 +1,4 @@
-# 🌶️ Spicy Tower
+# 🌶️ [Spicy Tower](https://spicy-tower.vercel.app)
 
 > A lightweight **Icy Tower** clone made with [Kaplay.js](https://kaplayjs.com)!
 ![spicy-logo](https://github.com/user-attachments/assets/172b06e4-2ad2-4370-8efc-fadf3530ba33)

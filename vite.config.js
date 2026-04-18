@@ -39,6 +39,7 @@ export default defineConfig({
             injectRegister: "auto",
             workbox: {
                 globPatterns: ["**/*.{js,css,html,ico,png,svg,mp3,wav,ogg,ttf,woff,woff2}"],
+                maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
             },
             manifest: {
                 name: "Spicy Tower",

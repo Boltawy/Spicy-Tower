@@ -5,6 +5,8 @@
 
 ### A fast-paced, rage-inducing vertical scroller  
 
+<img src="public/demo.gif" width="600" />
+
 ---
 
 ## 🕹️ Features
